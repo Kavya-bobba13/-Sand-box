@@ -1,18 +1,38 @@
 // RENT_FLAT...
+filter_map=new Map()
+
 const drop_down_bud = document.querySelectorAll(".dropdown-item");
 const items=document.querySelectorAll(".box");
+items.forEach((e)=>{
+    filter_map.set(e,0);
+})
+
+
+
+
+const drp_btn=document.getElementsByClassName("dropdown-toggle")[0];
+drp_btn.addEventListener("click",(e)=>{
+
+    if(e.target.innerText!="Budget"){
+             items.forEach(val => {
+                let value=filter_map.get(val)&~1;
+                filter_map.set(val,value);
+                if(value===0)
+                    val.style.display="inline-block";
+            });
+            console.log(filter_map);
+            e.target.innerText="Budget";
+    }
+
+});
+
+
 drop_down_bud.forEach(element => {
     
     element.addEventListener("click",(e) => {
-    items.forEach(val => {
-        val.style.display="inline-block";
-    });
-    
-    const drp_btn=document.getElementsByClassName("dropdown-toggle")[0];
-    if(drp_btn.innerText!=e.target.innerText){
     
     drp_btn.innerText=e.target.innerText;
-    console.log(e.target);
+    
     if(e.target.innerText=="1k - 10k"){
         
         items.forEach(val => { 
@@ -20,6 +40,8 @@ drop_down_bud.forEach(element => {
             console.log(cost.substring(1));
             if(cost.indexOf("Lac")>-1 || cost.substring(1)>10000)
             {
+                filter_map.set(val,filter_map.get(val)|1);
+                console.log(filter_map);
                 val.style.display="none";
             }
         });        
@@ -30,6 +52,7 @@ drop_down_bud.forEach(element => {
             console.log(cost.substring(1));
             if(cost.indexOf("Lac")>-1 || cost.substring(1)>50000 || cost.substring(1)<10000)
             {
+                filter_map.set(val,filter_map.get(val)|1);
                 val.style.display="none";
             }
         });        
@@ -40,6 +63,7 @@ drop_down_bud.forEach(element => {
             console.log(cost.substring(1));
             if(cost.indexOf("Lac")>-1 || cost.substring(1)<50000)
             {
+                filter_map.set(val,filter_map.get(val)|1);
                 val.style.display="none";
             }
         });        
@@ -50,16 +74,65 @@ drop_down_bud.forEach(element => {
             console.log(cost.substring(1));
             if(cost.indexOf("Lac")==-1)
             {
+                filter_map.set(val,filter_map.get(val)|1);
                 val.style.display="none";
             }
         });        
     }
     
-    }
-    else{
-        drp_btn.innerHTML="Budget";
-    }
-    
     })
 });
-// items[0]].style.display=none;
+
+
+//****Location filter ****/
+
+const drp_btn2=document.querySelector(".toggle2");
+const loc=document.querySelectorAll(".menu2 a");
+const locinp=document.querySelector(".menu2 input")
+locinp.addEventListener("keyup",(e)=>{
+    loc.forEach(ele => {
+        if(!ele.innerText.toUpperCase().startsWith(e.target.value.toUpperCase())){
+
+            ele.style.display="none";
+        }
+        else{
+            ele.style.display="";
+        }
+    })
+})
+
+
+drp_btn2.addEventListener("click",(e)=>{
+    if(e.target.innerText!="Location"){
+        items.forEach(val => {
+            let value=filter_map.get(val)&~2;
+            filter_map.set(val,value);
+            if(value===0)
+                val.style.display="inline-block";
+            
+        });
+        console.log(filter_map);
+        e.target.innerText="Location";
+    }
+})
+
+loc.forEach(ele => {
+    ele.addEventListener("click",(e)=>{
+        drp_btn2.innerText=e.target.innerText;
+        items.forEach(element => {
+            let locval=element.querySelector(".pos>span").innerText;
+            if(locval!=e.target.innerText){
+                filter_map.set(element,filter_map.get(element)|2);
+                console.log(filter_map);
+                element.style.display="none";
+
+            }
+            
+        })
+    })
+})
+
+
+
+
+

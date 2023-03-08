@@ -632,5 +632,23 @@ footer .row {
 }
 
 .dropdown-menu{
-  font-size: medium;
+  font-size: 1.5rem;  
+  
 }
+
+.menu2{
+  max-height:30vh;
+  overflow-y: scroll;
+}
+
+.menu2>input{
+  height: 4rem;
+  border-color:rgb(217, 217, 226);
+  font-size: 1.7rem;
+
+}
+
+input:focus{
+  outline: none;
+}
+
