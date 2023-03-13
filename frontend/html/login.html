@@ -9,16 +9,15 @@
 	<title>LogIn</title>
 	<link rel="stylesheet"
 		href="../css/loginstyle.css">
+	
     
 </head>
 
 <body>
 	<header>
 		<h1 class="heading"><a href="../index.html" class="logo">@Sand-Box</a></h1>
-		
-        
 	</header>
-
+	
 	<!-- container div -->
 	<div class="container">
 
@@ -35,36 +34,44 @@
 		<div class="form-section">
 
 			<!-- login form -->
+			<form id="loginform">
 			<div class="login-box">
 				<input type="email"
 					class="email ele"
-					placeholder="youremail@email.com">
+					placeholder="youremail@email.com"  name="email">
 				<input type="password"
 					class="password ele"
-					placeholder="password">
+					placeholder="password" name="password">
 				<button class="clkbtn">Login</button>
 			</div>
-
+			</form>
 			<!-- signup form -->
+			<form id="signupform" >
 			<div class="signup-box">
 				<input type="text"
 					class="name ele"
-					placeholder="Enter your name">
+					placeholder="Enter your name" name="uname">
 				<input type="email"
 					class="email ele"
-					placeholder="youremail@email.com">
+					placeholder="youremail@email.com" name="email">
 				<input type="password"
 					class="password ele"
-					placeholder="password">
+					placeholder="password" name="password">
 				<input type="password"
 					class="password ele"
-					placeholder="Confirm password">
+					placeholder="Confirm password" name="cpassword">
 				<button class="clkbtn">Signup</button>
 			</div>
+			</form>
 		</div>
 	</div>
 	
+	<script src="../js/login&logout.js"></script>
+	<script src="../js/data.js"></script>
 	<script src="../js/index.js"></script>
+	
+	
+	
 	
 </body>
 

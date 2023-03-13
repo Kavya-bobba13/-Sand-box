@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="../css/rentstyle.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" >
     <link rel="stylesheet" href="../css/styles.css">
-
+    <link rel="stylesheet" href="../css/rentstyle.css">
     <title>@Sand-Box</title>
 </head>
 <body>
+  
     <div class="navigation">
         <div class="nav-center container d-flex">
             <a href="../index.html" class="logo"><h1>@Sand-Box</h1></a>
@@ -20,16 +20,19 @@
                     <a href="../index.html" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a href="Rent.html" class="nav-link">Rent</a>
+                    <a href="./Rent.html" class="nav-link">Rent</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">Requests</a>
+                  <a href="./request.html" class="nav-link">Requests</a>
               </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">Sell</a>
                 </li>
                 <li class="nav-item">
-                    <a href="login.html" target="_blank" class="nav-link">SignIN</a>
+                    <a href="./login.html" target="_blank" class="nav-link" id="signname">SignIN</a>
+                </li>
+                <li class="nav-item" id="logout">
+                    <a href="#" class="nav-link">Logout</a>
                 </li>
             </ul>
 
@@ -38,29 +41,26 @@
             </div>
         </div>
     </div>
+  
     <div class="video-card-container">
         <div class="video-card">
             <a href="rent_flat.html"><h1>Flats</h1></a>
-            <!-- <img src="../images/disney.PNG" class="video-card-image" alt="">
-            <video src="videos/disney.mp4" mute loop class="card-video"></video> -->
+            
         </div>
 
         <div class="video-card">
             <a href=""><h1>House</h1></a>
-            <!-- <img src="../images/pixar.PNG" class="video-card-image" alt="">
-            <video src="videos/pixar.mp4" mute loop class="card-video"></video> -->
+    
         </div>
 
         <div class="video-card">
             <a href=""><h1>PG</h1></a>
-            <!-- <img src="../images/marvel.PNG" class="video-card-image" alt="">
-            <video src="videos/marvel.mp4" mute loop class="card-video"></video> -->
+            
         </div>
 
         <div class="video-card">
             <a href=""><h1>Office Space</h1></a>
-            <!-- <img src="../images/star-wars.PNG" class="video-card-image" alt="">
-            <video src="videos/star-war.mp4" mute loop class="card-video"></video> -->
+            
         </div>
     </div>
 
@@ -346,6 +346,9 @@
     </div>
 
     <script src="../js/rent.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/login&logout.js"></script>
+    
     
 </body>
 </html>

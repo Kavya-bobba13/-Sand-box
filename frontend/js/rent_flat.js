@@ -1,5 +1,6 @@
 // RENT_FLAT...
 filter_map=new Map()
+ 
 
 const drop_down_bud = document.querySelectorAll(".dropdown-item");
 const items=document.querySelectorAll(".box");
@@ -17,14 +18,21 @@ drp_btn.addEventListener("click",(e)=>{
              items.forEach(val => {
                 let value=filter_map.get(val)&~1;
                 filter_map.set(val,value);
-                if(value===0)
+                if(value==0)
                     val.style.display="inline-block";
             });
             console.log(filter_map);
+            
             e.target.innerText="Budget";
     }
+    else{
+        document.querySelector(".menu1").style.display="";
+        
+    }
+    
 
 });
+
 
 
 drop_down_bud.forEach(element => {
@@ -32,7 +40,8 @@ drop_down_bud.forEach(element => {
     element.addEventListener("click",(e) => {
     
     drp_btn.innerText=e.target.innerText;
-    
+    document.querySelector(".menu1").style.display="none";
+
     if(e.target.innerText=="1k - 10k"){
         
         items.forEach(val => { 
@@ -102,23 +111,31 @@ locinp.addEventListener("keyup",(e)=>{
 })
 
 
+
 drp_btn2.addEventListener("click",(e)=>{
     if(e.target.innerText!="Location"){
         items.forEach(val => {
             let value=filter_map.get(val)&~2;
             filter_map.set(val,value);
-            if(value===0)
+            if(value==0)
                 val.style.display="inline-block";
             
         });
         console.log(filter_map);
         e.target.innerText="Location";
     }
+    else{
+        document.querySelector(".menu2").style.display="";
+        
+
+    }
+    
 })
 
 loc.forEach(ele => {
     ele.addEventListener("click",(e)=>{
         drp_btn2.innerText=e.target.innerText;
+        document.querySelector(".menu2").style.display="none";
         items.forEach(element => {
             let locval=element.querySelector(".pos>span").innerText;
             if(locval!=e.target.innerText){
@@ -134,5 +151,20 @@ loc.forEach(ele => {
 
 
 
+const hamburer = document.querySelector(".hamburger");
+const navList = document.querySelector(".nav-list");
 
+if (hamburer) {
+  hamburer.addEventListener("click", () => {
+    navList.classList.toggle("open");
+  });
+}
 
+const hamburer2 = document.querySelector(".ham2");
+const navList2 = document.querySelector(".nl2");
+
+if (hamburer2) {
+  hamburer2.addEventListener("click", () => {
+    navList2.classList.toggle("open");
+  });
+}
