@@ -1,6 +1,13 @@
 
 function registered_user(email) {
     
+    $.ajax({
+        
+        url:"localhost:5500/regi",
+        
+    }).done((res)=>{
+        console.log(res);
+    })
     return localStorage.getItem(email)!=null;
 }
 

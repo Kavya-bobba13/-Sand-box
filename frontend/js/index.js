@@ -34,7 +34,8 @@ landsbtn.forEach((ele)=>{
 						// localStorage.setItem("name",registered.get(logf.email.value).uname);
 						localStorage.setItem("name",localStorage.getItem(logf.email.value+"uname"));
 						storagehandle();
-						window.open("../index.html");
+						
+						window.open("../index.html","_self");
 					}
 					else{
 						alert("enter right password!")
@@ -59,7 +60,8 @@ landsbtn.forEach((ele)=>{
 						
 						localStorage.setItem("name",signf.uname.value);
 						storagehandle()
-						window.open("../index.html");
+						
+						window.open("../index.html","_self");
 					}
 					else{
 						alert("password and confirm password not same!")

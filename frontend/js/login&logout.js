@@ -22,10 +22,16 @@ function storagehandle() {
         }
         if(san){
         san.innerText=localStorage.getItem("name");
-        san.setAttribute("href","#");
-        san.setAttribute("target","");
+        if(san.innerText=="ADMINadmin813"){
+            san.setAttribute("href","/frontend/html/admin.html");
+            san.setAttribute("target","");
         }
-        console.log("hii")
+        else{
+                san.setAttribute("href","#");
+                san.setAttribute("target","");
+            }
+        }
+        
     }
     else{
         if(logot){
@@ -43,3 +49,19 @@ function storagehandle() {
 
 window.onblur=storagehandle;
 window.onload=storagehandle;
+
+// window.onscroll = function() {myFunction()};
+
+// function myFunction() {
+//     let nav=document.querySelectorAll(".navigation");
+//     if(nav){
+        
+//         if (document.body.scrollDown>0 || document.documentElement.scrollDown>0) {
+//             nav[0].style.display="none";
+    
+//         } else if (document.body.scrollTop>0 || document.documentElement.scrollTop>0) {
+//             nav[0].style.display="";
+//         }
+//     }
+  
+// }
