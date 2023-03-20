@@ -224,3 +224,19 @@ drop_down_bud3.forEach(element => {
     })
 
 });
+
+
+
+$(".box").click(function(e){
+
+    
+    console.log(this.id);
+    localStorage.storeid=this.id;
+    window.open("../html/contact_owner.html");
+    
+})
+
+
+    
+
+

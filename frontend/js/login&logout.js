@@ -14,7 +14,7 @@ if(logot){
 function storagehandle() {
     
     
-    console.log("hrllo");
+    console.log("hello");
         
     if(localStorage.getItem("name")!=null){
         if(logot){
@@ -31,12 +31,12 @@ function storagehandle() {
         if(logot){
         logot.style.display="none";
         }
-        if(san){
+        if(san){ 
         san.innerText="SignIn";
-        san.setAttribute("href","http://127.0.0.1:5500/frontend/html/login.html");
+        san.setAttribute("href","http://127.0.0.1:5501/frontend/login-form-02/login.html");
         san.setAttribute("target","_blank");
         }
-        // window.open("../index.html")
+        // window.open("../index.html")  
     }
     
 }
