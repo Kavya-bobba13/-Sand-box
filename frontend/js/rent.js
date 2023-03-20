@@ -18,3 +18,8 @@ cardContainers.forEach((item, i) => {
 })
 
 
+$(".video-card").on("click",(e)=>{
+    
+    localStorage.setItem("p_type",e.target.innerText)
+
+})

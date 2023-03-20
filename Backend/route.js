@@ -1,31 +1,15 @@
-var data = require("./data.json");
-var registeredUsers = require("./registered.json");
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+var data=require("./data.json")
+var registeredUsers=require("./registered.json")
+const express=require("express")
+const cors=require("cors")
+const bodyParser=require("body-parser")
+const app=express()
+app.use(cors())
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static("public"))
 
-app.get("/", (req, res) => {
-  res.sendFile("/home/kavya.b/Project-01/-Sand-box/frontend/index.html");
-});
-app.post("/regi", (req, res) => {
-  console.log(req.body);
-  console.log("done");
-  let email = req.body.email;
-  console.log(registeredUsers);
-  let stat = "Invalid";
-  registeredUsers.forEach((obj) => {
-    console.log(obj);
-    if (obj.email == email) {
-      stat = "valid";
-    }
-  });
-  res.send({ status: stat });
-});
+
 
 app.post("/valid", (req, res) => {
   console.log(req.body);
@@ -41,6 +25,24 @@ app.post("/valid", (req, res) => {
   });
   res.send({ uname: unameb });
 });
+app.get("/",(req,res)=>{
+    res.sendFile("http://127.0.0.1:5501/frontend/index.html");
+})
+app.post("/regi",(req,res)=>{
+    console.log(req.body);
+    console.log("done");
+    let email=req.body.email
+    console.log(registeredUsers);
+    let stat="Invalid";
+    registeredUsers.forEach((obj)=>{
+        console.log(obj);
+        if(obj.email==email){
+            stat="valid";
+        }
+    })
+    res.send({status:stat})
+     
+})
 
 app.post("/pdata", (req, res) => {
   console.log(req.body);

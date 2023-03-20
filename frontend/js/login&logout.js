@@ -39,7 +39,7 @@ function storagehandle() {
         }
         if(san){ 
         san.innerText="SignIn";
-        san.setAttribute("href","http://127.0.0.1:5501/frontend/login-form-02/login.html");
+        san.setAttribute("href","/frontend/html/login.html");
         san.setAttribute("target","_blank");
         }
         // window.open("../index.html")  
