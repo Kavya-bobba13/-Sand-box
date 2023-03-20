@@ -4,20 +4,20 @@
 
 
 /*****signup and login */
-let signup = document.querySelector(".signup");
-let login = document.querySelector(".login");
-let slider = document.querySelector(".slider");
-let formSection = document.querySelector(".form-section");
+// let signup = document.querySelector(".signup");
+// let login = document.querySelector(".login");
+// let slider = document.querySelector(".slider");
+// let formSection = document.querySelector(".form-section");
 
-signup.addEventListener("click", () => {
-	slider.classList.add("moveslider");
-	formSection.classList.add("form-section-move");
-});
+// signup.addEventListener("click", () => {
+// 	slider.classList.add("moveslider");
+// 	formSection.classList.add("form-section-move");
+// });
 
-login.addEventListener("click", () => {
-	slider.classList.remove("moveslider");
-	formSection.classList.remove("form-section-move");
-});
+// login.addEventListener("click", () => {
+// 	slider.classList.remove("moveslider");
+// 	formSection.classList.remove("form-section-move");
+// });
 
 let landsbtn=document.querySelectorAll(".clkbtn");
 
@@ -26,8 +26,8 @@ landsbtn.forEach((ele)=>{
 	ele.addEventListener("click",(e)=>{
 		e.preventDefault()
 		
-		if(e.target.innerText=="Login"){
-			let logf=document.forms['loginform'];
+		if(e.target.value=="Login"){
+			let logf=document.forms['form1'];
 			if(logf.email.value && logf.email.value.endsWith("@gmail.com") && logf.password.value){
 				if(registered_user(logf.email.value)){
 					if(verify_user(logf.email.value,logf.password.value)){
@@ -51,7 +51,7 @@ landsbtn.forEach((ele)=>{
 		}
 		else{
 
-			let signf=document.forms['signupform'];
+			let signf=document.forms['form2'];
 			if(signf.email.value && signf.email.value.endsWith("@gmail.com") && signf.password.value && signf.uname.value && signf.cpassword.value){
 				if(!registered_user(signf.email.value)){
 					if(signf.cpassword.value==signf.password.value){

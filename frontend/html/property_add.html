@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/property_add_style.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+ 
+    <form method="post" novalidate>
+  <div id="msform">
+    <!-- progressbar -->
+    <ul id="progressbar">
+      <li class="active">Details</li>
+      <li>Property-details</li>
+      <li>Property-details</li>
+    </ul>
+    <!-- fieldsets -->
+    <fieldset>
+      <h2 class="fs-title">Add Your Property To Rent</h2>
+      <h3 class="fs-subtitle">You are one step close to register</h3>
+      <input type="text" id="cname" placeholder="Name of property holder" />
+      <select id="btype" class="form-control select">
+        <option disabled selected>Select Property-type</option>
+        <option value="1">Flats</option>
+        <option value="2">House</option>
+        <option value="3">Building</option>
+        <option value="4">Office Spaces</option>
+
+      </select>
+      <select  class="form-control select">
+        <option disabled selected>Select City</option>
+        <option value="1">Hyderabad</option>
+        <option value="2">Banglore</option>
+        <option value="3">Chennai</option>
+        <option value="4">Noida</option>
+        <option value="5">Mumbai</option>
+
+      </select>
+
+      <input type="building_name" id="bname" placeholder="Enter property name" />
+      <input type="text" id="facing" placeholder="Facing">
+      
+      <input type="text" id="area" placeholder="Property area(sq-fts)">
+      <input type="button" name="next" class="next action-button" value="Next" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Details-1</h2>
+      <h3 class="fs-subtitle">More info about your property</h3>
+      <input type="text" id="deposit" placeholder="Security-deposit" />
+      <input type="text" id="cost" placeholder="Cost per month" />
+      <input type="text" id="maintainence" placeholder="Monthly Maintainence" />
+      <input type="text" id="status" placeholder="Furnished status" />
+      <input type="text" id="balconies" placeholder="Balconies" />
+      <input type="text" id="bhk-size" placeholder="BHK-size" />
+      <input type="button"  name="previous" class="previous action-button" value="Previous" />
+      <input type="button"  name="next" class="next action-button" value="Next" />
+    </fieldset>
+    <fieldset>
+      <h2 class="fs-title">Details-2</h2>
+      <h3 class="fs-subtitle">More info about your property</h3>
+      <input type="text" id="baths" name="baths" placeholder="Baths" />
+      <input type="text" id="since" name="since" placeholder="Since" />
+      <input type="text" id="facing" name="facing" placeholder="Phone" />
+      <label for="image" class="label select">Property-images</label>
+      <input type="file" class="select" id="image" placeholder="Property-images(pdf)">
+     
+      <textarea name="address" id="address" placeholder="Address"></textarea>
+      <input type="button" name="previous" class="previous action-button" value="Previous" />
+      <input type="button" id="submit" name="submit" class="action-button" value="Submit" onclick="window.location.href='selling.html'"/>
+    </fieldset>
+  </div>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="../js/property_add_script.js"></script>
+
+</body>
+</html>

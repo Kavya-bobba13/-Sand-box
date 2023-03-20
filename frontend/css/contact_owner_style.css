@@ -2,11 +2,17 @@
     display: grid;
     grid-template-columns: auto auto auto auto;
     gap: 10px;
-    background-color: #eaeff5;
+    /* background-color: #eaeff5; */
+    background-color: #F7F5EB;
     padding: 10px;
     height: 63vh;
   }
-  
+  .title{
+    font-size: 2rem;
+  }
+  .desc{
+    font-size: 1.3rem;
+  }
   .grid-container > div {
     background-color: rgba(255, 255, 255, 0.8);
     
