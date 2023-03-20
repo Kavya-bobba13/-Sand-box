@@ -1,15 +1,17 @@
 var data=require("./data.json")
 var registeredUsers=require("./registered.json")
 const express=require("express")
+const cors=require("cors")
 const bodyParser=require("body-parser")
 const app=express()
+app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"))
 
 
 app.get("/",(req,res)=>{
-    res.sendFile("/home/sainikhil.b/project01/-Sand-box/frontend/index.html")
+    res.sendFile("http://127.0.0.1:5501/frontend/index.html");
 })
 app.post("/regi",(req,res)=>{
     console.log(req.body);
