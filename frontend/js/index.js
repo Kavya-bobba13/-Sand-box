@@ -4,20 +4,9 @@
 
 
 /*****signup and login */
-let signup = document.querySelector(".signup");
-let login = document.querySelector(".login");
-let slider = document.querySelector(".slider");
-let formSection = document.querySelector(".form-section");
-
-signup.addEventListener("click", () => {
-	slider.classList.add("moveslider");
-	formSection.classList.add("form-section-move");
-});
-
-login.addEventListener("click", () => {
-	slider.classList.remove("moveslider");
-	formSection.classList.remove("form-section-move");
-});
+// let signup = document.querySelector(".signup");
+// let login = document.querySelector(".login");
+// let formSection = document.querySelector(".form-section");
 
 let landsbtn=document.querySelectorAll(".clkbtn");
 
@@ -26,7 +15,7 @@ landsbtn.forEach((ele)=>{
 	ele.addEventListener("click",(e)=>{
 		e.preventDefault()
 		
-		if(e.target.innerText=="Login"){
+		if(e.target.value=="Login"){
 			let logf=document.forms['loginform'];
 			if(logf.email.value && logf.email.value.endsWith("@gmail.com") && logf.password.value){
 				// console.log(registered_user(logf.email.value));
@@ -123,24 +112,53 @@ landsbtn.forEach((ele)=>{
 		else{
 
 			let signf=document.forms['signupform'];
-			if(signf.email.value && signf.email.value.endsWith("@gmail.com") && signf.password.value && signf.uname.value && signf.cpassword.value){
-				if(!registered_user(signf.email.value)){
-					if(signf.cpassword.value==signf.password.value){
-						createAccount(signf);
-						console.log(signf);
+			if(signf.email.value && signf.email.value.endsWith("@gmail.com") && signf.password.value && signf.uname.value && signf.cpassword.value && signf.mobileno.value)
+			{
+					$.ajax({
+						type: "POST",
+						url: "http://127.0.0.1:3000/regi",
+						contentType: 'application/json',
+						data: JSON.stringify({
+							email:signf.email.value
+						}),
+						dataType: 'json',
+						success: function (result) {
+							console.log(result)
+							if("valid"!=result.status){
+								if(signf.cpassword.value==signf.password.value){
+									$.ajax({
+										type: "POST",
+										url: "http://127.0.0.1:3000/addUser",
+										contentType: 'application/json',
+										data: JSON.stringify({
+											uname:signf.uname.value,
+											email:signf.email.value,
+											password:signf.password.value,
+											mobileno:signf.mobileno.value
+										}),
+										dataType: 'json',
+										success: function(result){
+
+												console.log(result);
+												localStorage.setItem("name",signf.uname.value);
+												storagehandle()
+												window.open("../index.html","_self");
+										}
+									})
+									
+								}
+								else{
+									alert("password and confirm password not same!")
+								}
+							}
+							else{
+								alert("u have an account!")
+							}
 						
-						localStorage.setItem("name",signf.uname.value);
-						storagehandle()
-						
-						window.open("../index.html","_self");
-					}
-					else{
-						alert("password and confirm password not same!")
-					}
-				}
-				else{
-					alert("u have an account!")
-				}
+					
+						}
+					})
+				
 			}
 			else{
 				alert("fill form coorectly")
