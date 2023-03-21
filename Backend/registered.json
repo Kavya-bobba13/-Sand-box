@@ -2,17 +2,20 @@
     {
         "name":"nikhil",
         "email":"sai@gmail.com",
-        "password":1234
+        "password":1234,
+        "mobile":7890789090
     },
     {
         "name":"kavya",
         "email":"kav@gmail.com",
-        "password":4321
+        "password":4321,
+        "mobile":7890789090
     },
     {
         "name":"ADMINadmin813",
         "email":"kn@gmail.com",
-        "password":2122
+        "password":2122,
+        "mobile":9999999999
 
     }
 ]
