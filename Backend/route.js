@@ -64,6 +64,16 @@ app.post("/pdata",(req,res)=>{
     res.send(arr)
 })
 
+app.post("/getid",(req,res)=>{
+    let iid=req.body.id;
+    
+    data.forEach((ele)=>{
+        if(ele.id==iid){
+            res.send(ele);
+        }
+    })
+})
+
 
 app.listen(3000)
 
