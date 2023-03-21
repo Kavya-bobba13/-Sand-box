@@ -19,7 +19,7 @@ $.ajax({
       console.log(ress);
       
   document.querySelector(".listcont").innerHTML+=`
-  <div class="box">
+  <div class="box" id=${ress.id}>
   <div class="top">
     <div class="overlay">
       <img src=${ress.img} alt="" />
@@ -168,23 +168,7 @@ loc.forEach((ele) => {
   });
 });
 
-const hamburer = document.querySelector(".hamburger");
-const navList = document.querySelector(".nav-list");
 
-if (hamburer) {
-  hamburer.addEventListener("click", () => {
-    navList.classList.toggle("open");
-  });
-}
-
-const hamburer2 = document.querySelector(".ham2");
-const navList2 = document.querySelector(".nl2");
-
-if (hamburer2) {
-  hamburer2.addEventListener("click", () => {
-    navList2.classList.toggle("open");
-  });
-}
 
 // *bhk filter */
 const drop_down_bud3 = document.querySelectorAll(".dropdown-item3");
@@ -226,6 +210,34 @@ drop_down_bud3.forEach((element) => {
   });
 });
 
+  $(".box").on("click",(e)=>{
+    console.log(e.target.id);
+      localStorage.setItem("iid",e.target.id)
+      window.open("../html/contact_owner.html");
+  });
+
+
+
+
+  //End of success function
   }
 })
+
+const hamburer = document.querySelector(".hamburger");
+const navList = document.querySelector(".nav-list");
+
+if (hamburer) {
+  hamburer.addEventListener("click", () => {
+    navList.classList.toggle("open");
+  });
+}
+
+const hamburer2 = document.querySelector(".ham2");
+const navList2 = document.querySelector(".nl2");
+
+if (hamburer2) {
+  hamburer2.addEventListener("click", () => {
+    navList2.classList.toggle("open");
+  });
+}
 

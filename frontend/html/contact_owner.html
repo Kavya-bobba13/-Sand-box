@@ -4,18 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/contact_owner_style.css">
+    
     <title>Document</title>
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script>
-    // $( document ).ready(function() {
-    //     console.log( "document loaded" );
-    // });
- 
-   
-    </script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+    />
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/contact_owner_style.css">
 </head>
 <body>
+    <div class="navigation">
+        <div class="nav-center container d-flex">
+            <a href="../index.html" class="logo"><h1>@Sand-Box</h1></a>
+
+            <ul class="nav-list d-flex">
+                <li class="nav-item">
+                    <a href="../index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="./Rent.html" class="nav-link">Rent</a>
+                </li>
+                <li class="nav-item">
+                  <a href="./activity.html" class="nav-link">MyActivity</a>
+              </li>
+                <li class="nav-item">
+                    <a href="./my_activity.html" class="nav-link">Sell</a>
+                </li>
+                <li class="nav-item">
+                    <a href="./login.html" target="_blank" class="nav-link" id="signname">SignIN</a>
+                </li>
+                <li class="nav-item" id="logout">
+                    <a href="#" class="nav-link">Logout</a>
+                </li>
+            </ul>
+
+            <div class="hamburger">
+                <i class="bx bx-menu-alt-left"></i>
+            </div>
+        </div>
+    </div>
+
     <h1 class="title">Grid Container</h1>
 
     <p class="description desc">A Grid Container consists of grid items arranged in columns and rows</p>
@@ -74,7 +104,9 @@
     
     <button class="button bt1">Contact Owner</button>
     <button class="button bt2">Book and Contact Owner</button>
-     <script src="../js/data.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="../js/data.js"></script>
+    <script src="../js/login&logout.js"></script>
     <script src="../js/contact_owner.js"></script>
 </body>
 

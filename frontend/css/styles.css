@@ -668,3 +668,7 @@ input:focus{
   outline: none;
 }
 
+
+.top,.bottom{
+  pointer-events: none;
+}
