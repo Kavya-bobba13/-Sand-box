@@ -27,11 +27,12 @@
     font-size: 20px;
   }
   .grid-head{
-    color:rgb(22, 22, 22)
+    color:rgb(22, 22, 22);
+    font-size:20px !important;
   }
   .grid-cont{
     color: black;
-    font-size: 30x;
+    font-size: 10x;
   }
 
   .item1{
