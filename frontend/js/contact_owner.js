@@ -18,7 +18,7 @@ function fill() {
                         $('p').text(resp.bhkSize+"bhk, "+"       "+resp.area +",       "+resp.propertyName+",  "+resp.location);
                        
                         document.querySelector(".img").setAttribute("src",resp.image);
-                        document.querySelector(".pname").innerText=resp.name;
+                        document.querySelector(".pname").innerText=resp.ownerName;
                        // ar.bid[0].name;
                        //ar.bid[0].img
                         document.querySelector(".address").innerText=resp.address;   

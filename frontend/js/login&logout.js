@@ -21,13 +21,13 @@ function storagehandle() {
         logot.style.display="inline-block";
         }
         if(san){
-        san.innerText=localStorage.getItem("name");
+        san.innerText="Profile";
         if(san.innerText=="ADMINadmin813"){
             san.setAttribute("href","/frontend/html/admin.html");
             san.setAttribute("target","");
         }
         else{
-                san.setAttribute("href","#");
+                san.setAttribute("href","/frontend/html/profile.html");
                 san.setAttribute("target","");
             }
         }

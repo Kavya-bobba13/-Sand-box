@@ -58,8 +58,8 @@ landsbtn.forEach((ele)=>{
 									dataType: 'json',
 									success:function (resp){
 										console.log(resp);
-										if(resp.uname){
-											localStorage.setItem("name",resp.uname);
+										if(resp.token){
+											localStorage.setItem("name",resp.token);
 											storagehandle();
 											window.open("/frontend/index.html","_self");
 										}
@@ -140,7 +140,7 @@ landsbtn.forEach((ele)=>{
 										success: function(result){
 
 												console.log(result);
-												localStorage.setItem("name",signf.uname.value);
+												localStorage.setItem("name",result.token);
 												storagehandle()
 												window.open("../index.html","_self");
 										}
