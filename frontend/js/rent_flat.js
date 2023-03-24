@@ -213,7 +213,7 @@ drop_down_bud3.forEach((element) => {
   $(".box").on("click",(e)=>{
     console.log(e.target.id);
       localStorage.setItem("iid",e.target.id)
-      window.open("../html/contact_owner.html");
+      window.open("../html/property_details.html");
   });
 
 

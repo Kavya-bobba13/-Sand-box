@@ -1,6 +1,7 @@
 
  .video-card-container {
    margin: 6%;
+   margin-bottom: 9%;
    /* position: relative;
     
     display: flex;
@@ -15,16 +16,26 @@
  }
 
  .video-card {
-    /* position: relative;
-    min-width: calc(100%/5 - 10px);
-    width: calc(100%/5 - 10px);
-    height: 100%;*/
+    position: relative;
+    /* min-width: calc(100%/5 - 10px); */
+    /* width: calc(100%/4); */
+    width: 60%;
+    height: 100%;
     
     border-radius: 5px;
     font-size: 1.4rem;
-    background: #030b17;
+    
+    /* background: #030b17; */
 
     height: 23vh;
+ }
+ .video-card a img{
+   height: 100%;
+ }
+
+ .video-card:hover{
+   transform: scale(.9);
+   transition: ease-in-out .4s;
  }
 
  @media only screen and (max-width: 768px){
@@ -48,40 +59,15 @@
     object-fit: cover;
  } */
 .video-card h1{
-   color: white;
+   color: black;
    text-align: center;
    padding-top: 20%;
   
    
 }
-.video-card:hover{
-   transform: scale(1.2);
-   transition:ease-in-out .4s;
-   
+img{
+   pointer-events: none;
 }
-
-
-.vc1:hover{
-   
-   background-image: url("../rent_images/3_bedroom.jpg");
-}
-
-.vc2:hover{
-   
-   background-image: url("../rent_images/5_bedroom.jpg");
-}
-
-.vc3:hover{
-   
-   background-image: url("../rent_images/7_bedroom.jpg");
-}
-
-.vc4:hover{
-   
-   background-image: url("../rent_images/9_bedroom.jpg");
-}
-
-
 
  .card-video {
     position: relative;

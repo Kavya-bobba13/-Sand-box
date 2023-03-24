@@ -27,7 +27,7 @@ function storagehandle() {
             san.setAttribute("target","");
         }
         else{
-                san.setAttribute("href","#");
+                san.setAttribute("href","/frontend/html/profile.html");
                 san.setAttribute("target","");
             }
         }

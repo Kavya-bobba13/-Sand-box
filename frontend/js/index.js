@@ -4,9 +4,7 @@
 
 
 /*****signup and login */
-// let signup = document.querySelector(".signup");
-// let login = document.querySelector(".login");
-// let formSection = document.querySelector(".form-section");
+
 
 let landsbtn=document.querySelectorAll(".clkbtn");
 

@@ -35,8 +35,12 @@ async function displayAll(){
     result=await DarUser.find();
     return result;
 }
-async function display(name){
-  result=await DarUser.find({email:name});
+async function displayName(name){
+  result=await DarUser.find({name:name});
+  return result;
+}
+async function display(mail){
+  result=await DarUser.find({email:mail});
   console.log(result);
   
   return result;
@@ -97,6 +101,14 @@ app.post("/regi",async(req,res)=>{
     console.log(stat);
     res.send({status:stat})
      
+})
+//getting user data for profile
+app.post("/getData",async(req,res)=>{
+  let name=req.body.name;
+  let obj=await displayName(name);
+  console.log(obj);
+  res.send(obj[0]);
+
 })
 
 app.post("/pdata",(req,res)=>{

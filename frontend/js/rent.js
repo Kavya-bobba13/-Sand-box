@@ -19,7 +19,9 @@ cardContainers.forEach((item, i) => {
 
 
 $(".video-card").on("click",(e)=>{
-    
+    console.log(e.target.innerText)
     localStorage.setItem("p_type",e.target.innerText)
+    window.open("../html/rent_flat.html")
 
 })
+
