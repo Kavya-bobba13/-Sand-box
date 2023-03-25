@@ -16,7 +16,7 @@ function loader() {
                 console.log("ok");
                 console.log(result);
                 if(result){
-                    result.requested.forEach(ele => {
+                    result.requestedProperties.forEach(ele => {
                         
                 
                     document.querySelector(".container.py-5.requested").innerHTML+=`
@@ -77,7 +77,7 @@ function loader() {
                   </div>`;
                 })
                 
-                result.wishlisted.forEach((ele)=>{
+                result.likedProperties.forEach((ele)=>{
                 document.querySelector(".container.py-5.wishlisted").innerHTML+=`
                 <div class="row justify-content-center mb-3">
                 <div class="col-md-12 col-xl-10">

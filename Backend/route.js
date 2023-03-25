@@ -50,11 +50,10 @@ mongoose
 
     const UsersHRSchema = {
       likedProperties: [{ type: PropertiesHRSchema }],
-      requestedProperties:[{ type: PropertiesHRSchema }],
+      requestedProperties: [{ type: PropertiesHRSchema }],
       myProperties: [
         { type: mongoose.Schema.Types.ObjectId, ref: "PropertiesHRSchema" },
       ],
-
     };
 
     //model Registration={collection,schema}
@@ -94,18 +93,18 @@ mongoose
       let uname = req.body.uname;
       let password = req.body.password;
       let mobileno = req.body.mobileno;
-      let obj=await addUser({
+      let obj = await addUser({
         name: uname,
         email: email,
         password: password,
         mobile: mobileno,
       });
 
-      let data={
+      let data = {
         name: obj.name,
-        userId:obj.userId,
-        email:obj.email,
-        mobileno:obj.mobile
+        userId: obj.userId,
+        email: obj.email,
+        mobileno: obj.mobile,
       };
       jwt.sign(
         data,
@@ -113,10 +112,9 @@ mongoose
         { expiresIn: "24h" },
         (err, token) => {
           console.log(token);
-          res.send({token:token})
+          res.send({ token: token });
         }
       );
-      
     });
 
     async function addUser(obj) {
@@ -147,13 +145,13 @@ mongoose
         console.log("uname", unameb);
       }
 
-      if (unameb!=null) {
+      if (unameb != null) {
         console.log(unameb);
         let data = {
           name: unameb,
-          userId:obj[0].userId,
-          email:obj[0].email,
-          mobileno:obj[0].mobile
+          userId: obj[0].userId,
+          email: obj[0].email,
+          mobileno: obj[0].mobile,
         };
 
         jwt.sign(
@@ -162,16 +160,12 @@ mongoose
           { expiresIn: "24h" },
           (err, token) => {
             console.log(token);
-            res.send({token:token})
+            res.send({ token: token });
           }
         );
-
-      
-      }
-      else{
-
-      console.log(unameb);
-      res.send({ token: unameb });
+      } else {
+        console.log(unameb);
+        res.send({ token: unameb });
       }
     });
 
@@ -231,22 +225,21 @@ mongoose
 
     //display all db
     app.get("/", async function (req, res) {
-      let result = await displayAll();
+      let result = await PropertiesHR.find();
+
       res.send(result);
     });
 
     //getting user data for profile
     app.post("/getData", (req, res) => {
       let name = req.body.name;
-      jwt.verify(name,process.env.SECRETKEY,async (err,authdata)=>{
-        if(err){
-            res.send("not authorized")
-        }
-        else{
+      jwt.verify(name, process.env.SECRETKEY, async (err, authdata) => {
+        if (err) {
+          res.send("not authorized");
+        } else {
           res.send(authdata);
         }
-      })
-      
+      });
     });
 
     app.get("/admindisplay", async (req, res) => {
@@ -254,22 +247,49 @@ mongoose
       res.send(result);
     });
 
-    app.post("/requests_liked",async(req,res)=> {
+    app.post("/requests_liked", async (req, res) => {
       console.log("hii");
-      console.log(req.headers.periperi)
-      jwt.verify(req.headers.periperi,process.env.SECRETKEY,async (err,authdata)=>{
-        if(err){
-            res.send(null)
+      console.log(req.headers.periperi);
+      jwt.verify(
+        req.headers.periperi,
+        process.env.SECRETKEY,
+        async (err, authdata) => {
+          if (err) {
+            res.send(null);
+          } else {
+            let doc = await UsersHR.findOne({ _id: authdata.userId });
+            console.log(doc);
+            let obj;
+            obj = {
+              requestedProperties: doc.requestedProperties,
+              likedProperties: doc.likedProperties,
+            };
+            res.json(obj);
+          }
         }
-        else{
-          let doc=await UsersHR.findOne({_id:authdata.userId});
-          console.log(doc);
-          let obj;
-          obj={requested:doc.re}
-          res.json();
+      );
+    });
+
+    app.post("/store_request",async (req,res)=>{
+      jwt.verify(req.headers.periperi,
+        process.env.SECRETKEY,
+        async (err,authdata)=>{
+          if(err){
+            res.send(null);
+          }
+          else{
+            let propobj=await PropertiesHR.findOne({_id:req.body.id})
+            await UsersHR.updateOne({_id:authdata.userId},{$push : {requestedProperties:propobj}})
+            await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
+            res.send({})
+          }
         }
-      })
+        
+        
+        )
     })
+
+
 
   });
 
