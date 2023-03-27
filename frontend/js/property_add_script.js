@@ -88,7 +88,7 @@
       });
     });
   
-  })(jQuery);
+  })(jQuery);  //template js ends
 
   var ele=document.getElementById("submit");
   ele.addEventListener("click",fun2);
@@ -96,16 +96,44 @@
   function fun2(){
     var obj={};
     var arr=[];
-    obj.name=document.getElementById("bname").value;
-    console.log("kav",document.getElementById("bname").value); 
-    obj.deposit=document.getElementById("deposit").value;
+    obj.ownerName=document.getElementById("ownerName").value;
+    console.log("kav",document.getElementById("propertyName").value); 
+    obj.propertyName=document.getElementById("propertyName").value;
+    var e=document.getElementById("type");
+    console.log("ele type",e);
+    obj.propertyType=e.options[e.selectedIndex].text;
+    var loc=document.getElementById("location");
+    obj.location=loc.options[loc.selectedIndex].text;
+    console.log("ele loc",e);
+    console.log((obj.propertyType),"and",obj.location);
+    obj.facing=document.getElementById("facing").value;
+    obj.cost=document.getElementById("cost").value;
+    obj.securityDeposit=document.getElementById("securityDeposit").value;
     obj.address=document.getElementById("address").value;
-    obj.status=document.getElementById("status").value;
+    obj.furnishedStatus=document.getElementById("furnishedStatus").value;
     obj.beds=document.getElementById("beds").value;
+    obj.since=document.getElementById("since").value;
     obj.baths=document.getElementById("baths").value;
-    localStorage.store_details=JSON.stringify(obj);
-    
+    obj.balconies=document.getElementById("balconies").value;
     console.log(obj);
+    localStorage.store_details=JSON.stringify(obj);
+    $.ajax({
+      type: "POST",
+      url: "http://127.0.0.1:3000/addProperty",
+      contentType: 'application/json',
+      headers: { "periperi": localStorage.name },
+      data: JSON.stringify(obj),
+      dataType: 'json',
+      success: function(result){
+
+          console.log(result);
+
+          
+          window.open("../index.html","_self");
+      }
+    })
+    
+    
   }
   
   

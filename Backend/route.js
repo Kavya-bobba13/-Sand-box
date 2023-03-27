@@ -70,7 +70,7 @@ mongoose
     const RegisteredUsersHR = mongoose.model(
       "RegisteredUsersHR",
       RegisteredUsersHRSchema
-    ); //model is DarUser
+    ); //models defined
 
     //get calls
 
@@ -85,7 +85,7 @@ mongoose
       return result;
     }
 
-    //post calls
+    //sigup user and add new user  calls
     app.post("/addUser", async function (req, res) {
       console.log(req.body);
       console.log("done adduser");
@@ -116,7 +116,7 @@ mongoose
         }
       );
     });
-
+//adding a new user
     async function addUser(obj) {
       let userid = new UsersHR({});
       userid = await userid.save();
@@ -129,6 +129,15 @@ mongoose
         userId: userid._id,
       });
       return await User.save();
+    }
+    //function to addProperty new 
+    async function addProperty(obj){
+      let propid=new PropertiesHR(obj);
+
+      await UsersHR.updateOne({_id:obj.ownerId},{$push : {myProperties:propid}})
+      console.log("property saved",propid,"userid",obj.ownerId);
+      return await propid.save();
+
     }
 
     //validating pwd of registered user
@@ -191,9 +200,7 @@ mongoose
       console.log(stat);
       res.send({ status: stat });
     });
-
-
-
+//display properties of "selected type"
     app.post("/pdata", async (req, res) => {
       console.log(req.body);
       let type = req.body.type;
@@ -270,7 +277,7 @@ mongoose
       let result = await displayAll();
       res.send(result);
     });
-
+// liked properties of user in my activity page
     app.post("/requests_liked", async (req, res) => {
       console.log("hii");
       console.log(req.headers.periperi);
@@ -293,10 +300,56 @@ mongoose
         }
       );
     });
+    //display my peroperties added
+    app.post("/myProperties",async(req,res)=>{
+      console.log("my properties");
+      jwt.verify(req.headers.periperi,
+        process.env.SECRETKEY,
+        async (err,authdata)=>{
+          if(err){
+            res.send(null);
+          }
+          else{
+            let userdoc=await UsersHR.findOne({_id: authdata.userId});
+            let proparr=userdoc.myProperties;
+            console.log(proparr);
+            var arr=[];
+            for(let i=0;i<proparr.length;i++){
+              var obj=await PropertiesHR.findOne({_id:proparr[i]});
+              arr.push(obj);
+            }
+            console.log(arr);
+            res.send((arr));
+          }
+        })
 
-    app.post("/store_request", async (req, res) => {
-      jwt.verify(
-        req.headers.periperi,
+      })
+  //add property api to sell page
+    app.post("/addProperty",async(req,res)=>{
+      console.log(req.body,"add property");
+      jwt.verify(req.headers.periperi,
+        process.env.SECRETKEY,
+        async (err,authdata)=>{
+          if(err){
+            res.send(null);
+          }
+          else{
+            var obj=req.body;
+            obj.ownerId=authdata.userId;
+            obj.RequestedUsers=[];
+            obj.likedUsers=[];
+            console.log(obj);
+            await addProperty(obj);
+        
+           // await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
+            res.send({})
+          }
+        }  
+     )
+  })
+//requested properties of user stored
+    app.post("/store_request",async (req,res)=>{
+      jwt.verify(req.headers.periperi,
         process.env.SECRETKEY,
         async (err, authdata) => {
           if (err) {
@@ -324,6 +377,7 @@ mongoose
             }
             res.send({});
           }
+         
         }
       );
     });
