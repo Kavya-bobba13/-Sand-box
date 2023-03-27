@@ -6,6 +6,9 @@ $.ajax({
     type: "POST",
 	url: "http://127.0.0.1:3000/pdata",
 	contentType: 'application/json',
+  headers:{
+    periperi:localStorage.name
+  },
 	data: JSON.stringify({
 		type:type
 	}),

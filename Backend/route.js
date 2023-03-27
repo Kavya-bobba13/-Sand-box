@@ -159,7 +159,11 @@ mongoose
           process.env.SECRETKEY,
           { expiresIn: "24h" },
           (err, token) => {
-            console.log(token);
+            if(data.userId=="641b1f2da200c7ee16d4afa1")
+            {
+              res.send({ token: token,admin:"yesyes" })
+            }
+            else
             res.send({ token: token });
           }
         );
@@ -188,17 +192,37 @@ mongoose
       res.send({ status: stat });
     });
 
+
+
     app.post("/pdata", async (req, res) => {
       console.log(req.body);
       let type = req.body.type;
       let arr = [];
+      var doc = false;
+      var uid;
 
-      let doc = await PropertiesHR.find();
-      //console.log(doc);
+      if (req.headers.periperi) {
+        jwt.verify(
+          req.headers.periperi,
+          process.env.SECRETKEY,
+          async (err, authdata) => {
+            if (err) {
+              //
+            } else {
+              console.log(authdata.userId);
+              // doc= await PropertiesHR.find({ownerId:{$ne:authdata.userId}})
+              // doc = await PropertiesHR.find();
+              doc = true;
+              uid = authdata.userId;
+            }
+          }
+        );
+      }
+
+      if (doc) doc = await PropertiesHR.find({ ownerId: { $ne: uid },propertyType:type });
+      else doc = await PropertiesHR.find({propertyType:type});
       doc.forEach((ele) => {
-        console.log(ele.toObject());
-        if (ele.toObject().type == type) {
-          console.log(ele);
+        
           arr.push({
             id: ele.toObject()._id,
             img: ele.toObject().image,
@@ -207,7 +231,7 @@ mongoose
             property_name: ele.toObject().propertyName,
             cost: ele.toObject().cost,
           });
-        }
+        
       });
       console.log(arr);
       res.send(arr);
@@ -258,7 +282,7 @@ mongoose
             res.send(null);
           } else {
             let doc = await UsersHR.findOne({ _id: authdata.userId });
-            console.log(doc);
+            // console.log(doc);
             let obj;
             obj = {
               requestedProperties: doc.requestedProperties,
@@ -270,27 +294,80 @@ mongoose
       );
     });
 
-    app.post("/store_request",async (req,res)=>{
-      jwt.verify(req.headers.periperi,
+    app.post("/store_request", async (req, res) => {
+      jwt.verify(
+        req.headers.periperi,
         process.env.SECRETKEY,
-        async (err,authdata)=>{
-          if(err){
+        async (err, authdata) => {
+          if (err) {
             res.send(null);
-          }
-          else{
-            let propobj=await PropertiesHR.findOne({_id:req.body.id})
-            await UsersHR.updateOne({_id:authdata.userId},{$push : {requestedProperties:propobj}})
-            await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
-            res.send({})
+          } else {
+            let propobj = await PropertiesHR.findOne({ _id: req.body.id });
+            let obj = await UsersHR.findOne({ _id: authdata.userId });
+            obj = obj.toObject();
+            let present = false;
+            obj.requestedProperties.forEach((ele) => {
+              if (ele._id == req.body.id) {
+                present = true;
+                return;
+              }
+            });
+            if (!present) {
+              await UsersHR.updateOne(
+                { _id: authdata.userId },
+                { $push: { requestedProperties: propobj } }
+              );
+              await PropertiesHR.updateOne(
+                { _id: req.body.id },
+                { $push: { RequestedUsers: authdata.userId } }
+              );
+            }
+            res.send({});
           }
         }
-        
-        
-        )
-    })
+      );
+    });
 
+    app.post("/remove_request", async (req, res) => {
+      console.log("entered");
+      jwt.verify(
+        req.headers.periperi,
+        process.env.SECRETKEY,
+        async (err, authdata) => {
+          if (err) {
+            console.log("not ok");
+            res.send(null);
+          } else {
+            let iid = String(req.body.iid).substring(
+              0,
+              String(req.body.iid).length - 2
+            );
 
+            console.log(iid);
 
+            let obj = await UsersHR.findOne({ _id: authdata.userId });
+            obj = obj.toObject();
+            obj.requestedProperties.forEach((ele, ind) => {
+              if (ele._id == iid) {
+                obj.requestedProperties.splice(ind, 1);
+                return;
+              }
+            });
+
+            await UsersHR.updateOne(
+              { _id: authdata.userId },
+              { $set: { requestedProperties: obj.requestedProperties } }
+            );
+            await PropertiesHR.updateOne(
+              { _id: iid },
+              { $pull: { RequestedUsers: authdata.userId } }
+            );
+
+            res.send({});
+          }
+        }
+      );
+    });
   });
 
 app.listen(3000, () => {

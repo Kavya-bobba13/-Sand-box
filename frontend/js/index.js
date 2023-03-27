@@ -58,6 +58,7 @@ landsbtn.forEach((ele)=>{
 										console.log(resp);
 										if(resp.token){
 											localStorage.setItem("name",resp.token);
+											if(resp.admin) localStorage.admin=resp.admin
 											storagehandle();
 											window.open("/frontend/index.html","_self");
 										}
