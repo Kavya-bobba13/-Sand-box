@@ -119,7 +119,7 @@
     localStorage.store_details=JSON.stringify(obj);
     $.ajax({
       type: "POST",
-      url: "http://127.0.0.1:3000/addProperty",
+      url: "http://127.0.0.1:3000/properties/addProperty",
       contentType: 'application/json',
       headers: { "periperi": localStorage.name },
       data: JSON.stringify(obj),
