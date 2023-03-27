@@ -21,7 +21,7 @@ function loader() {
                     </div>
                     <div class="col-lg-6 col-md-9">
                       <div class="head-text">
-                      ${result[i].propertyName},${result[i].beds}BHK ${result[i].type} for rent in ${result[i].address}, ${result[i].location}.
+                      ${result[i].propertyName},${result[i].beds}BHK ,${result[i].propertyType} for rent in ${result[i].address}, ${result[i].location}.
                       </div>
                       <div class="body-text">
                         <div class="row inside">

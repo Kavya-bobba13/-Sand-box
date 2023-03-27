@@ -116,7 +116,7 @@ mongoose
         }
       );
     });
-//adding a new user
+    //adding a new user
     async function addUser(obj) {
       let userid = new UsersHR({});
       userid = await userid.save();
@@ -130,14 +130,16 @@ mongoose
       });
       return await User.save();
     }
-    //function to addProperty new 
-    async function addProperty(obj){
-      let propid=new PropertiesHR(obj);
+    //function to addProperty new
+    async function addProperty(obj) {
+      let propid = new PropertiesHR(obj);
 
-      await UsersHR.updateOne({_id:obj.ownerId},{$push : {myProperties:propid}})
-      console.log("property saved",propid,"userid",obj.ownerId);
+      await UsersHR.updateOne(
+        { _id: obj.ownerId },
+        { $push: { myProperties: propid } }
+      );
+      console.log("property saved", propid, "userid", obj.ownerId);
       return await propid.save();
-
     }
 
     //validating pwd of registered user
@@ -168,11 +170,7 @@ mongoose
           process.env.SECRETKEY,
           { expiresIn: "24h" },
           (err, token) => {
-            if(data.userId=="641b1f2da200c7ee16d4afa1")
-            {
-              res.send({ token: token,admin:"yesyes" })
-            }
-            else
+            console.log(token);
             res.send({ token: token });
           }
         );
@@ -200,36 +198,18 @@ mongoose
       console.log(stat);
       res.send({ status: stat });
     });
-//display properties of "selected type"
+    //display properties of "selected type"
     app.post("/pdata", async (req, res) => {
       console.log(req.body);
       let type = req.body.type;
       let arr = [];
-      var doc = false;
-      var uid;
 
-      if (req.headers.periperi) {
-        jwt.verify(
-          req.headers.periperi,
-          process.env.SECRETKEY,
-          async (err, authdata) => {
-            if (err) {
-              //
-            } else {
-              console.log(authdata.userId);
-              // doc= await PropertiesHR.find({ownerId:{$ne:authdata.userId}})
-              // doc = await PropertiesHR.find();
-              doc = true;
-              uid = authdata.userId;
-            }
-          }
-        );
-      }
-
-      if (doc) doc = await PropertiesHR.find({ ownerId: { $ne: uid },propertyType:type });
-      else doc = await PropertiesHR.find({propertyType:type});
+      let doc = await PropertiesHR.find();
+      //console.log(doc);
       doc.forEach((ele) => {
-        
+        console.log(ele.toObject());
+        if (ele.toObject().type == type) {
+          console.log(ele);
           arr.push({
             id: ele.toObject()._id,
             img: ele.toObject().image,
@@ -238,7 +218,7 @@ mongoose
             property_name: ele.toObject().propertyName,
             cost: ele.toObject().cost,
           });
-        
+        }
       });
       console.log(arr);
       res.send(arr);
@@ -277,7 +257,7 @@ mongoose
       let result = await displayAll();
       res.send(result);
     });
-// liked properties of user in my activity page
+    // liked properties of user in my activity page
     app.post("/requests_liked", async (req, res) => {
       console.log("hii");
       console.log(req.headers.periperi);
@@ -289,7 +269,7 @@ mongoose
             res.send(null);
           } else {
             let doc = await UsersHR.findOne({ _id: authdata.userId });
-            // console.log(doc);
+            console.log(doc);
             let obj;
             obj = {
               requestedProperties: doc.requestedProperties,
@@ -301,128 +281,100 @@ mongoose
       );
     });
     //display my peroperties added
-    app.post("/myProperties",async(req,res)=>{
+    app.post("/myProperties", async (req, res) => {
       console.log("my properties");
-      jwt.verify(req.headers.periperi,
+      jwt.verify(
+        req.headers.periperi,
         process.env.SECRETKEY,
-        async (err,authdata)=>{
-          if(err){
+        async (err, authdata) => {
+          if (err) {
             res.send(null);
-          }
-          else{
-            let userdoc=await UsersHR.findOne({_id: authdata.userId});
-            let proparr=userdoc.myProperties;
+          } else {
+            let userdoc = await UsersHR.findOne({ _id: authdata.userId });
+            let proparr = userdoc.myProperties;
             console.log(proparr);
-            var arr=[];
-            for(let i=0;i<proparr.length;i++){
-              var obj=await PropertiesHR.findOne({_id:proparr[i]});
+            var arr = [];
+            for (let i = 0; i < proparr.length; i++) {
+              var obj = await PropertiesHR.findOne({ _id: proparr[i] });
               arr.push(obj);
             }
             console.log(arr);
-            res.send((arr));
+            res.send(arr);
           }
-        })
-
-      })
-  //add property api to sell page
-    app.post("/addProperty",async(req,res)=>{
-      console.log(req.body,"add property");
-      jwt.verify(req.headers.periperi,
+        }
+      );
+    });
+    //add property api to sell page
+    app.post("/addProperty", async (req, res) => {
+      console.log(req.body, "add property");
+      jwt.verify(
+        req.headers.periperi,
         process.env.SECRETKEY,
-        async (err,authdata)=>{
-          if(err){
+        async (err, authdata) => {
+          if (err) {
             res.send(null);
-          }
-          else{
-            var obj=req.body;
-            obj.ownerId=authdata.userId;
-            obj.RequestedUsers=[];
-            obj.likedUsers=[];
+          } else {
+            var obj = req.body;
+            obj.ownerId = authdata.userId;
+            obj.RequestedUsers = [];
+            obj.likedUsers = [];
             console.log(obj);
+            
             await addProperty(obj);
-        
-           // await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
-            res.send({})
+
+            // await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
+            res.send({});
           }
-        }  
-     )
-  })
-//requested properties of user stored
-    app.post("/store_request",async (req,res)=>{
-      jwt.verify(req.headers.periperi,
+        }
+      );
+    });
+    //requested properties of user stored
+    app.post("/store_request", async (req, res) => {
+      jwt.verify(
+        req.headers.periperi,
         process.env.SECRETKEY,
         async (err, authdata) => {
           if (err) {
             res.send(null);
           } else {
             let propobj = await PropertiesHR.findOne({ _id: req.body.id });
-            let obj = await UsersHR.findOne({ _id: authdata.userId });
-            obj = obj.toObject();
-            let present = false;
-            obj.requestedProperties.forEach((ele) => {
-              if (ele._id == req.body.id) {
-                present = true;
-                return;
-              }
-            });
-            if (!present) {
-              await UsersHR.updateOne(
-                { _id: authdata.userId },
-                { $push: { requestedProperties: propobj } }
-              );
-              await PropertiesHR.updateOne(
-                { _id: req.body.id },
-                { $push: { RequestedUsers: authdata.userId } }
-              );
-            }
-            res.send({});
-          }
-         
-        }
-      );
-    });
-
-    app.post("/remove_request", async (req, res) => {
-      console.log("entered");
-      jwt.verify(
-        req.headers.periperi,
-        process.env.SECRETKEY,
-        async (err, authdata) => {
-          if (err) {
-            console.log("not ok");
-            res.send(null);
-          } else {
-            let iid = String(req.body.iid).substring(
-              0,
-              String(req.body.iid).length - 2
-            );
-
-            console.log(iid);
-
-            let obj = await UsersHR.findOne({ _id: authdata.userId });
-            obj = obj.toObject();
-            obj.requestedProperties.forEach((ele, ind) => {
-              if (ele._id == iid) {
-                obj.requestedProperties.splice(ind, 1);
-                return;
-              }
-            });
-
             await UsersHR.updateOne(
               { _id: authdata.userId },
-              { $set: { requestedProperties: obj.requestedProperties } }
+              { $push: { requestedProperties: propobj } }
             );
-            await PropertiesHR.updateOne(
-              { _id: iid },
-              { $pull: { RequestedUsers: authdata.userId } }
-            );
-
+            await PropertiesHR.updateOne({
+              $push: { RequestedUsers: authdata.userId },
+            });
             res.send({});
           }
         }
       );
     });
   });
+
+//multer for upload images
+const multer = require("multer");
+app.post("/imgUpload", function (req, res) {
+  upload(req, res, (err) => {
+    if (err) {
+      console.log(err);
+      res.status(400).send("something is wrong");
+    } else {
+      res.send(req.file);
+    }
+  });
+});
+//disk storage
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./imgUploads");
+    // https://drive.google.com/drive/folders/1Erxp-H3dHLObXU6FhfM7igdvmmdWogj8?usp=share_link
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage }).single("demo_img");
 
 app.listen(3000, () => {
   console.log("server running in 3000");

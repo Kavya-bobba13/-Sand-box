@@ -11,7 +11,7 @@
 </head>
 <body>
  
-    <form method="post" novalidate>
+    <form method="post" action="/uploadPhoto" enctype="multipart/form-data" novalidate>
   <div id="msform">
     <!-- progressbar -->
     <ul id="progressbar">
@@ -69,7 +69,8 @@
       <input type="number" id="since" name="since" placeholder="Since" />
       <input type="text" id="facing" name="facing" placeholder="Phone" />
       <label for="image" class="label select">Property-images</label>
-      <input type="file" class="select" id="image" placeholder="Property-images(pdf)">
+      <input type="file" class="select" id="my_img" value="my_img" placeholder="Property-images(png,jpeg)">
+      <input type="button" name="upload" value="upload">
      
       <textarea name="address" id="address" placeholder="Address"></textarea>
       <input type="button" name="previous" class="previous action-button" value="Previous" />
