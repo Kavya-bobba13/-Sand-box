@@ -34,7 +34,7 @@ logot2.addEventListener("click",(e)=>{
 
 $.ajax({
 		type: "GET",
-		url: "http://127.0.0.1:3000/admindisplay",
+		url: "http://127.0.0.1:3000/admin/admindisplay",
 		contentType: 'application/json',
 		dataType: 'json',
 		success: function (result) {
