@@ -205,13 +205,14 @@ async function requestedProperties(req, res) {
               obj.RequestedUsers=[];
               obj.likedUsers=[];
               console.log(obj);
-              await addProperty(obj);
-          
-             // await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
+              // await Property(obj);
+              
+             await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
               res.send({})
             }
           }  
        )
     }
+  
 
-    module.exports={addProperty,removeRequest,storeRequest,myProperties,propertyDisplay,getPropertyId,requestedProperties};
+  module.exports={addProperty,removeRequest,storeRequest,myProperties,propertyDisplay,getPropertyId,requestedProperties};
