@@ -90,6 +90,21 @@
   
   })(jQuery);  //template js ends
 
+  //image is uploaded
+  // var e=document.getElementById("imgUpload");
+  // e.addEventListener("click",()=>{
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "http://127.0.0.1:3000/imgUploads",
+  //     contentType: 'application/json',
+  //     data: 
+  //     dataType: 'json',
+  //     success: function(result){
+
+  // })
+
+
+  //submit is clicked
   var ele=document.getElementById("submit");
   ele.addEventListener("click",fun2);
 
@@ -97,7 +112,7 @@
     var obj={};
     var arr=[];
     obj.ownerName=document.getElementById("ownerName").value;
-    console.log("kav",document.getElementById("propertyName").value); 
+    console.log("kavya",document.getElementById("propertyName").value); 
     obj.propertyName=document.getElementById("propertyName").value;
     var e=document.getElementById("type");
     console.log("ele type",e);
@@ -115,6 +130,7 @@
     obj.since=document.getElementById("since").value;
     obj.baths=document.getElementById("baths").value;
     obj.balconies=document.getElementById("balconies").value;
+    obj.img=document.getElementById("my_img").files[0];
     console.log(obj);
     localStorage.store_details=JSON.stringify(obj);
     $.ajax({

@@ -223,6 +223,7 @@ async function removeRequest(req, res) {
 
         res.send({});
       }
+<<<<<<< HEAD
     }
   );
 }
@@ -259,3 +260,33 @@ module.exports = {
   getPropertyId,
   requestedProperties,
 };
+=======
+    
+
+
+  async function addProperty(req,res){
+        console.log(req.body,"add property");
+        jwt.verify(req.headers.periperi,
+          process.env.SECRETKEY,
+          async (err,authdata)=>{
+            if(err){
+              res.send(null);
+            }
+            else{
+              var obj=req.body;
+              obj.ownerId=authdata.userId;
+              obj.RequestedUsers=[];
+              obj.likedUsers=[];
+              console.log(obj);
+              // await Property(obj);
+              
+             await PropertiesHR.updateOne({_id:req.body.id},{$push : {RequestedUsers:authdata.userId}})
+              res.send({})
+            }
+          }  
+       )
+    }
+  
+
+  module.exports={addProperty,removeRequest,storeRequest,myProperties,propertyDisplay,getPropertyId,requestedProperties};
+>>>>>>> c090cd3cce33ea51cbeb03f363051f1ceefb92c0
