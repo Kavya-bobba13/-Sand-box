@@ -37,8 +37,10 @@ function loader() {
                             <div class="superscript">since</div>
                             <div class="mainscript">${result[i].since}</div>
                           </div>
+                          
                         </div>
                       </div>
+                      
                     </div>
                     <div class="col-3">
                       <div class="row inside2">
@@ -50,8 +52,12 @@ function loader() {
                           <div class="superscript">Price</div>
                           <div class="mainscript">${result[i].cost}</div>
                         </div>
+                       
                       </div>
+                      <button type="button" class="btn btn-primary btn-sm">requested Users</button>
                     </div>
+                    
+                    
                   </div>`
              }
                     

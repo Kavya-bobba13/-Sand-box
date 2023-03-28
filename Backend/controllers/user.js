@@ -126,6 +126,7 @@ async function addNewUser(req, res) {
     }
 
     console.log(stat);
+    // return {status:"Invalid"};
     res.send({ status: stat });
   }
 
