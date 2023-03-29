@@ -26,8 +26,8 @@ var upload = multer({ storage: storage }).single('myFile');
 //app.post("/properties/uploadfile",uploadImg)
 
 function uploadImg(req,res){
-  
-  console.log("ok");
+  try{
+    console.log("ok");
   console.log(req.form,"main");
   upload(req,res,(err) => {
     console.log(req.file);
@@ -77,6 +77,12 @@ function uploadImg(req,res){
         
     }
 })
+  }
+  catch(err){
+    res.send(err);
+  }
+  
+  
 }
  
 

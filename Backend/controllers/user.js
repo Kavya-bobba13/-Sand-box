@@ -19,6 +19,7 @@ const { UsersHR } = require("../models/userModel");
 
 
 async function addNewUser(req, res) {
+  try{
     console.log(req.body);
     console.log("done adduser");
     let email = req.body.email;
@@ -48,9 +49,15 @@ async function addNewUser(req, res) {
       }
     );
   }
+    catch(err){
+      res.send(err);
+    }
+    
+  }
 
   async function addUser(obj) {
-    let userid = new UsersHR({});
+    try{
+      let userid = new UsersHR({});
     userid = await userid.save();
     console.log(userid);
     const User = new RegisteredUsersHR({
@@ -60,18 +67,29 @@ async function addNewUser(req, res) {
       mobile: obj.mobile,
       userId: userid._id,
     });
-    return await User.save();
+      return await User.save();
+    }
+    catch(err){
+      res.send(err);
+    }
+    
   }
 
   async function display(name) {
-    result = await RegisteredUsersHR.find({ email: name });
+    try {
+      result = await RegisteredUsersHR.find({ email: name });
     console.log(result);
 
     return result;
+    } catch (error) {
+      res.send(error);
+    }
+    
   }
   
   async function valid(req, res){
-    console.log(req.body);
+    try{
+      console.log(req.body);
     console.log("done pwd enter");
     var email = req.body.email;
     var pwd = req.body.password;
@@ -102,17 +120,23 @@ async function addNewUser(req, res) {
             res.send({ token: token,admin:"yesyes" })
           }
           else
-          res.send({ token: token });
+          res.send({ token: token , statusCode:200});
         }
       );
     } else {
       console.log(unameb);
       res.send({ token: unameb });
     }
+    }
+    catch(err){
+      res.send(err);
+    }
+    
   }
 
   async function register(req, res) {
-    console.log(req.body);
+    try{
+      console.log(req.body);
     console.log("done regi");
     let email = req.body.email;
     var stat = "Invalid";
@@ -128,9 +152,17 @@ async function addNewUser(req, res) {
     console.log(stat);
     // return {status:"Invalid"};
     res.send({ status: stat });
+    
+    }
+    catch(err){
+      res.send(err);
+    }
+    
+    
   }
 
  function userProfile(req, res) {
+  try{
     let name = req.body.name;
     jwt.verify(name, process.env.SECRETKEY, async (err, authdata) => {
       if (err) {
@@ -139,6 +171,11 @@ async function addNewUser(req, res) {
         res.send(authdata);
       }
     });
+  }
+  catch(err){
+    res.send(err);
+  }
+    
  }
 
  async function requestedUsers(req,res) {

@@ -17,13 +17,24 @@ const { RegisteredUsersHR } = require("../models/registerModel");
 const { UsersHR } = require("../models/userModel");
 
 async function adminDashboard(req, res) {
+  try{
     let result = await displayAll();
     res.send(result);
   }
+  catch(err){
+    res.send(err);
+  }
+    
+  }
 
   async function displayAll() {
-    result = await RegisteredUsersHR.find();
+    try{
+      result = await RegisteredUsersHR.find();
     return result;
+    }
+    catch(err){
+      res.send(err);
+    }
   }
 
 module.exports={adminDashboard};

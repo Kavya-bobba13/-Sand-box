@@ -38,6 +38,9 @@ async function propertyDisplay(req, res) {
       }
     );
   }
+ 
+    
+  
 
   if (doc) doc = await PropertiesHR.find({ ownerId: { $ne: uid } });
   else doc = await PropertiesHR.find();
@@ -68,7 +71,7 @@ async function propertyDisplay(req, res) {
       ) {
         valid = false;
       } else if (req.body.cost == "above 1Lac" && !ele.cost.endsWith("Lac")) {
-        valid = false;
+        valid = false;z
       }
     }
     if (req.body.bhkSize !== "Size-bhk") {
