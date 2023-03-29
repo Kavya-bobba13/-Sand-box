@@ -106,7 +106,7 @@
 
   //submit is clicked
   var ele=document.getElementById("submit");
-  ele.addEventListener("click",fun2);
+  // ele.addEventListener("click",fun2);
 
   function fun2(){
     var obj={};
@@ -130,7 +130,7 @@
     obj.since=document.getElementById("since").value;
     obj.baths=document.getElementById("baths").value;
     obj.balconies=document.getElementById("balconies").value;
-    obj.img=document.getElementById("my_img").files[0];
+    
     console.log(obj);
     localStorage.store_details=JSON.stringify(obj);
     $.ajax({

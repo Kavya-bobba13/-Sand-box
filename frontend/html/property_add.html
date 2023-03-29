@@ -11,7 +11,7 @@
 </head>
 <body>
  
-    <form method="post" action="/uploadPhoto" enctype="multipart/form-data" novalidate>
+    <form method="post" id="myform" action="http://127.0.0.1:3000/properties/uploadfile" enctype="multipart/form-data" >
   <div id="msform">
     <!-- progressbar -->
     <ul id="progressbar">
@@ -20,45 +20,45 @@
       <li>Property-details</li>
     </ul>
     <!-- fieldsets -->
-    <fieldset>
+    <fieldset id="hidd">
       <h2 class="fs-title">Add Your Property To Rent</h2>
       <h3 class="fs-subtitle">You are one step close to register</h3>
-      <input type="text" id="ownerName" placeholder="Name of property holder" />
-      <select class="form-control select type" id="type" >
+      <input type="text" name="ownerName" id="ownerName" placeholder="Name of property holder" />
+      <select class="form-control select type" name="propertyType" id="propertyType" >
         <option disabled selected>Select Property-type</option>
-        <option value="1">Flats</option>
-        <option value="2">House</option>
-        <option value="3">PG</option>
-        <option value="4">Office Space</option>
+        <option value="Flats">Flats</option>
+        <option value="House">House</option>
+        <option value="PG">PG</option>
+        <option value="Office Space">Office Space</option>
 
       </select>
-      <select  class="form-control select location" id="location">
+      <select  class="form-control select location" name="location" id="location">
         <option disabled selected>Select City</option>
-        <option value="1">Hyderabad</option>
-        <option value="2">Bengaluru</option>
-        <option value="3">Chennai</option>
-        <option value="4">Noida</option>
-        <option value="5">Mumbai</option>
-        <option value="6">Nostatusa</option>
-        <option value="7">Delhi</option>
+        <option value="Hyderabad">Hyderabad</option>
+        <option value="Bengaluru">Bengaluru</option>
+        <option value="Chennai">Chennai</option>
+        <option value="Noida">Noida</option>
+        <option value="Mumbai">Mumbai</option>
+        <option value="Nostatusa">Nostatusa</option>
+        <option value="Delhi">Delhi</option>
 
       </select>
 
-      <input type="building_name" id="propertyName" placeholder="Enter property name" />
-      <input type="text" id="facing" placeholder="Facing">
+      <input type="building_name" id="propertyName" name="propertyName" placeholder="Enter property name" />
+      <input type="text" id="facing" name="facing" placeholder="Facing">
       
-      <input type="text" id="area" placeholder="Property area(sq-fts)">
+      <input type="text" id="area" name="area" placeholder="Property area(sq-fts)">
       <input type="button" name="next" class="next action-button" value="Next" />
     </fieldset>
     <fieldset>
       <h2 class="fs-title">Details-1</h2>
       <h3 class="fs-subtitle">More info about your property</h3>
-      <input type="text" id="securityDeposit" placeholder="Security-deposit" />
-      <input type="text" id="cost" placeholder="Cost per month" />
-      <input type="text" id="maintainence" placeholder="Monthly Maintainence" />
-      <input type="text" id="furnishedStatus" placeholder="Furnished status" />
-      <input type="number" id="balconies" placeholder="Balconies" />
-      <input type="number" id="beds" placeholder="BHK-size" />
+      <input type="text" name="securityDeposit" id="securityDeposit" placeholder="Security-deposit" />
+      <input type="text" name="cost" id="cost" placeholder="Cost per month" />
+      <input type="text" name="maintainence" id="maintainence" placeholder="Monthly Maintainence" />
+      <input type="text" name="furnishedStatus" id="furnishedStatus" placeholder="Furnished status" />
+      <input type="number" name="balconies" id="balconies" placeholder="Balconies" />
+      <input type="number" name="beds" id="beds" placeholder="BHK-size" />
       <input type="button"  name="previous" class="previous action-button" value="Previous" />
       <input type="button"  name="next" class="next action-button" value="Next" />
     </fieldset>
@@ -67,16 +67,18 @@
       <h3 class="fs-subtitle">More info about your property</h3>
       <input type="number" id="baths" name="baths" placeholder="Baths" />
       <input type="number" id="since" name="since" placeholder="Since" />
-      <input type="text" id="facing" name="facing" placeholder="Phone" />
+      <input type="text" id="mobile" name="mobile" placeholder="Phone" />
       <label for="image" class="label select">Property-images</label>
-      <input type="file" class="select" id="my_img" value="my_img" placeholder="Property-images(png,jpeg)">
-      <input type="button" name="upload" value="upload">
+      <input type="file" class="select" name="myFile" id="myFile"  placeholder="Property-images(png,jpeg)" >
+      <!-- <input type="button" name="upload" value="upload"> -->
      
       <textarea name="address" id="address" placeholder="Address"></textarea>
+      
       <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <input type="button" id="submit" name="submit" class="action-button addPropertySubmit" value="Submit"  />
+      <input type="submit" id="submit" name="submit" class="action-button addPropertySubmit" value="Submit"  />
       <!-- onclick="window.location.href='selling.html'" -->
     </fieldset>
+    <input type="hidden" id="key" name="key">
   </div>
 </form>
 
@@ -84,6 +86,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 <script src="../js/property_add_script.js"></script>
+<script src="../js/hidden.js"></script>
 
 </body>
 </html>

@@ -17,7 +17,7 @@ function loader() {
                         document.querySelector("#container_main").innerHTML+=
                     `<div class="row mt-5 mr">
                     <div class="col-3">
-                      <img src="../rent_images/100_frontal.jpg" />
+                      <img src=${result[i].image} />
                     </div>
                     <div class="col-lg-6 col-md-9">
                       <div class="head-text">

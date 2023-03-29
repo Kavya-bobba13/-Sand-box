@@ -54,6 +54,7 @@ mongoose
     app.use("/admin",require("./routes/admin"))
   });
 
-app.listen(3000, () => {
+var serverInstance=app.listen(3000, () => {
   console.log("server running in 3000");
 });
+ module.exports={serverInstance};

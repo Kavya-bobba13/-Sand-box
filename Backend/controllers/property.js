@@ -16,6 +16,7 @@ const { PropertiesHR } = require("../models/propertyModel");
 const { UsersHR } = require("../models/userModel");
 
 async function propertyDisplay (req, res){
+  try{
     console.log(req.body);
     let type = req.body.type;
     let arr = [];
@@ -56,8 +57,14 @@ async function propertyDisplay (req, res){
     });
     console.log(arr);
     res.send(arr);
+  }
+  catch(err){
+    res.send(err);
+  }
+    
 }
 async function getPropertyId(req, res){
+  try{
     let iid = req.body.id;
     let doc = await PropertiesHR.find();
     doc.forEach((ele) => {
@@ -65,9 +72,15 @@ async function getPropertyId(req, res){
         res.send(ele.toObject());
       }
     })
+  }
+  catch(err){
+    res.send(err);
+  }
+    
 }
 
 async function requestedProperties(req, res) {
+  try{
     console.log("hii");
     console.log(req.headers.periperi);
     jwt.verify(
@@ -89,9 +102,15 @@ async function requestedProperties(req, res) {
       }
     );
   }
+  catch(err){
+    res.send(err);
+  }
+    
+  }
 
   async function myProperties(req,res){
-    console.log("my properties");
+    try{
+      console.log("my properties");
     jwt.verify(req.headers.periperi,
       process.env.SECRETKEY,
       async (err,authdata)=>{
@@ -111,45 +130,57 @@ async function requestedProperties(req, res) {
           res.send((arr));
         }
       })
+    }
+    catch(err){
+      res.send(err);
+    }
+    
 
     }
 
   async function storeRequest(req,res){
-        jwt.verify(req.headers.periperi,
-          process.env.SECRETKEY,
-          async (err, authdata) => {
-            if (err) {
-              res.send(null);
-            } else {
-              let propobj = await PropertiesHR.findOne({ _id: req.body.id });
-              let obj = await UsersHR.findOne({ _id: authdata.userId });
-              obj = obj.toObject();
-              let present = false;
-              obj.requestedProperties.forEach((ele) => {
-                if (ele._id == req.body.id) {
-                  present = true;
-                  return;
-                }
-              });
-              if (!present) {
-                await UsersHR.updateOne(
-                  { _id: authdata.userId },
-                  { $push: { requestedProperties: propobj } }
-                );
-                await PropertiesHR.updateOne(
-                  { _id: req.body.id },
-                  { $push: { RequestedUsers: authdata.userId } }
-                );
+    try{
+      jwt.verify(req.headers.periperi,
+        process.env.SECRETKEY,
+        async (err, authdata) => {
+          if (err) {
+            res.send(null);
+          } else {
+            let propobj = await PropertiesHR.findOne({ _id: req.body.id });
+            let obj = await UsersHR.findOne({ _id: authdata.userId });
+            obj = obj.toObject();
+            let present = false;
+            obj.requestedProperties.forEach((ele) => {
+              if (ele._id == req.body.id) {
+                present = true;
+                return;
               }
-              res.send({});
+            });
+            if (!present) {
+              await UsersHR.updateOne(
+                { _id: authdata.userId },
+                { $push: { requestedProperties: propobj } }
+              );
+              await PropertiesHR.updateOne(
+                { _id: req.body.id },
+                { $push: { RequestedUsers: authdata.userId } }
+              );
             }
-           
+            res.send({});
           }
-        );
+         
+        }
+      );
+    }
+    catch(err){
+      res.send(err);
+    }
+        
     }
 
   async function removeRequest (req, res){
-        console.log("entered");
+    try{
+      console.log("entered");
         jwt.verify(
           req.headers.periperi,
           process.env.SECRETKEY,
@@ -187,12 +218,18 @@ async function requestedProperties(req, res) {
             }
           }
         );
+    }
+    catch(err){
+      res.send(err);
+    }
+        
       }
     
 
 
   async function addProperty(req,res){
-        console.log(req.body,"add property");
+    try{
+      console.log(req.body,"add property");
         jwt.verify(req.headers.periperi,
           process.env.SECRETKEY,
           async (err,authdata)=>{
@@ -212,6 +249,12 @@ async function requestedProperties(req, res) {
             }
           }  
        )
+
+    }
+    catch(err){
+      res.send(err);
+    }
+        
     }
   
 
