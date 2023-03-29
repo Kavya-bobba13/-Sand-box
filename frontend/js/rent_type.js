@@ -3,6 +3,18 @@ if (localStorage.getItem("p_type")) {
   localStorage.removeItem("p_type");
   $(".toggle4").text(type);
 }
+
+if(localStorage.search_prop){
+  let obj=JSON.parse(localStorage.search_prop)
+  localStorage.removeItem("search_prop")
+  if(obj.val1!="Location")
+    $(".toggle2").text(obj.val1);
+  if(obj.val2!="BHK")
+    $(".toggle3").text(obj.val2+"bhk");
+  if(obj.val3!="Type")
+  $(".toggle4").text(obj.val3);
+
+}
 document.querySelector(".listcont").innerHTML = "";
 
 function filter() {

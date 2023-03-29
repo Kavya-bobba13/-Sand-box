@@ -106,7 +106,7 @@
 
   //submit is clicked
   var ele=document.getElementById("submit");
-  ele.addEventListener("click",fun2);
+  // ele.addEventListener("click",fun2);
 
   function fun2(){
     var obj={};

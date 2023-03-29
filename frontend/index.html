@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RentalApp</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" >
+    <script src="https://unpkg.com/phosphor-icons" defer></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -80,8 +81,54 @@
         <div class="content">
             <h1>Find your dream home</h1> 
             <div class="search">
-              <input type="text" placeholder="Search Property-Type" />
-              <a href="">Search</a>
+              <!-- <input type="text" placeholder="Search Property-Type" /> -->
+              <div class="search-wrapper">
+                <div class="search-box">
+                  <div class="dropdown">
+                    <div class="default-option val1">
+                      Location
+                    </div>
+                    <ul class="dropdown-menu menu2">
+                      <input  type="text" name="" id="" value="">
+                      <li class="dropdown-item dropdown-item2" >Ahmedabad</li>
+                      <li class="dropdown-item dropdown-item2" >Bengaluru</li>
+                      <li class="dropdown-item dropdown-item2" >Chennai</li>
+                      <li class="dropdown-item dropdown-item2" >Delhi</li>
+                      <li class="dropdown-item dropdown-item2" >Hyderabad</li>
+                      <li class="dropdown-item dropdown-item2" >Mumbai</li>
+                      <li class="dropdown-item dropdown-item2" >Noida</li>
+                      <li class="dropdown-item dropdown-item2" >Pune</li>
+                    </ul>
+                  </div>
+                  <div class="dropdown">
+                    <div class="default-option val2">
+                      BHK
+                    </div>
+                    <ul class="dropdown-menu">
+                      <li class="dropdown-item">1</li>
+                      <li class="dropdown-item">2</li>
+                      <li class="dropdown-item">3</li>
+                      <li class="dropdown-item">above 3</li>
+                      
+                    </ul>
+                  </div>
+                  <div class="dropdown">
+                    <div class="default-option val3">
+                      Type
+                    </div>
+                    <ul class="dropdown-menu">
+                      <li class="dropdown-item">Flats</li>
+                      <li class="dropdown-item">House</li>
+                      <li class="dropdown-item">PG</li>
+                      <li class="dropdown-item">Office Space</li>
+                    </ul>
+                  </div>
+                  <div class="search-field">
+                    <a href="#" class="search-btn">Search</a>
+                  </div>
+                </div>
+              </div>
+              
             </div>
           </div> 
     </header>
@@ -398,7 +445,7 @@
       </div>
     </footer>
 </body>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="./js/slider.js"></script>
 

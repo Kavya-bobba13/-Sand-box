@@ -2,6 +2,9 @@ const iid = localStorage.iid;
 console.log("hey", iid);
 
 document.querySelector(".contact").addEventListener("click", () => {
+  if(!localStorage.name){
+    window.open("../login-form-02/login.html", "_self");
+  }
   $.ajax({
     type: "POST",
     url: "http://127.0.0.1:3000/properties/store_request",
@@ -12,6 +15,7 @@ document.querySelector(".contact").addEventListener("click", () => {
     }),
     dataType: "json",
     success: function (resp) {
+      
       window.open("../index.html", "_self");
     },
   });
