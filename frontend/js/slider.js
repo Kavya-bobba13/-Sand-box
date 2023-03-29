@@ -49,3 +49,27 @@ document.addEventListener("scroll", function(){ // or window.addEventListener("s
    lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
    if(lastScrollTop==0) nav[0].style.backgroundColor="";
 }, false);
+
+
+$(".dropdown").click((e)=>{
+	console.log($($(e.target).children()[1]).toggleClass("active"));
+})
+
+$(".dropdown-item").click((e)=>{
+	console.log($($(e.target).parent().parent().children()[0]).text(e.target.innerText));
+	$($(e.target).parent()).toggleClass("active")
+
+})
+
+$(".search-btn").click((e)=>{
+  
+	localStorage.search_prop=JSON.stringify({
+		val1:$(".val1").text().trim(" "),
+		val2:$(".val2").text().trim(" "),
+		val3:$(".val3").text().trim(" ")
+	});
+  console.log(localStorage.search_prop);
+  window.open("../../frontend/html/rent_type.html","_self")
+
+
+})

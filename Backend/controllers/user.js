@@ -147,9 +147,12 @@ async function addNewUser(req, res) {
         stat = "valid";
         console.log(obj[0]);
       }
-      console.log(stat);
-    res.send({ status: stat });
     }
+
+    console.log(stat);
+    // return {status:"Invalid"};
+    res.send({ status: stat });
+    
     }
     catch(err){
       res.send(err);
@@ -174,4 +177,25 @@ async function addNewUser(req, res) {
   }
     
  }
- module.exports={valid,register,userProfile,addNewUser};
+
+ async function requestedUsers(req,res) {
+    let id=req.body.id;
+    console.log(id);
+    let doc=await PropertiesHR.findOne({_id:id},{_id:0,RequestedUsers:1})
+    console.log(doc);
+    let arr=[]
+    doc.RequestedUsers.forEach(async (ele,ind) => {
+      
+      
+        let doc2= await RegisteredUsersHR.findOne({userId:String(ele)})
+        console.log(doc2);
+        arr.push(doc2)
+        if((ind+1)==doc.RequestedUsers.length){
+          res.send(arr)
+        }
+        
+    });
+    console.log(arr);
+    
+ }
+ module.exports={valid,register,userProfile,addNewUser,requestedUsers};

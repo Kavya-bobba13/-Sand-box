@@ -17,7 +17,7 @@ function loader() {
                         document.querySelector("#container_main").innerHTML+=
                     `<div class="row mt-5 mr">
                     <div class="col-3">
-                      <img src=${result[i].image} />
+                      <img src="${result[i].image}" />
                     </div>
                     <div class="col-lg-6 col-md-9">
                       <div class="head-text">
@@ -37,8 +37,10 @@ function loader() {
                             <div class="superscript">since</div>
                             <div class="mainscript">${result[i].since}</div>
                           </div>
+                          
                         </div>
                       </div>
+                      
                     </div>
                     <div class="col-3">
                       <div class="row inside2">
@@ -50,8 +52,12 @@ function loader() {
                           <div class="superscript">Price</div>
                           <div class="mainscript">${result[i].cost}</div>
                         </div>
+                       
                       </div>
+                      <button type="button" class="btn btn-primary btn-sm" id=${result[i]._id}>requested Users</button>
                     </div>
+                    
+                    
                   </div>`
              }
                     
@@ -62,6 +68,11 @@ function loader() {
                 }
                 
                 
+          $(".btn-sm").on("click",(e)=>{
+            console.log(e.target.id);
+            localStorage.setItem("reqId",e.target.id);
+            window.open("../html/manage_users.html","_self");
+          })
         },
         error:function (){
             window.open("../login-form-02/login.html","_self");
