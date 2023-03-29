@@ -41,7 +41,7 @@ function uploadImg(req,res){
       
         var obj={};
         obj.ownerName=req.body.ownerName;
-        obj.propertyName=req.propertyName;
+        obj.propertyName=req.body.propertyName;
         obj.propertyType=req.body.propertyType;
         obj.location=req.body.location;
         obj.facing=req.body.facing;
