@@ -26,6 +26,8 @@ router.post("/myProperties",myProperties)
 router.post("/store_request",storeRequest)
 router.post("/remove_request",removeRequest)
 router.post("/uploadfile",uploadImg)
+//router.post("/uploadimg",img)
+
 
 
 

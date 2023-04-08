@@ -14,10 +14,10 @@ app.use(express.static("public"));
 const router=express.Router() 
 
 const UsersHRSchema = {
-    likedProperties: [{ type: PropertiesHRSchema }],
-    requestedProperties: [{ type: PropertiesHRSchema }],
+    likedProperties: [{ type: PropertiesHRSchema ,unique: true}],
+    requestedProperties: [{ type: PropertiesHRSchema,unique:true }],
     myProperties: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "PropertiesHRSchema" },
+      { type: mongoose.Schema.Types.ObjectId, ref: "PropertiesHRSchema" , unique:true},
     ],
   };
 

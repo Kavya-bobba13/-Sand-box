@@ -1,4 +1,3 @@
-
 const express = require("express");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -10,92 +9,105 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-const router=express.Router()
-
+const router = express.Router();
 
 const { PropertiesHR } = require("../models/propertyModel");
 const { RegisteredUsersHR } = require("../models/registerModel");
 const { UsersHR } = require("../models/userModel");
 
-
 async function addNewUser(req, res) {
-  try{
+  try {
     console.log(req.body);
     console.log("done adduser");
     let email = req.body.email;
     let uname = req.body.uname;
     let password = req.body.password;
     let mobileno = req.body.mobileno;
-    let obj = await addUser({
-      name: uname,
-      email: email,
-      password: password,
-      mobile: mobileno,
-    });
-
-    let data = {
-      name: obj.name,
-      userId: obj.userId,
-      email: obj.email,
-      mobileno: obj.mobile,
-    };
-    jwt.sign(
-      data,
-      process.env.SECRETKEY,
-      { expiresIn: "24h" },
-      (err, token) => {
-        console.log(token);
-        res.send({ token: token });
-      }
-    );
-  }
-    catch(err){
-      res.send(err);
+    if (email && uname && password && mobileno) {
+      console.log("if block");
+      let obj = await addUser({
+        name: uname,
+        email: email,
+        password: password,
+        mobile: mobileno,
+      });
+      console.log(obj, "34");
+      let data = {
+        name: obj.name,
+        userId: obj.userId,
+        email: obj.email,
+        mobile: obj.mobile,
+      };
+      console.log("data");
+      jwt.sign(
+        data,
+        process.env.SECRETKEY,
+        { expiresIn: "24h" },
+        (err, token) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(token);
+            console.log("valid");
+            res.send({ user: "valid", token: token });
+          }
+        }
+      );
+    } else {
+      console.log("else block");
+      res.send({ user: "Invalid" });
     }
-    
+  } catch (err) {
+    // res.send({err});
   }
+}
 
-  async function addUser(obj) {
-    try{
-      let userid = new UsersHR({});
+async function addUser(obj) {
+  try {
+    let userid = new UsersHR({});
     userid = await userid.save();
     console.log(userid);
-    const User = new RegisteredUsersHR({
+    userid = new RegisteredUsersHR({
       name: obj.name,
       email: obj.email,
       password: obj.password,
       mobile: obj.mobile,
       userId: userid._id,
     });
-      return await User.save();
-    }
-    catch(err){
-      res.send(err);
-    }
-    
+    //userid=await userid.save();
+    console.log(userid);
+    return userid;
+  } catch (err) {
+    res.send(err);
   }
+}
 
-  async function display(name) {
-    try {
-      result = await RegisteredUsersHR.find({ email: name });
+async function display(name) {
+  try {
+    result = await RegisteredUsersHR.find({ email: name });
     console.log(result);
 
     return result;
-    } catch (error) {
-      res.send(error);
-    }
-    
+  } catch (error) {
+    res.send(error);
   }
-  
-  async function valid(req, res){
-    try{
-      console.log(req.body);
+}
+
+async function valid(req, res) {
+  try {
+    console.log(req.body);
     console.log("done pwd enter");
     var email = req.body.email;
     var pwd = req.body.password;
     var unameb = null;
     var obj = await display(email);
-    //console.log(obj[0].password,"hi",pwd,obj[0].password===pwd,obj[0].email===email);
+    console.log(
+      obj[0].password,
+      "hi",
+      pwd,
+      obj[0].password === pwd,
+      obj[0].email === email
+    );
     if (obj.length > 0 && obj[0].email === email && obj[0].password === pwd) {
       unameb = obj[0].name;
       console.log("uname", unameb);
@@ -107,7 +119,7 @@ async function addNewUser(req, res) {
         name: unameb,
         userId: obj[0].userId,
         email: obj[0].email,
-        mobileno: obj[0].mobile,
+        mobile: obj[0].mobile,
       };
 
       jwt.sign(
@@ -115,28 +127,23 @@ async function addNewUser(req, res) {
         process.env.SECRETKEY,
         { expiresIn: "24h" },
         (err, token) => {
-          if(data.userId=="641b1f2da200c7ee16d4afa1")
-          {
-            res.send({ token: token,admin:"yesyes" })
-          }
-          else
-          res.send({ token: token , statusCode:200});
+          if (data.userId == "641b1f2da200c7ee16d4afa1") {
+            res.send({ user: "admin", token: token, admin: "yesyes" });
+          } else res.send({ user: "valid pwd", token: token });
         }
       );
     } else {
       console.log(unameb);
-      res.send({ token: unameb });
+      res.send({ user: "Invalid pwd", token: unameb });
     }
-    }
-    catch(err){
-      res.send(err);
-    }
-    
+  } catch (err) {
+    res.send(err);
   }
+}
 
-  async function register(req, res) {
-    try{
-      console.log(req.body);
+async function register(req, res) {
+  try {
+    console.log(req.body);
     console.log("done regi");
     let email = req.body.email;
     var stat = "Invalid";
@@ -150,52 +157,154 @@ async function addNewUser(req, res) {
     }
 
     console.log(stat);
-    // return {status:"Invalid"};
-    res.send({ status: stat });
-    
-    }
-    catch(err){
-      res.send(err);
-    }
-    
-    
-  }
 
- function userProfile(req, res) {
-  try{
+    // return {status:"Invalid"};
+    res.send({ statusValid: stat });
+  } catch (err) {
+    res.send(err);
+  }
+}
+async function editProfile(req, res) {
+  try {
     let name = req.body.name;
+
     jwt.verify(name, process.env.SECRETKEY, async (err, authdata) => {
       if (err) {
         res.send("not authorized");
       } else {
-        res.send(authdata);
+        console.log("user profile 1");
+        let cat = req.body.cat;
+        var data = {};
+        if (cat == "details") {
+          let name = req.body.cname;
+          let email = req.body.email;
+          let mobile = req.body.mobileno;
+
+          var update1;
+          if (name && email && mobile) {
+            update1 = "valid";
+            let update = {
+              name: name,
+              email: email,
+              mobile: mobile,
+            };
+            let data = {
+              name: name,
+              email: email,
+              mobile: mobile,
+              userId: authdata.userId,
+            };
+            const doc = await RegisteredUsersHR.findOneAndUpdate(
+              { userId: authdata.userId },
+              update,
+              {
+                new: true,
+              }
+            );
+            console.log("update done");
+            var token1;
+            jwt.sign(
+              data,
+              process.env.SECRETKEY,
+              { expiresIn: "24h" },
+              (err, token) => {
+                //res.send({ user: "valid pwd", token: token });
+                token1 = token;
+              }
+            );
+            console.log(token1);
+          } else {
+            update1 = "invalid";
+            console.log("some values are null");
+          }
+          var update2;
+          let oldpwd = req.body.oldpwd;
+          let newpwd = req.body.newpwd;
+          let cnewpwd = req.body.cnewpwd;
+          if (oldpwd && newpwd && cnewpwd) {
+            update2 = "valid";
+            const doc = await RegisteredUsersHR.findOne({
+              userId: authdata.userId,
+            });
+            if (doc.password == oldpwd && newpwd == cnewpwd) {
+              console.log("pwd change");
+              const doc1 = await RegisteredUsersHR.updateOne(
+                { userId: authdata.userId },
+                { $set: { password: newpwd } }
+              );
+            } else {
+              res.send("enter pwd details correctly");
+            }
+          } else {
+            update2 = "invalid";
+            console.log("passowords are null");
+          }
+          //var obj=RegisteredUsersHR.findOne({_id:authdata.userId});
+          var doc2 = await RegisteredUsersHR.findOne({
+            userId: authdata.userId,
+          });
+          res.send({ update1: update1, update2: update2, token: token1 });
+        } else {
+          console.log(authdata);
+          res.send(authdata);
+        }
       }
     });
-  }
-  catch(err){
+  } catch (err) {
     res.send(err);
   }
-    
- }
+}
 
- async function requestedUsers(req,res) {
-    let id=req.body.id;
-    console.log(id);
-    let doc=await PropertiesHR.findOne({_id:id},{_id:0,RequestedUsers:1})
-    console.log(doc);
-    let arr=[]
-    doc.RequestedUsers.forEach(async (ele,ind) => {
-      
-      
-        let doc2= await RegisteredUsersHR.findOne({userId:String(ele)})
-        console.log(doc2);
-        arr.push(doc2)
-        if((ind+1)==doc.RequestedUsers.length){
-          res.send(arr)
+async function userProfile(req, res) {
+  try {
+    let name = req.body.name;
+
+    jwt.verify(name, process.env.SECRETKEY, async (err, authdata) => {
+      if (err) {
+        res.send("not authorized");
+      } else {
+        console.log("user profile load");
+        var doc= await RegisteredUsersHR.findOne({userId:authdata.userId});
+        console.log(doc);
+        if(doc){
+          res.send(doc);
         }
+       else{
+        console.log(authdata,authdata._id);
+        res.send(authdata);
+       }
         
+      }
     });
-    console.log(arr);
-    
- }
- module.exports={valid,register,userProfile,addNewUser,requestedUsers};
+  } catch (err) {
+    res.send(err);
+  }
+}
+
+async function requestedUsers(req, res) {
+  let id = req.body.id;
+  console.log(id);
+  let doc = await PropertiesHR.findOne(
+    { _id: id },
+    { _id: 0, RequestedUsers: 1 }
+  );
+  console.log(doc);
+  let arr = [];
+  doc.RequestedUsers.forEach(async (ele, ind) => {
+    let doc2 = await RegisteredUsersHR.findOne({ userId: String(ele) });
+    console.log(doc2);
+    arr.push(doc2);
+    if (ind + 1 == doc.RequestedUsers.length) {
+      res.send(arr);
+    }
+  });
+  console.log(arr);
+}
+module.exports = {
+  valid,
+  register,
+  userProfile,
+  editProfile,
+  addNewUser,
+  requestedUsers,
+};
