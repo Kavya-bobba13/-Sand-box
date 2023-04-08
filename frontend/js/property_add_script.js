@@ -102,8 +102,11 @@
   //     success: function(result){
 
   // })
-
-
+  function fun1(){
+    console.log("loc obj:", $(".pac-input").val());
+  }
+  console.log("loc obj:", $(".pac-input").val());
+ 
   //submit is clicked
   var ele=document.getElementById("submit");
   // ele.addEventListener("click",fun2);

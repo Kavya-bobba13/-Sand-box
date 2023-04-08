@@ -2,6 +2,7 @@ const iid = localStorage.iid;
 console.log("hey", iid);
 
 document.querySelector(".contact").addEventListener("click", () => {
+  alert("Email is sent!")
   if(!localStorage.name){
     window.open("../login-form-02/login.html", "_self");
   }
@@ -12,17 +13,16 @@ document.querySelector(".contact").addEventListener("click", () => {
     headers: { "periperi": localStorage.name },
     data: JSON.stringify({
       id:iid,
+      email:"sainikhilmunna@gmail.com"
     }),
     dataType: "json",
-    success: function (resp) {
-      
+    success:function xyz(res) {
       window.open("../index.html", "_self");
-    },
+    }
   });
 });
 //console.log(id);
 //var obj=require("./data.json")
-
 
   $.ajax({
     type: "POST",
@@ -43,12 +43,12 @@ document.querySelector(".contact").addEventListener("click", () => {
       document.querySelector(".pimg").setAttribute("src", resp.image);
 
       document.querySelectorAll(".cost").forEach((ele) => {
-        ele.innerText += resp.cost;
+        ele.innerText +=("₹"+ resp.cost);
       });
       document.querySelectorAll(".area").forEach((ele) => {
-        ele.innerText += resp.area;
+        ele.innerText += (resp.area+" sqfts");
       });
-      document.querySelector(".bhksize").innerText += resp.bhkSize + "bhk";
+      document.querySelector(".bhksize").innerText += resp.bhkSize + "bhk ,";
       document.querySelectorAll(".location").forEach((ele) => {
         ele.innerText += resp.location;
       });
@@ -58,7 +58,7 @@ document.querySelector(".contact").addEventListener("click", () => {
       //ar.bid[0].img
       document.querySelector(".address").innerText += resp.address;
       //ar.bid[0].loc;
-      document.querySelector(".deposit").innerText += resp.securityDeposit;
+      document.querySelector(".deposit").innerText += ("₹"+resp.securityDeposit);
       //ar.bid[0].cost;
       document.querySelector(".status").innerHTML += resp.furnishedStatus;
       document.querySelector(".balconies").innerHTML += resp.balconies;
@@ -67,6 +67,11 @@ document.querySelector(".contact").addEventListener("click", () => {
       document.querySelector(".facing").innerText += resp.facing;
       document.querySelector(".since").innerText += resp.since;
       document.querySelector(".statusP").innerText +=(resp.status?"Available":"Unavailable") ;
+      let latlong=[resp.coordinates];
+      localStorage.setItem("coordinates",latlong);
+      localStorage.setItem("addr",resp.address);
+      initialize();
+      //localStorage.latlong.split(" ")
     },
     error:function(){
       console.log("error");
