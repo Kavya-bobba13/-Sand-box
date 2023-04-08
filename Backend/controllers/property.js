@@ -294,13 +294,14 @@ async function getPropertyId(req, res) {
                 { userId: authdata.userId,"intrest.location._id": locationtrack},
                 { $set: { "intrest.location.$.count": val1,[sizetrack]: val3, [costtrack]: val4,[typetrack]: val2 } }
               );
-
+            res.send(doc)
         }
         else{
           let docc2 = await UsersTrackerHR.updateOne(
             { userId: authdata.userId},
             { $push: { "intrest.location": { _id: locationtrack, count: 1 } } ,$set: {[sizetrack]: val3 ,[costtrack]: val4,[typetrack]: val2 } }
           );
+          res.send(doc)
         }
 
       }

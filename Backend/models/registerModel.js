@@ -34,7 +34,7 @@ const router=express.Router()
             match: /^\\d{10}$/ },
         image:{
           type:String,
-          default:"",
+          default:"https://houserentals-properties-upload.s3.ap-south-1.amazonaws.com/image-1680887731952.jpeg",
         },
         userId: {
            type: mongoose.Schema.Types.ObjectId,

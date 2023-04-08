@@ -23,6 +23,7 @@ document.querySelector(".contact").addEventListener("click", () => {
 });
 //console.log(id);
 //var obj=require("./data.json")
+console.log("ok");
 
   $.ajax({
     type: "POST",
@@ -77,5 +78,6 @@ document.querySelector(".contact").addEventListener("click", () => {
       console.log("error");
     }
   });
+
 
 
