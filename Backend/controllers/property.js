@@ -9,10 +9,17 @@ app.use(cors());
 app.use(express.json());
 
 const router = express.Router();
+const bodyParser = require("body-parser");
+const nodemailer = require('nodemailer');
+const Mailgen = require('mailgen');
+//const { EMAIL, PASSWORD } = require('../env.js')
+ const EMAIL=process.env.EMAIL;
+ const PASSWORD=process.env.PASSWORD;
 
 const { PropertiesHR } = require("../models/propertyModel");
 const { UsersHR } = require("../models/userModel");
 const { UsersTrackerHR } = require("../models/userTrackerModel");
+const { RegisteredUsersHR } = require("../models/registerModel");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -34,6 +41,8 @@ async function checkadd(req,res) {
   console.log(dd);
   res.send(dd)
 }
+
+
 
 async function propertyDisplay(req, res) {
   console.log(req.body);
@@ -317,7 +326,7 @@ async function requestedProperties(req, res) {
           requestedProperties: doc.requestedProperties,
           likedProperties: doc.likedProperties,
         };
-        res.json(obj);
+        res.json(obj).send();
       }
     }
   );
@@ -353,6 +362,69 @@ async function myProperties(req, res) {
     }
   );
 }
+async function sendEmail(userEmail,cost,name,email,mobile){
+  //const { userEmail } = req.body;
+  console.log("sendEmail fun entered");
+  let config = {
+      service : 'gmail',
+      auth : {
+          user:  EMAIL,
+          pass: PASSWORD,
+      }
+  }
+
+  let transporter = nodemailer.createTransport(config);
+
+  let MailGenerator = new Mailgen({
+      theme: "default",
+      product : {
+          name: "@Sand-box",
+          link : 'https://Sand-box.js/'
+      }
+  })
+
+  let response = {
+      body: {
+          name : "! User",
+          intro: "Thank you for using Sand-box!",
+          table : {
+              data : [
+                  {
+                      ownername : name,
+                      Email: email,
+                      mobile:mobile,
+                      price : cost,
+                  }
+              ]
+          },
+          outro: "Looking forward to find you more rentals"
+      }
+  }
+
+  let mail = MailGenerator.generate(response)
+
+  let message = {
+      from : "hemalathabobba1@gmail.com",
+      to : userEmail,
+      subject: "Place Order",
+      html: mail
+  }
+  console.log("before send mail");
+
+  transporter.sendMail(message).then(() => {
+    console.log("you should receive an email");
+      return "you should receive an email"
+     
+  }).catch(error => {
+    console.log("error ",error);
+     return "error"
+     
+  })
+
+return ("Signup Successfully...!");
+}
+
+
 
 async function storeRequest(req, res) {
   jwt.verify(
@@ -364,6 +436,7 @@ async function storeRequest(req, res) {
       } else {
         let propobj = await PropertiesHR.findOne({ _id: req.body.id });
         let obj = await UsersHR.findOne({ _id: authdata.userId });
+        let regobj=await RegisteredUsersHR.findOne({ userId: authdata.userId });
         obj = obj.toObject();
         let present = false;
         obj.requestedProperties.forEach((ele) => {
@@ -382,6 +455,9 @@ async function storeRequest(req, res) {
             { $push: { RequestedUsers: authdata.userId } }
           );
         }
+        console.log(propobj.cost," ",regobj.name,regobj.email,regobj.mobile);
+        //sending an email
+       await sendEmail(req.body.email,propobj.cost,regobj.name,regobj.email,regobj.mobile);
         res.send({});
       }
     }
@@ -505,4 +581,3 @@ module.exports = {
   checkadd
 };
 
-// module.exports={addProperty,removeRequest,storeRequest,myProperties,propertyDisplay,getPropertyId,requestedProperties};

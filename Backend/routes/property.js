@@ -28,6 +28,7 @@ router.post("/remove_request",removeRequest)
 router.post("/uploadfile",uploadImg)
 router.post("/updateProperty",updateProperty)
 router.post("/cc",checkadd)
+//router.post("/uploadimg",img)
 
 
 

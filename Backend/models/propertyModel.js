@@ -9,37 +9,84 @@ app.use(express.json());
 const router = express.Router();
 
 const PropertiesHRSchema = {
-  status: { type: Boolean, default: true },
-  ownerName: { type: String },
-  propertyName: { type: String },
-  propertyType: { type: String },
-  image: { type: String },
-  location: { type: String },
-  cost: { type: String },
-  bhkSize: { type: String },
-  area: { type: String },
-  securityDeposit: { type: String },
-  since: { type: String },
-  facing: { type: String },
-  address: { type: String },
-  furnishedStatus: { type: String },
-  beds: { type: String },
-  baths: { type: String },
-  balconies: { type: String },
-  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "UsersHRSchema" },
-  RequestedUsers: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "UsersHRSchema" }],
-    default: [],
-  },
-  likedUsers: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "UsersHRSchema" }],
-    default: [],
-  },
-  postedOn:{
-    type:Date,
-    default:new Date()
-  }
-};
+    status: { 
+      type: Boolean ,
+      // required:true,
+      enum:[true,false],
+      default:true
+    },
+    ownerName: { 
+      type: String ,
+      required:true,
+      minlength:4,
+      maxlength:40,
+    },
+    propertyName: { 
+      type: String ,
+      required: true,
+      minlength:5,
+      maxlength:40,
+    },
+    propertyType: { 
+      type: String ,
+      required: true,
+      enum:["Flats","House","PG","Office Space"],
+    },
+    image: { 
+      type: String ,
+      required: true,},
+    location: { 
+      type: String ,
+      required: true},
+    cost: { 
+      type: String,
+      required: true},
+    bhkSize: { 
+      type: Number, 
+      // required: true
+    },
+    area: { 
+      type: Number,
+      // required: true 
+    },
+    securityDeposit: { 
+      type: Number,
+      required: true },
+    since: { 
+      type: Number,
+      required: true },
+    facing: { 
+      type: String,
+      required: true, },
+    address: {
+       type: String,
+       required: true },
+    furnishedStatus: { 
+      type: String ,
+      required:true,
+      enum:["fully","not"]},
+    baths: {
+       type: Number,
+        required:true },
+    balconies: { 
+      type: Number,
+      required:true },
+    coordinates:{type:Array},
+    ownerId: {
+       type: mongoose.Schema.Types.ObjectId,
+       required:true,
+        ref: "UsersHRSchema" },
+    RequestedUsers: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "UsersHRSchema" ,default:[]},
+    ],
+    likedUsers: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "UsersHRSchema" ,default:[]},
+    ],
+    postedOn:{
+      type:Date,
+      default:new Date()
+    }
+  };
 
 const PropertiesHR = mongoose.model("PropertiesHR", PropertiesHRSchema);
 module.exports = { PropertiesHR, PropertiesHRSchema };
