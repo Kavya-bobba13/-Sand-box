@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../css/property_add_style.css">
-    
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" type="text/css" href="../css/map.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
@@ -72,7 +75,12 @@
       <input type="file" class="select" name="myFile" id="myFile"  placeholder="Property-images(png,jpeg)" >
       <!-- <input type="button" name="upload" value="upload"> -->
      
-      <textarea name="address" id="address" placeholder="Address"></textarea>
+      <!-- <textarea name="address" id="address" placeholder="Address"></textarea> -->
+      <label for="pac-input" class="label select">Location</label>
+      <input id="pac-input" name="searchbox" class="controls" type="text" placeholder="Search Box"/>
+      <input type="hidden" class="coordinates" name="coordinates" >
+      <div id="map"></div>
+
       
       <input type="button" name="previous" class="previous action-button" value="Previous" />
       <input type="submit" id="submit" name="submit" class="action-button addPropertySubmit" value="Submit"  />
@@ -87,6 +95,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 <script src="../js/property_add_script.js"></script>
 <script src="../js/hidden.js"></script>
+
+
+<script src="../js/map.js"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7Thyj9fZ-8j44gfQjgHZahML79VnNDZA&callback=initAutocomplete&libraries=places&v=weekly"
+      defer
+></script>
 
 </body>
 </html>

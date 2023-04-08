@@ -43,7 +43,7 @@ landsbtn.forEach((ele)=>{
 					dataType: 'json',
 					success: function (result) {
 						console.log(result)
-						if ("valid"== result.status) {
+						if ("valid"== result.statusValid) {
 							
 								$.ajax({
 									type: "POST",
