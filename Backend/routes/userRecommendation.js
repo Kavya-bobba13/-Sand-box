@@ -5,7 +5,7 @@ require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const { adminDashboard, dataDisplay } = require("../controllers/admin");
+const { tracking ,counting,recommending} = require("../controllers/userRecommendation");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -14,6 +14,8 @@ app.use(express.static("public"));
 const router=express.Router()
 
 
-router.get("/admindisplay",adminDashboard);
-router.post("/dataDisplay",dataDisplay);
+router.post("/store",tracking);
+router.post("/countTime",counting);
+router.post("/recommend",recommending);
+
 module.exports =router;

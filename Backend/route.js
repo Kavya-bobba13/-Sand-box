@@ -10,6 +10,8 @@ app.use(express.json());
 const bodyParser = require("body-parser");
 const multer = require("multer");
 app.use(express.urlencoded({ extended: false }));
+const bcrypt=require("bcrypt")
+const saltRounds=8
 // const multer=require("multer")
 
 const router=express.Router()
@@ -52,9 +54,10 @@ mongoose
   //   })
     app.use("/properties",require("./routes/property"))
     app.use("/admin",require("./routes/admin"))
+    app.use("/userTrack",require("./routes/userRecommendation"))
   });
 
-var serverInstance=app.listen(3000, () => {
+var serverInstance=app.listen(process.env.PORT || 3000, () => {
   console.log("server running in 3000");
 });
  module.exports={serverInstance};

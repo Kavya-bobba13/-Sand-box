@@ -3,16 +3,37 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+const multer = require("multer");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+
 const router = express.Router();
 
 const { PropertiesHR } = require("../models/propertyModel");
 const { UsersHR } = require("../models/userModel");
+const { UsersTrackerHR } = require("../models/userTrackerModel");
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../frontend/images");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); //Appending extension
+  },
+});
+
+var upload = multer({ storage: storage }).single("imgg");
+
+
+async function checkadd(req,res) {
+  let doc=await PropertiesHR.findOne({_id:"642dae502bdb8a3506456e32"},{postedOn:1,_id:0})
+  
+  let dd=new Date(doc.postedOn).getFullYear()
+  dd=String(dd)
+  console.log(dd);
+  res.send(dd)
+}
 
 async function propertyDisplay(req, res) {
   console.log(req.body);
@@ -38,46 +59,67 @@ async function propertyDisplay(req, res) {
       }
     );
   }
- 
-    
-  
 
   if (doc) doc = await PropertiesHR.find({ ownerId: { $ne: uid } });
   else doc = await PropertiesHR.find();
 
   let arrc = ["Location", "Budget", "Size-bhk", "Property-Type"];
 
+  let locationtrack, costtrack, sizetrack, typetrack;
+
+  if (req.body.location !== "Location") {
+    locationtrack = req.body.location;
+  }
+  if (req.body.bhkSize !== "Size-bhk") {
+    if (String(req.body.bhkSize)[0] == "a") {
+      sizetrack = "size" + 4;
+    } else {
+      sizetrack = "size" + String(req.body.bhkSize)[0];
+    }
+  }
+  if (req.body.propertyType !== "Property-Type") {
+    if(req.body.propertyType=="Office Space")
+      typetrack="OfficeSpace"  
+    else typetrack = req.body.propertyType;
+  }
   doc.forEach((ele) => {
     let valid = true;
     if (req.body.location !== "Location") {
       if (ele.location !== req.body.location) valid = false;
     }
     if (req.body.cost !== "Budget") {
-      
-      if (req.body.cost == "1k - 10k" && ((ele.cost) >= 10000 || ele.cost.endsWith("Lac"))) {
+      if (
+        req.body.cost == "1k - 10k" &&
+        (ele.cost >= 10000 || ele.cost.endsWith("Lac"))
+      ) {
         console.log(ele.cost);
         valid = false;
+        costtrack = "low";
       } else if (
-        req.body.cost == "10k - 50k" && (
-        ele.cost < 10000 ||
-        ele.cost >= 50000 ||
-        ele.cost.endsWith("Lac"))
+        req.body.cost == "10k - 50k" &&
+        (ele.cost < 10000 || ele.cost >= 50000 || ele.cost.endsWith("Lac"))
       ) {
+        costtrack = "middle";
         valid = false;
       } else if (
-        req.body.cost == "50k - 1Lac" && (
-        ele.cost.endsWith("Lac") ||
-        ele.cost < 50000 )
+        req.body.cost == "50k - 1Lac" &&
+        (ele.cost.endsWith("Lac") || ele.cost < 50000)
       ) {
+        costtrack = "high";
         valid = false;
       } else if (req.body.cost == "above 1Lac" && !ele.cost.endsWith("Lac")) {
-        valid = false;z
+        costtrack = "vhigh";
+        valid = false;
       }
     }
     if (req.body.bhkSize !== "Size-bhk") {
-      let val=req.body.bhkSize.substring(0, 1);
-      if (val=="a") {if(ele.bhkSize<="3") valid = false;}
-      else if((ele.bhkSize != val)) valid=false;
+      let val = req.body.bhkSize.substring(0, 1);
+
+      if (val == "a") {
+        if (ele.bhkSize <= "3") valid = false;
+      } else if (ele.bhkSize != val) {
+        valid = false;
+      }
     }
     if (req.body.propertyType !== "Property-Type") {
       if (ele.propertyType !== req.body.propertyType) valid = false;
@@ -94,18 +136,168 @@ async function propertyDisplay(req, res) {
       });
     }
   });
+  if (uid && req.body.search) {
+    console.log("done");
+    let doc = await UsersTrackerHR.findOne({ userId: uid });
+    console.log(doc);
+    let val;
+    if (sizetrack) {
+      val = doc.intrest.bhk.toObject()[sizetrack];
+      sizetrack = "intrest.bhk." + sizetrack;
+
+      // let val=doc.sizetrack
+      console.log(val, sizetrack);
+      val++;
+      console.log(val);
+      await UsersTrackerHR.updateOne(
+        { userId: uid },
+        { $set: { [sizetrack]: Number(val) } }
+      );
+    }
+    if (typetrack) {
+      val = doc.intrest.propertyType.toObject()[typetrack];
+
+      typetrack = "intrest.propertyType." + typetrack;
+
+      // let val=doc.sizetrack
+      console.log(val, typetrack);
+      val++;
+      console.log(val);
+      await UsersTrackerHR.updateOne(
+        { userId: uid },
+        { $set: { [typetrack]: Number(val) } }
+      );
+    }
+
+    if (locationtrack) {
+      let present = false;
+      let arrloc = [...doc.intrest.location];
+      for (let i = 0; i < arrloc.length; i++) {
+        if (arrloc[i]._id == locationtrack) {
+          present = true;
+          val = arrloc[i].count;
+          break;
+        }
+      }
+      console.log(present);
+      if (present) {
+        val++;
+        console.log(val);
+        let docc = await UsersTrackerHR.updateOne(
+          { userId: uid, "intrest.location._id": locationtrack },
+          { $set: { "intrest.location.$.count": val } }
+        );
+        // console.log(docc);
+      } else {
+        let docc = await UsersTrackerHR.updateOne(
+          { userId: uid },
+          { $push: { "intrest.location": { _id: locationtrack, count: 1 } } }
+        );
+      }
+    }
+    if (costtrack) {
+      val = doc.intrest.cost.toObject()[costtrack];
+      val++;
+      console.log(val);
+      costtrack = "intrest.cost." + costtrack;
+      await UsersTrackerHR.updateOne(
+        { userId: uid },
+        { $set: { [costtrack]: Number(val) } }
+      );
+    }
+  }
 
   // console.log(arr);
   res.send(arr);
 }
 async function getPropertyId(req, res) {
   let iid = req.body.id;
-  let doc = await PropertiesHR.find();
-  doc.forEach((ele) => {
-    if (ele.toObject()._id == iid) {
-      res.send(ele.toObject());
+  let doc = await PropertiesHR.findOne({ _id: iid });
+  jwt.verify(
+    req.headers.periperi,
+    process.env.SECRETKEY,
+    async (err, authdata) => {
+      if (err) {
+        // res.send("Ivalid User!");
+        res.send(doc.toObject());
+      } else {
+        console.log("okok");
+        let docc = await UsersTrackerHR.findOne({ userId: authdata.userId });
+        let val1, val2, val3, val4;
+        let locationtrack, typetrack, sizetrack, costtrack;
+        locationtrack = doc.location;
+        let present = false;
+        let arrloc = [...docc.intrest.location];
+        for (let i = 0; i < arrloc.length; i++) {
+          if (arrloc[i]._id == locationtrack) {
+            present = true;
+            val1 = arrloc[i].count;
+            break;
+          }
+        }
+        console.log(present);
+        if(present){
+          val1++;
+          console.log(val1, locationtrack);
+
+        }
+
+        typetrack=doc.propertyType
+        if(typetrack=="Office Space")
+          typetrack="OfficeSpace"
+        val2 = docc.intrest.propertyType.toObject()[typetrack];
+
+        typetrack = "intrest.propertyType." + typetrack;
+  
+        // let val=doc.sizetrack
+        console.log(val2, typetrack);
+        val2++;
+
+        if (String(doc.bhkSize)[0] == "a") {
+          sizetrack = "size" + 4;
+        } else {
+          sizetrack = "size" + String(doc.bhkSize)[0];
+        }
+
+        val3 = docc.intrest.bhk.toObject()[sizetrack];
+        sizetrack = "intrest.bhk." + sizetrack;
+        val3++;
+        console.log(val3, sizetrack);
+        if(!doc.cost.endsWith("Lac") && doc.cost<10000){
+          costtrack="low"
+        }
+        else if( !doc.cost.endsWith("Lac") && doc.cost<50000){
+          costtrack="middle"
+        }
+        else if(!doc.cost.endsWith("Lac")){
+          costtrack="high"
+        }
+        else{
+          costtrack="vhigh"
+        }
+        val4 = docc.intrest.cost.toObject()[costtrack];
+        costtrack = "intrest.cost." + costtrack;
+        val4++;
+        console.log(val4, costtrack);
+        if(present){
+
+          let docc2 = await UsersTrackerHR.updateOne(
+                { userId: authdata.userId,"intrest.location._id": locationtrack},
+                { $set: { "intrest.location.$.count": val1,[sizetrack]: val3, [costtrack]: val4,[typetrack]: val2 } }
+              );
+
+        }
+        else{
+          let docc2 = await UsersTrackerHR.updateOne(
+            { userId: authdata.userId},
+            { $push: { "intrest.location": { _id: locationtrack, count: 1 } } ,$set: {[sizetrack]: val3 ,[costtrack]: val4,[typetrack]: val2 } }
+          );
+        }
+
+      }
     }
-  });
+  );
+  
 }
 
 async function requestedProperties(req, res) {
@@ -142,13 +334,13 @@ async function myProperties(req, res) {
       } else {
         let userdoc = await UsersHR.findOne({ _id: authdata.userId });
         let proparr = userdoc.myProperties;
-        console.log(proparr);
+        // console.log(proparr);
         var arr = [];
         for (let i = 0; i < proparr.length; i++) {
           var obj = await PropertiesHR.findOne({ _id: proparr[i] });
           arr.push(obj);
         }
-        console.log(arr);
+        // console.log(arr);
         res.send(arr);
         // let userdoc = await UsersHR.findOne({ _id: authdata.userId }).populate("myProperties");
         //  var arr = [];
@@ -237,6 +429,47 @@ async function removeRequest(req, res) {
   );
 }
 
+async function updateProperty(req, res) {
+  console.log("ok");
+  upload(req, res, async (err) => {
+    if (err) {
+    } else {
+      let obj = req.body;
+      if (req.file) obj.image = "../images/" + req.file.originalname;
+      // console.log(obj.image);
+      console.log(obj);
+      let obj2 = await PropertiesHR.updateOne(
+        { _id: req.headers.pid },
+        { $set: obj }
+      );
+      await UsersHR.updateMany(
+        { "requestedProperties._id": req.headers.pid },
+        {
+          $set: {
+            "requestedProperties.$.ownerName": obj.ownerName,
+            "requestedProperties.$.propertyName": obj.propertyName,
+            "requestedProperties.$.propertyType": obj.propertyType,
+            "requestedProperties.$.image": obj.image,
+            "requestedProperties.$.location": obj.location,
+            "requestedProperties.$.cost": obj.cost,
+            "requestedProperties.$.securityDeposit": obj.securityDeposit,
+            "requestedProperties.$.facing": obj.facing,
+            "requestedProperties.$.address": obj.address,
+            "requestedProperties.$.balconies": obj.balconies,
+            "requestedProperties.$.bhkSize": obj.bhkSize,
+            "requestedProperties.$.baths": obj.baths,
+            "requestedProperties.$.area": obj.area,
+            "requestedProperties.$.furnishedStatus": obj.furnishedStatus,
+            "requestedProperties.$.status": obj.status,
+            "requestedProperties.$.since": obj.since,
+          },
+        }
+      );
+      res.send({ ok: "ok" });
+    }
+  });
+}
+
 async function addProperty(req, res) {
   console.log(req.body, "add property");
   jwt.verify(
@@ -268,9 +501,8 @@ module.exports = {
   propertyDisplay,
   getPropertyId,
   requestedProperties,
+  updateProperty,
+  checkadd
 };
-    
 
-
-
-  module.exports={addProperty,removeRequest,storeRequest,myProperties,propertyDisplay,getPropertyId,requestedProperties};
+// module.exports={addProperty,removeRequest,storeRequest,myProperties,propertyDisplay,getPropertyId,requestedProperties};

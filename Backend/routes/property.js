@@ -7,7 +7,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require('path');
-const { propertyDisplay, getPropertyId, requestedProperties, myProperties, addProperty, storeRequest, removeRequest} = require("../controllers/property");
+const { checkadd,propertyDisplay, getPropertyId, requestedProperties, myProperties, updateProperty, storeRequest, removeRequest} = require("../controllers/property");
 const { uploadImg} = require("../controllers/multer");
 const app = express();
 app.use(cors());
@@ -26,6 +26,9 @@ router.post("/myProperties",myProperties)
 router.post("/store_request",storeRequest)
 router.post("/remove_request",removeRequest)
 router.post("/uploadfile",uploadImg)
+router.post("/updateProperty",updateProperty)
+router.post("/cc",checkadd)
+
 
 
 

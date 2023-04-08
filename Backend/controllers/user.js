@@ -10,12 +10,15 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+const bcrypt=require("bcrypt")
+const saltRounds=8
 const router=express.Router()
 
 
 const { PropertiesHR } = require("../models/propertyModel");
 const { RegisteredUsersHR } = require("../models/registerModel");
 const { UsersHR } = require("../models/userModel");
+const {UsersTrackerHR}=require("../models/userTrackerModel")
 
 
 async function addNewUser(req, res) {
@@ -24,30 +27,38 @@ async function addNewUser(req, res) {
     console.log("done adduser");
     let email = req.body.email;
     let uname = req.body.uname;
-    let password = req.body.password;
     let mobileno = req.body.mobileno;
-    let obj = await addUser({
-      name: uname,
-      email: email,
-      password: password,
-      mobile: mobileno,
-    });
+    let password //= req.body.password;
+    bcrypt.hash(req.body.password,saltRounds,async (err,hash)=>{
+      if(!err)
+      {
+        
+        let obj = await addUser({
+          name: uname,
+          email: email,
+          password: hash,
+          mobile: mobileno,
+        });
 
-    let data = {
-      name: obj.name,
-      userId: obj.userId,
-      email: obj.email,
-      mobileno: obj.mobile,
-    };
-    jwt.sign(
-      data,
-      process.env.SECRETKEY,
-      { expiresIn: "24h" },
-      (err, token) => {
-        console.log(token);
-        res.send({ token: token });
+        let data = {
+          name: obj.name,
+          userId: obj.userId,
+          email: obj.email,
+          mobileno: obj.mobile,
+        };
+        jwt.sign(
+          data,
+          process.env.SECRETKEY,
+          { expiresIn: "24h" },
+          (err, token) => {
+            console.log(token);
+            res.send({ token: token });
+          }
+        );
       }
-    );
+      else res.send("notok")
+    })
+    
   }
     catch(err){
       res.send(err);
@@ -58,16 +69,23 @@ async function addNewUser(req, res) {
   async function addUser(obj) {
     try{
       let userid = new UsersHR({});
+      let ut= new UsersTrackerHR({userId:userid._id})
+      await ut.save()
     userid = await userid.save();
     console.log(userid);
-    const User = new RegisteredUsersHR({
+    console.log("ok1",obj);
+    let user = new RegisteredUsersHR({
       name: obj.name,
       email: obj.email,
       password: obj.password,
       mobile: obj.mobile,
       userId: userid._id,
     });
-      return await User.save();
+    console.log("ok2");
+      let det=await user.save();
+      console.log(det);
+      console.log("ok3");
+      return det
     }
     catch(err){
       res.send(err);
