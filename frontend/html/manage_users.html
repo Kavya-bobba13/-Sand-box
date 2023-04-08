@@ -153,4 +153,19 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="../js/logoutStorageHandle.js"></script>
 <script src="../js/manage_users.js"></script>
+<script>
+    const logot = document.querySelector("#logout");
+    
+    if (logot) {
+      logot.style.display = "none";
+      logot.addEventListener("click", (e) => {
+        e.preventDefault();
+        localStorage.removeItem("name");
+        if(localStorage.admin)
+        localStorage.removeItem("admin");
+        storagehandle();
+        
+      });
+    }
+    </script>
 </html>

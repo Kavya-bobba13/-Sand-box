@@ -9,15 +9,14 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-const bcrypt=require("bcrypt")
-const saltRounds=8
-const router=express.Router()
-
+const bcrypt = require("bcrypt");
+const saltRounds = 8;
+const router = express.Router();
 
 const { PropertiesHR } = require("../models/propertyModel");
 const { RegisteredUsersHR } = require("../models/registerModel");
 const { UsersHR } = require("../models/userModel");
-const {UsersTrackerHR}=require("../models/userTrackerModel")
+const { UsersTrackerHR } = require("../models/userTrackerModel");
 
 async function addNewUser(req, res) {
   try {
@@ -26,11 +25,9 @@ async function addNewUser(req, res) {
     let email = req.body.email;
     let uname = req.body.uname;
     let mobileno = req.body.mobileno;
-    
-    bcrypt.hash(req.body.password,saltRounds,async (err,hash)=>{
-      if(!err)
-      {
-        
+
+    bcrypt.hash(req.body.password, saltRounds, async (err, hash) => {
+      if (!err) {
         let obj = await addUser({
           name: uname,
           email: email,
@@ -53,25 +50,21 @@ async function addNewUser(req, res) {
             res.send({ token: token });
           }
         );
-      }
-      else res.send("notok")
-    })
-    
+      } else res.send("notok");
+    });
+  } catch (err) {
+    res.send(err);
   }
-    catch(err){
-      res.send(err);
-    }
-  
 }
 
-  async function addUser(obj) {
-    try{
-      let userid = new UsersHR({});
-      let ut= new UsersTrackerHR({userId:userid._id})
-      await ut.save()
+async function addUser(obj) {
+  try {
+    let userid = new UsersHR({});
+    let ut = new UsersTrackerHR({ userId: userid._id });
+    await ut.save();
     userid = await userid.save();
     console.log(userid);
-    console.log("ok1",obj);
+    console.log("ok1", obj);
     let user = new RegisteredUsersHR({
       name: obj.name,
       email: obj.email,
@@ -80,17 +73,14 @@ async function addNewUser(req, res) {
       userId: userid._id,
     });
     console.log("ok2");
-      let det=await user.save();
-      console.log(det);
-      console.log("ok3");
-      return det
-    }
-    catch(err){
-      res.send(err);
-    }
-    
+    let det = await user.save();
+    console.log(det);
+    console.log("ok3");
+    return det;
+  } catch (err) {
+    // res.send(err);
   }
-
+}
 
 async function display(name) {
   try {
@@ -105,47 +95,44 @@ async function display(name) {
 
 async function valid(req, res) {
   try {
+    console.log("ohh");
+    var obj = await display(req.body.email);
     console.log(req.body);
+    console.log(obj[0].password);
     console.log("done pwd enter");
     var email = req.body.email;
-    var pwd = req.body.password;
     var unameb = null;
-    var obj = await display(email);
-    console.log(
-      obj[0].password,
-      "hi",
-      pwd,
-      obj[0].password === pwd,
-      obj[0].email === email
-    );
-    if (obj.length > 0 && obj[0].email === email && obj[0].password === pwd) {
-      unameb = obj[0].name;
-      console.log("uname", unameb);
-    }
+    bcrypt.compare(req.body.password,obj[0].password, async (err, hash) => {
+      console.log(hash);
+      if (err) {
+        console.log(unameb);
+        res.send({ user: "Invalid pwd", token: unameb });
+      } else {
+        
+        unameb=obj[0].name
 
-    if (unameb != null) {
-      console.log(unameb);
-      let data = {
-        name: unameb,
-        userId: obj[0].userId,
-        email: obj[0].email,
-        mobile: obj[0].mobile,
-      };
+          console.log(unameb);
+          let data = {
+            name: unameb,
+            userId: obj[0].userId,
+            email: obj[0].email,
+            mobile: obj[0].mobile,
+          };
 
-      jwt.sign(
-        data,
-        process.env.SECRETKEY,
-        { expiresIn: "24h" },
-        (err, token) => {
-          if (data.userId == "641b1f2da200c7ee16d4afa1") {
-            res.send({ user: "admin", token: token, admin: "yesyes" });
-          } else res.send({ user: "valid pwd", token: token });
-        }
-      );
-    } else {
-      console.log(unameb);
-      res.send({ user: "Invalid pwd", token: unameb });
-    }
+          jwt.sign(
+            data,
+            process.env.SECRETKEY,
+            { expiresIn: "24h" },
+            (err, token) => {
+              if (data.userId == "641b1f2da200c7ee16d4afa1") {
+                res.send({ user: "admin", token: token, admin: "yesyes" });
+              } else res.send({ user: "valid pwd", token: token });
+            }
+          );
+        
+      }
+    });
+
   } catch (err) {
     res.send(err);
   }
@@ -169,7 +156,7 @@ async function register(req, res) {
     console.log(stat);
 
     // return {status:"Invalid"};
-    res.send({ statusValid: stat });
+    res.send({ status: stat });
   } catch (err) {
     res.send(err);
   }
@@ -274,16 +261,14 @@ async function userProfile(req, res) {
         res.send("not authorized");
       } else {
         console.log("user profile load");
-        var doc= await RegisteredUsersHR.findOne({userId:authdata.userId});
+        var doc = await RegisteredUsersHR.findOne({ userId: authdata.userId });
         console.log(doc);
-        if(doc){
+        if (doc) {
           res.send(doc);
+        } else {
+          console.log(authdata, authdata._id);
+          res.send(authdata);
         }
-       else{
-        console.log(authdata,authdata._id);
-        res.send(authdata);
-       }
-        
       }
     });
   } catch (err) {

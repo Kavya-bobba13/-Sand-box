@@ -114,7 +114,7 @@
     obj.ownerName=document.getElementById("ownerName").value;
     console.log("kavya",document.getElementById("propertyName").value); 
     obj.propertyName=document.getElementById("propertyName").value;
-    var e=document.getElementById("type");
+    var e=document.getElementById("propertyType");
     console.log("ele type",e);
     obj.propertyType=e.options[e.selectedIndex].text;
     var loc=document.getElementById("location");

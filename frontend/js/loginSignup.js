@@ -58,8 +58,10 @@ landsbtn.forEach((ele)=>{
 										console.log(resp);
 										if(resp.token){
 											localStorage.setItem("name",resp.token);
+											localStorage.setItem("times",0)
 											if(resp.admin) localStorage.admin=resp.admin
 											storagehandle();
+
 											window.open("/frontend/index.html","_self");
 										}
 										else{
@@ -125,6 +127,7 @@ landsbtn.forEach((ele)=>{
 							console.log(result)
 							if("valid"!=result.status){
 								if(signf.cpassword.value==signf.password.value){
+									console.log(signf.uname.value,signf.email.value,signf.password.value,signf.mobileno.value);
 									$.ajax({
 										type: "POST",
 										url: "http://127.0.0.1:3000/users/addUser",

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!--=== Coding by CodingLab | www.codinglabweb.com === -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!----======== CSS ======== -->
+    <link rel="stylesheet" href="../css/editProperty.css">
+     
+    <!----===== Iconscout CSS ===== -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!--<title>Responsive Regisration Form </title>--> 
+    <style>
+        .eimg{
+            margin-left: 4%;
+
+        }
+        .eimg:hover{
+            cursor: pointer;
+        }
+        .cancel img{
+            margin-left: 98%;
+            width: 4%;
+            height: 4%;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cancel"><img src="../images/cancel.png" alt=""></div>
+        <header>My Property <img src="../images/edit-button.png" class="eimg" alt="" srcset="" width="2.5%" height="4%"></header>
+        
+        <form id="myform">
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Personal Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Prperty Holder Name</label>
+                            <input type="text" name="ownerName" class="name" placeholder="Enter your name" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Property Name</label>
+                            <input type="text" name="propertyName" class="pname" placeholder="Enter name" >
+                        </div>
+
+                      
+
+                        <div class="input-field">
+                            <label>Property Type</label>
+                            <select id="propertyType" name="propertyType">
+                                <option disabled selected>Select Property Type</option>
+                                <option class="typeFlats">Flats</option>
+                                <option class="typeHouse">House</option>
+                                <option class="typePG">PG</option>
+                                <option class="typeOffice">Office Space</option>
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Location</label>
+                            <select id="location" name="location">
+                                <option  disabled selected>City</option>
+                                <option  class="locationHyderabad">Hyderabad</option>
+                                <option  class="locationBengaluru">Bengaluru</option>
+                                <option  class="locationChennai">Chennai</option>
+                                <option  class="locationNoida">Noida</option>
+                                <option  class="locationMumbai">Mumbai</option>
+                                <option  class="locationNostatusa">Nostatusa</option>
+                                <option  class="locationDelhi">Delhi</option>
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label>Availability</label>
+                            <select name="status">
+                                <option disabled selected>Available?</option>
+                                <option class="statusPtrue">true</option>
+                                <option class="statusPfalse">false</option>
+                            </select>
+                        </div>
+                        <div class="input-field"></div>
+                    </div>
+                </div>
+
+                <div class="details ID">
+                    <span class="title">Identity Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Facing</label>
+                            <input name="facing" type="text" class="facing" placeholder="east" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>area(sqft)</label>
+                            <input name="area" type="number" class="area" placeholder="3200" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Furnished Status</label>
+                                <select name="furnishedStatus">
+                                    <option disabled selected>full/not</option>
+                                    <option class="statusfully">fully furnished</option>
+                                    <option class="statusnot">not furnished</option>
+                                </select>
+                            
+                        </div>
+
+                        <div class="input-field">
+                            <label>Cost</label>
+                            <input name="cost" type="text" class="cost" placeholder="2000/ 90000/ 2Lac" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Security Deposit</label>
+                            <input name="securityDeposit" type="text" class="deposit" placeholder="2000/ 90000/ 2Lac" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Maintainence</label>
+                            <input name="maintainence" type="text" class="maintainence" placeholder="2000/ 900" >
+                        </div>
+                    </div>
+
+                    <button class="nextBtn">
+                        <span class="btnText">Next</span>
+                        <i class="uil uil-navigator"></i>
+                    </button>
+                </div> 
+            </div>
+
+            <div class="form second">
+                <div class="details address">
+                    <span class="title">Address Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>BHK</label>
+                            <input name="bhkSize" type="number" class="bhksize" placeholder="1" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Baths</label>
+                            <input name="baths" type="number" class="baths" placeholder="1" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Balconies</label>
+                            <input name="balconies" type="number" class="balconies" placeholder="2" >
+                        </div>
+
+                        <div class="input-field">
+                            <label>Since</label>
+                            <input name="since" type="number" class="since" placeholder="3" >
+                        </div>
+
+                       
+
+                        <div class="input-field">
+                            <label>Address</label>
+                            <input name="address" type="text" class="address" placeholder="Enter Address" >
+                        </div>
+                        <div class="input-field"></div>
+                    </div>
+                </div>
+
+                <div class="details family">
+                    <span class="title">Family Details</span>
+
+                    <div class="fields">
+                        <div class="input-field">
+                            <img class="pimg" src="../images/10_frontal.jpg" alt="">
+                            <input type="hidden" name="image" value="" class="imagesrc">
+                        </div>
+                        <div class="input-field2">
+                            
+                            <input type="file"  name="imgg" id="imgg">
+                        </div>
+                        
+                    </div>
+
+                    <div class="buttons">
+                        <div class="backBtn">
+                            <i class="uil uil-navigator"></i>
+                            <span class="btnText">Back</span>
+                        </div>
+                        
+                        <button class="sumbit" onclick="calling()">
+                            <span class="btnText">Submit</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div> 
+            </div>
+        </form>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="../js/editProperty.js"></script>
+</body>
+</html>

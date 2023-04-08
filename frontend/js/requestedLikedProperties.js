@@ -34,7 +34,7 @@ function loader() {
       if (result) {
         document.querySelector(".container.py-5.requested").innerHTML="";
         result.requestedProperties.forEach((ele) => {
-          
+          console.log(ele.image);
           document.querySelector(".container.py-5.requested").innerHTML += `
                     <div class="row justify-content-center mb-3 propid">
                     <div class="col-md-12 col-xl-10">

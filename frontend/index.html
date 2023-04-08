@@ -12,11 +12,11 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
     
-    <link
+    <!-- <link
       rel="stylesheet"
       href="https://unpkg.com/swiper/swiper-bundle.min.css"
-    />
-    
+    /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.2.0/swiper-bundle.css" integrity="sha512-Lc4aT4sbiVWDTSgqn3lf5kwKECm7rU45AReUS9WI2k4yRPSKtS+kJ9aV1jrxDUIyetNFRYZ3U2gR6WWbtWbIfA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/styles.css" />
     
 </head>
@@ -85,7 +85,7 @@
               <div class="search-wrapper">
                 <div class="search-box">
                   <div class="dropdown">
-                    <div class="default-option val1">
+                    <div class="default-option val1 toggle2">
                       Location
                     </div>
                     <ul class="dropdown-menu menu2">
@@ -446,10 +446,29 @@
     </footer>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.2.0/swiper-bundle.min.js" integrity="sha512-KBCt3sdFOcFtYTgEfE3uJckVpvPr1w8HPugyPgHFE/4iJOwhwj6eSaF27bDJTHRX2jyAFOgV3Ve9vOD97rbjrg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="./js/slider.js"></script>
 
 <script src="./js/logoutStorageHandle.js"></script>
+<script src="js/track.js"></script>
+<script>
+const logot = document.querySelector("#logout");
+
+if (logot) {
+  logot.style.display = "none";
+  logot.addEventListener("click", (e) => {
+    e.preventDefault();
+    sender()
+    localStorage.removeItem("name");
+    if(localStorage.admin)
+    localStorage.removeItem("admin");
+    
+    
+    storagehandle();
+  });
+}
+</script>
 
 
 </html>

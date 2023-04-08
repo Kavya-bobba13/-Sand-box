@@ -21,7 +21,9 @@ function loader() {
                     </div>
                     <div class="col-lg-6 col-md-9">
                       <div class="head-text">
+                      <a href="../html/editProperty.html" class=${result[i]._id }>
                       ${result[i].propertyName},${result[i].beds}BHK ${result[i].propertyType} for rent in ${result[i].address}, ${result[i].location}.
+                      </a>
                       </div>
                       <div class="body-text">
                         <div class="row inside">
@@ -42,7 +44,7 @@ function loader() {
                       </div>
                       
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                       <div class="row inside2">
                         <div class="col-12">
                           <div class="superscript">Property Owner</div>
@@ -55,6 +57,9 @@ function loader() {
                        
                       </div>
                       <button type="button" class="btn btn-primary btn-sm" id=${result[i]._id}>requested Users</button>
+                    </div>
+                    <div class=" col-1 editer">
+                      <img src="../images/pencil.png" class=${result[i]._id}>
                     </div>
                     
                     
@@ -72,6 +77,11 @@ function loader() {
             console.log(e.target.id);
             localStorage.setItem("reqId",e.target.id);
             window.open("../html/manage_users.html","_self");
+          })
+
+          $(".editer img").click((e)=>{
+            localStorage.iid2=$(e.target).attr('class')
+            window.open("../html/editProperty.html","_self");
           })
         },
         error:function (){

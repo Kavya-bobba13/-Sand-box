@@ -61,6 +61,22 @@ $(".dropdown-item").click((e)=>{
 
 })
 
+
+const drp_btn2 = document.querySelector(".toggle2");
+const loc = document.querySelectorAll(".menu2 li");
+const locinp = document.querySelector(".menu2 input");
+if(locinp){
+locinp.addEventListener("keyup", (e) => {
+  loc.forEach((ele) => {
+    if (!ele.innerText.toUpperCase().startsWith(e.target.value.toUpperCase())) {
+      ele.style.display = "none";
+    } else {
+      ele.style.display = "";
+    }
+  });
+});
+}
+
 $(".search-btn").click((e)=>{
   
 	localStorage.search_prop=JSON.stringify({

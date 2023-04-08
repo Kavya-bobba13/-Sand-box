@@ -22,19 +22,24 @@ document.querySelector(".contact").addEventListener("click", () => {
 });
 //console.log(id);
 //var obj=require("./data.json")
-function fill() {
+
+
   $.ajax({
     type: "POST",
     url: "http://127.0.0.1:3000/properties/getid",
     contentType: "application/json",
+    headers:{
+      periperi:localStorage.name
+    },
     data: JSON.stringify({
       id: iid,
     }),
     dataType: "json",
     success: function (resp) {
+      console.log(resp);
       //$('.title').text("  "+resp.cost);
       //$('p').text(resp.bhkSize+"bhk, "+"       "+resp.area +",       "+resp.propertyName+",  "+resp.location);
-
+      // console.log(resp);
       document.querySelector(".pimg").setAttribute("src", resp.image);
 
       document.querySelectorAll(".cost").forEach((ele) => {
@@ -61,8 +66,11 @@ function fill() {
       document.querySelector(".baths").innerHTML += resp.baths;
       document.querySelector(".facing").innerText += resp.facing;
       document.querySelector(".since").innerText += resp.since;
+      document.querySelector(".statusP").innerText +=(resp.status?"Available":"Unavailable") ;
     },
+    error:function(){
+      console.log("error");
+    }
   });
-}
 
-window.onload = fill;
+

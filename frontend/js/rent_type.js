@@ -3,21 +3,27 @@ if (localStorage.getItem("p_type")) {
   localStorage.removeItem("p_type");
   $(".toggle4").text(type);
 }
-
-if(localStorage.search_prop){
-  let obj=JSON.parse(localStorage.search_prop)
-  localStorage.removeItem("search_prop")
-  if(obj.val1!="Location")
+var search_ = false;
+if (localStorage.search_prop) {
+  let obj = JSON.parse(localStorage.search_prop);
+  localStorage.removeItem("search_prop");
+  if (obj.val1 != "Location") {
     $(".toggle2").text(obj.val1);
-  if(obj.val2!="BHK")
-    $(".toggle3").text(obj.val2+"bhk");
-  if(obj.val3!="Type")
-  $(".toggle4").text(obj.val3);
-
+    search_ = true;
+  }
+  if (obj.val2 != "BHK") {
+    $(".toggle3").text(obj.val2 + "bhk");
+    search_ = true;
+  }
+  if (obj.val3 != "Type") {
+    $(".toggle4").text(obj.val3);
+    search_ = true;
+  }
 }
 document.querySelector(".listcont").innerHTML = "";
 
 function filter() {
+  storagehandle();
   $.ajax({
     type: "POST",
     url: "http://127.0.0.1:3000/properties/pdata",
@@ -30,11 +36,12 @@ function filter() {
       location: $(".toggle2").text().trim(" "),
       bhkSize: $(".toggle3").text().trim(" "),
       propertyType: $(".toggle4").text().trim(" "),
+      search:search_
     }),
     dataType: "json",
     success: function (res) {
-      
-      console.log(res+"jhbhkb");
+      search_=false
+      console.log(res + "jhbhkb");
       console.log(document.querySelector(".listcont").innerHTML);
       document.querySelector(".listcont").innerHTML = "";
       // update(res)
@@ -61,15 +68,11 @@ function filter() {
   </div>
   </div>`;
 
-
-
-
-$(".box").on("click", (e) => {
-  console.log(e.target.id);
-  localStorage.setItem("iid", e.target.id);
-  window.open("../html/property_details.html");
-});
-
+        $(".box").on("click", (e) => {
+          console.log(e.target.id);
+          localStorage.setItem("iid", e.target.id);
+          window.open("../html/property_details.html");
+        });
       });
     },
   });
@@ -84,7 +87,7 @@ drp_btn.addEventListener("click", (e) => {
   if (e.target.innerText.trim(" ") != "Budget") {
     e.target.innerText = "Budget";
     document.querySelector(".menu1").style.display = "";
-    filter()
+    filter();
   }
 });
 
@@ -92,7 +95,7 @@ drop_down_bud.forEach((element) => {
   element.addEventListener("click", (e) => {
     drp_btn.innerText = e.target.innerText;
     document.querySelector(".menu1").style.display = "none";
-    filter()
+    filter();
   });
 });
 
@@ -115,7 +118,7 @@ drp_btn2.addEventListener("click", (e) => {
   if (e.target.innerText.trim(" ") != "Location") {
     e.target.innerText = "Location";
     document.querySelector(".menu2").style.display = "";
-    filter()
+    filter();
   }
 });
 
@@ -123,7 +126,7 @@ loc.forEach((ele) => {
   ele.addEventListener("click", (e) => {
     drp_btn2.innerText = e.target.innerText;
     document.querySelector(".menu2").style.display = "none";
-    filter()
+    filter();
   });
 });
 
@@ -135,7 +138,7 @@ drp_btn3.addEventListener("click", (e) => {
   if (e.target.innerText.trim(" ") != "Size-bhk") {
     e.target.innerText = "Size-bhk";
     document.querySelector(".menu3").style.display = "";
-    filter()
+    filter();
   }
 });
 
@@ -143,7 +146,7 @@ drop_down_bud3.forEach((element) => {
   element.addEventListener("click", (e) => {
     document.querySelector(".menu3").style.display = "none";
     drp_btn3.innerText = e.target.innerText;
-    filter()
+    filter();
   });
 });
 
@@ -156,7 +159,7 @@ drp_btn4.addEventListener("click", (e) => {
   if (e.target.innerText.trim(" ") != "Property-Type") {
     e.target.innerText = "Property-Type";
     document.querySelector(".menu4").style.display = "";
-    filter()
+    filter();
   }
 });
 
@@ -164,14 +167,9 @@ drop_down_bud4.forEach((element) => {
   element.addEventListener("click", (e) => {
     document.querySelector(".menu4").style.display = "none";
     drp_btn4.innerText = e.target.innerText;
-    filter()
+    filter();
   });
 });
-
-
-
-
-
 
 const hamburer = document.querySelector(".hamburger");
 const navList = document.querySelector(".nav-list");
@@ -191,5 +189,4 @@ if (hamburer2) {
   });
 }
 
-
-window.onload=filter
+window.onload = filter;

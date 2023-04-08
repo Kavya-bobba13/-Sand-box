@@ -54,10 +54,10 @@ Upload new photo
 <div class="form-group">
 <label class="form-label ">E-mail</label>
 <input type="text" class="form-control mb-1 true" id="email" value="xxx@gmail.com">
-<div class="alert alert-warning mt-3">
+<!-- <div class="alert alert-warning mt-3">
 Your email is not confirmed. Please check your inbox.<br>
 <a href="javascript:void(0)">Resend confirmation</a>
-</div>
+</div> -->
 </div>
 </div>
 </div>
@@ -231,7 +231,7 @@ Your email is not confirmed. Please check your inbox.<br>
 					success: function (result) {
 						console.log("hii",result)
             $('#uname').val(result.name);
-            $("#mobile").val(result.mobileno);
+            $("#mobile").val(result.mobile);
             $("#email").val(result.email);
 
 
