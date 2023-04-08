@@ -15,9 +15,9 @@ const { RegisteredUsersHR } = require("../models/registerModel")
 //app.use(express.urlencoded({ extended: false }));
 
 const s3 = new aws.S3({
-  accessKeyId: "AKIA4G5PNZGZCTAZEUMU",
-  secretAccessKey: "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",
-  region: "ap-south-1",
+  accessKeyId: process.env.S3_ACCESS_KEY,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: process.env.S3_BUCKET_REGION,
 });
 
 const upload = (bucketName) =>
