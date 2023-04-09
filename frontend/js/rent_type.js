@@ -47,19 +47,24 @@ function filter() {
       // update(res)
       res.forEach((ress) => {
         console.log(ress);
-
+        //
+         console.log(ress.statusl); 
         document.querySelector(".listcont").innerHTML += `
-  <div class="box" id=${ress.id}>
+  <div class="box" >
+ 
   <div class="top">
     <div class="overlay">
       <img src=${ress.img} alt="" />
+     
     </div>
     <div class="pos">
       <span>${ress.location}</span>
       <span class="bhk">${ress.bhk}BHK</span>
+       
     </div>
+    <div class="like like-no" ><img src="../images/${ress.statusl}.svg" id=${ress.id+" hii"}></div>
   </div>
-  <div class="bottom">
+  <div class="bottom" id=${ress.id}>
     <p>${ress.property_name}</p>
     <div>
       <span>${ress.cost}</span>
@@ -68,17 +73,51 @@ function filter() {
   </div>
   </div>`;
 
-        $(".box").on("click", (e) => {
+        $(".bottom").on("click", (e) => {
           console.log(e.target.id);
           localStorage.setItem("iid", e.target.id);
           window.open("../html/property_details.html");
         });
+
+        $(".like").on("click",(event) => {
+          event.target.classList.toggle("like-no");
+          event.target.classList.toggle("like-yes");
+          if (event.target.classList.contains("like-yes")) {
+            event.target.setAttribute("src","../images/like.svg")
+            console.log("✅💾 Saving Favorite...");
+            likeMe(event.target.id,"like");
+            
+          } else {
+            event.target.setAttribute("src","../images/dislike.svg")
+            console.log("❌ Removing Favorite...");
+            likeMe(event.target.id,"dislike");
+            // getFaveData(event.target);
+          }
+        })
       });
     },
   });
 }
 // RENT_FLAT...
+function likeMe(id,statusl){
+  $.ajax({
+    type: "POST",
+    url: "http://127.0.0.1:3000/properties/liked",
+    contentType: "application/json",
+    headers: {
+      periperi: localStorage.name,
+    },
+    data: JSON.stringify({
+      id:id,
+      statusl:statusl
+    }),
+    dataType: "json",
+    success: function (res) {
 
+    }
+  })
+  // getFaveD
+}
 const drop_down_bud = document.querySelectorAll(".dropdown-item");
 // budget filter
 

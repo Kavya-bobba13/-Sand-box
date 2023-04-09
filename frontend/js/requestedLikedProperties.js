@@ -119,7 +119,7 @@ function loader() {
                           </div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-xl-6">
-                          <h5>${ele.type} : ${ele.propertyName}</h5>
+                          <h5>${ele.propertyType} : ${ele.propertyName}</h5>
                           <div class="d-flex flex-row">
                             <span>Availability: ${ele.status}</span>
                           </div>
@@ -151,7 +151,7 @@ function loader() {
                             <button class="btn btn-primary btn-sm detbtn probtn2" type="button"  id=${
                               ele._id + "21"
                             }>Details</button>
-                            <button class="btn btn-outline-primary btn-sm probtn2" type="button"  id=${
+                            <button class="btn btn-outline-primary btn-sm detbtn mt-2 probtn2" type="button"  id=${
                               ele._id + "22"
                             }>Clear Request</button>
                           </div>
@@ -163,15 +163,57 @@ function loader() {
               </div>
                 `;
         });
-
+        //requested properties
         $(".probtn1").on("click", (e) => {
           
           if (e.target.innerText == "Details") {
+            console.log(e.target.id);
+            let iid = String(e.target.id).substring(
+              0,
+              String(e.target.id).length - 2
+            );
+              console.log(iid,"iid");
+              localStorage.setItem("iid", iid);
+              window.open("../html/property_details.html");
+          
           } else {
             $.ajax({
 
               type: "POST",
               url: "http://127.0.0.1:3000/properties/remove_request",
+              contentType: "application/json",
+              headers: {
+                periperi: localStorage.name,
+              },
+              data: JSON.stringify({
+                iid:e.target.id
+              }),
+              dataType: "json",
+              success: function (result) {
+                loader()
+              }
+
+            })
+            
+          }
+        });
+        //liked properties
+        $(".probtn2").on("click", (e) => {
+          
+          if (e.target.innerText == "Details") {
+            console.log(e.target.id);
+            let iid = String(e.target.id).substring(
+              0,
+              String(e.target.id).length - 2
+            );
+              console.log(iid,"iid");
+              localStorage.setItem("iid", iid);
+              window.open("../html/property_details.html");
+          } else {
+            $.ajax({
+
+              type: "POST",
+              url: "http://127.0.0.1:3000/properties/remove_like",
               contentType: "application/json",
               headers: {
                 periperi: localStorage.name,

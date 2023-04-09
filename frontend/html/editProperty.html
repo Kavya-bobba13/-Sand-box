@@ -35,7 +35,7 @@
         <div class="cancel"><img src="../images/cancel.png" alt=""></div>
         <header>My Property <img src="../images/edit-button.png" class="eimg" alt="" srcset="" width="2.5%" height="4%"></header>
         
-        <form id="myform">
+        <form id="myform" name="form1" action="http://127.0.0.1:3000/properties/imgChange"enctype="multipart/form-data" method="post">
             <div class="form first">
                 <div class="details personal">
                     <span class="title">Personal Details</span>
@@ -126,7 +126,7 @@
 
                         <div class="input-field">
                             <label>Maintainence</label>
-                            <input name="maintainence" type="text" class="maintainence" placeholder="2000/ 900" >
+                            <input name="maintainence" type="text" class="maintainence" placeholder="1000" value="1000" >
                         </div>
                     </div>
 
@@ -182,7 +182,10 @@
                         </div>
                         <div class="input-field2">
                             
-                            <input type="file"  name="imgg" id="imgg">
+                                <input type="file"  name="myFile" id="imgg">
+                                <input type="hidden" id="key" name="key">
+                                <input type="hidden" id="iid2" name="iid2">
+                                <button type="button" name="submitImg" class="btn btn-light img">Upload</button>
                         </div>
                         
                     </div>
@@ -193,7 +196,7 @@
                             <span class="btnText">Back</span>
                         </div>
                         
-                        <button class="sumbit" onclick="calling()">
+                        <button type="submit" class="sumbit" onclick="calling()">
                             <span class="btnText">Submit</span>
                             <i class="uil uil-navigator"></i>
                         </button>

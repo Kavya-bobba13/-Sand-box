@@ -22,21 +22,21 @@ function loader() {
                     <div class="col-lg-6 col-md-9">
                       <div class="head-text">
                       <a href="../html/editProperty.html" class=${result[i]._id }>
-                      ${result[i].propertyName},${result[i].beds}BHK ${result[i].propertyType} for rent in ${result[i].address}, ${result[i].location}.
+                      ${result[i].propertyName},${result[i].bhkSize}BHK ${result[i].propertyType} for rent in ${result[i].address}, ${result[i].location}.
                       </a>
                       </div>
                       <div class="body-text">
                         <div class="row inside">
                           <div class="col-4">
-                            <div class="superscript">furnishedStatus</div>
+                            <div class="superscript">FurnishedStatus</div>
                             <div class="mainscript">${result[i].furnishedStatus}</div>
                           </div>
                           <div class="col-4">
-                            <div class="superscript">securityDeposit</div>
+                            <div class="superscript">SecurityDeposit</div>
                             <div class="mainscript">${result[i].securityDeposit}</div>
                           </div>
                           <div class="col-4">
-                            <div class="superscript">since</div>
+                            <div class="superscript">Since</div>
                             <div class="mainscript">${result[i].since}</div>
                           </div>
                           
@@ -56,10 +56,10 @@ function loader() {
                         </div>
                        
                       </div>
-                      <button type="button" class="btn btn-primary btn-sm" id=${result[i]._id}>requested Users</button>
+                      <button type="button" class="btn btn-primary btn-sm" id=${result[i]._id}>Requested Users</button>
                     </div>
                     <div class=" col-1 editer">
-                      <img src="../images/pencil.png" class=${result[i]._id}>
+                      <img src="../images/pencil.png"  id=${result[i]._id} class=${result[i]._id}>
                     </div>
                     
                     
