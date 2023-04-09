@@ -191,10 +191,10 @@ function calcRoute() {
                   //Get distance and time
                   const output = document.querySelector('#output');
                   let x=result.routes[0].legs[0].distance.text.split(" ");
-                  let y=Number(x[0]);
+                  let y=Number(x[0])*1.6;
                   console.log(x,y );
                   console.log(result.routes[0].legs[0].duration.text );
-                  output.innerHTML = "<div class='alert-info'>From: " +document.querySelector(".from").value + ".<br />To: " +localStorage.getItem("addr") + ".<br /> Driving distance: " + (y*1.6).toPrecision(2) + ".<br /> TravelTime: " + result.routes[0].legs[0].duration.text + ".</div>";
+                  output.innerHTML = "<div class='alert-info'>From: " +document.querySelector(".from").value + ".<br />To: " +localStorage.getItem("addr") + ".<br /> Driving distance: " + x[0] + "miles. <br /> TravelTime: " + result.routes[0].legs[0].duration.text + ".</div>";
 
                   //display route
                   directionsDisplay.setDirections(result);

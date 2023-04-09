@@ -28,15 +28,15 @@ function loader() {
                       <div class="body-text">
                         <div class="row inside">
                           <div class="col-4">
-                            <div class="superscript">furnishedStatus</div>
+                            <div class="superscript">FurnishedStatus</div>
                             <div class="mainscript">${result[i].furnishedStatus}</div>
                           </div>
                           <div class="col-4">
-                            <div class="superscript">securityDeposit</div>
+                            <div class="superscript">SecurityDeposit</div>
                             <div class="mainscript">${result[i].securityDeposit}</div>
                           </div>
                           <div class="col-4">
-                            <div class="superscript">since</div>
+                            <div class="superscript">Since</div>
                             <div class="mainscript">${result[i].since}</div>
                           </div>
                           
@@ -56,10 +56,10 @@ function loader() {
                         </div>
                        
                       </div>
-                      <button type="button" class="btn btn-primary btn-sm" id=${result[i]._id}>requested Users</button>
+                      <button type="button" class="btn btn-primary btn-sm" id=${result[i]._id}>Requested Users</button>
                     </div>
                     <div class=" col-1 editer">
-                      <img src="../images/pencil.png" class=${result[i]._id}>
+                      <img src="../images/pencil.png"  id=${result[i]._id} class=${result[i]._id}>
                     </div>
                     
                     

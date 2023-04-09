@@ -27,6 +27,7 @@ async function addNewUser(req, res) {
     let mobileno = req.body.mobileno;
 
     bcrypt.hash(req.body.password, saltRounds, async (err, hash) => {
+      console.log(hash);
       if (!err) {
         let obj = await addUser({
           name: uname,
@@ -34,22 +35,24 @@ async function addNewUser(req, res) {
           password: hash,
           mobile: mobileno,
         });
-
-        let data = {
-          name: obj.name,
-          userId: obj.userId,
-          email: obj.email,
-          mobileno: obj.mobile,
-        };
-        jwt.sign(
-          data,
-          process.env.SECRETKEY,
-          { expiresIn: "24h" },
-          (err, token) => {
-            console.log(token);
-            res.send({ token: token });
-          }
-        );
+        if(obj){
+          let data = {
+            name: uname,
+            userId: obj.userId,
+            email: obj.email,
+            mobileno: obj.mobile,
+          };
+          jwt.sign(
+            data,
+            process.env.SECRETKEY,
+            { expiresIn: "24h" },
+            (err, token) => {
+              console.log(token);
+              res.send({ token: token });
+            }
+          );
+        }
+        
       } else res.send("notok");
     });
   } catch (err) {

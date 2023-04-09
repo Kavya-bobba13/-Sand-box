@@ -46,6 +46,39 @@ const upload = (bucketName) =>
 
 const uploadSingle = upload("houserentals-properties-upload").single('myFile');
 
+function imageChange(req,res){
+  console.log(req.form1);
+  console.log("property image change kavya");
+
+  uploadSingle(req,res,(err) => {
+    if(err){
+      console.log(req.file,"property image change err");
+      console.log(err);
+        res.send(err)
+    }
+    else{
+      var key=req.body.key;
+      var iid=req.body.iid2
+        jwt.verify(key,
+          process.env.SECRETKEY,
+          async (err,authdata)=>{
+            if(err){
+              console.log(err,"property image change err");
+            }
+            else{
+              if(req.file){
+                console.log(req.file);
+             await PropertiesHR.updateOne({_id:iid},{$set:{image:req.file.location}})
+              }
+              
+             //res.send({})
+            }
+          })
+        
+    }
+})
+}
+
 function profilePic(req,res){
   console.log(req.form);
   console.log("profile upload kavya");
@@ -108,6 +141,7 @@ function uploadImg(req,res){
         obj.since=Number(req.body.since);
         obj.baths=Number(req.body.baths);
         obj.mobile=Number(req.body.mobile);
+        obj.bhkSize=obj.beds;
         obj.balconies=Number(req.body.balconies);
         obj.bhkSize=obj.beds
        // obj.image="../images/"+req.file.originalname;
@@ -144,4 +178,4 @@ function uploadImg(req,res){
 }
  
 
-module.exports={uploadImg,profilePic};
+module.exports={uploadImg,profilePic,imageChange};

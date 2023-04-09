@@ -411,6 +411,21 @@ Navigation
 .rent .box .pos span:last-child {
   background-color: #e0203b;
 }
+.rent .box  .like{
+    width: 48x;
+    height: 48px;
+     position: absolute; 
+    top: 2%;
+    right: 2%;
+    z-index: 20;
+}
+/* .rent .box .like-no{
+  background: url(../images/dislike.svg) no-repeat;
+}
+.rent .box  .like-yes{
+  background: url(../images/like.svg) no-repeat;
+} */
+
 
 .rent .box .bottom {
   padding: 1.5rem;
@@ -443,6 +458,7 @@ Navigation
 .rent .box .bottom div i {
   font-size: 2.5rem;
 }
+
 
 @media (max-width: 768px) {
   .title h1 {
@@ -676,7 +692,7 @@ input:focus{
 }
 
 
-.top,.bottom{
+.bottom p,.bottom div{
   pointer-events: none;
 }
 

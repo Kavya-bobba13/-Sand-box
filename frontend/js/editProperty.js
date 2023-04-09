@@ -1,3 +1,10 @@
+
+const iid2 = localStorage.iid2;
+console.log("hey", iid2);
+document.getElementById("iid2").value=iid2;
+document.querySelector("#key").value=localStorage.name;
+console.log("propid updated");
+
 const form = document.querySelector("form"),
         nextBtn = form.querySelector(".nextBtn"),
         backBtn = form.querySelector(".backBtn"),
@@ -28,9 +35,6 @@ document.querySelector(".eimg").addEventListener("click",(e)=>{
 $(".cancel").click((e)=>{
     window.open("../html/myProperties.html","_self")
 })
-const iid2 = localStorage.iid2;
-console.log("hey", iid2);
-
 
 //console.log(id);
 //var obj=require("./data.json")
@@ -62,6 +66,7 @@ function fill() {
       // ar.bid[0].name;
       //ar.bid[0].img
       document.querySelector(".address").value = resp.address;
+     // document.querySelector(".maintainence").value=resp.maintainence
       //ar.bid[0].loc;
       document.querySelector(".deposit").value = resp.securityDeposit;
       //ar.bid[0].cost;

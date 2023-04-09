@@ -135,6 +135,13 @@ async function propertyDisplay(req, res) {
     }
 
     if (valid) {
+      let kav="dislike";
+      let ele2=ele.likedUsers;
+      console.log(uid," x " ,ele2);
+      if(ele2.includes(new mongoose.Types.ObjectId(uid))){
+        console.log(ele2,"ele2");
+        kav="like";
+      }
       arr.push({
         id: ele._id,
         img: ele.image,
@@ -142,6 +149,7 @@ async function propertyDisplay(req, res) {
         location: ele.location,
         property_name: ele.propertyName,
         cost: ele.cost,
+        statusl:kav
       });
     }
   });
@@ -544,7 +552,7 @@ async function storeRequest(req, res) {
 }
 
 async function removeRequest(req, res) {
-  console.log("entered");
+  console.log("entered remove requests");
   jwt.verify(
     req.headers.periperi,
     process.env.SECRETKEY,
@@ -583,6 +591,46 @@ async function removeRequest(req, res) {
     }
   );
 }
+async function removeLike(req, res) {
+  console.log("entered remove likes");
+  jwt.verify(
+    req.headers.periperi,
+    process.env.SECRETKEY,
+    async (err, authdata) => {
+      if (err) {
+        console.log("not ok");
+        res.send(null);
+      } else {
+        let iid = String(req.body.iid).substring(
+          0,
+          String(req.body.iid).length - 2
+        );
+
+        console.log(iid);
+
+        let obj = await UsersHR.findOne({ _id: authdata.userId });
+        obj = obj.toObject();
+        obj.likedProperties.forEach((ele, ind) => {
+          if (ele._id == iid) {
+            obj.likedProperties.splice(ind, 1);
+            return;
+          }
+        });
+
+        await UsersHR.updateOne(
+          { _id: authdata.userId },
+          { $set: { likedProperties: obj.likedProperties } }
+        );
+        await PropertiesHR.updateOne(
+          { _id: iid },
+          { $pull: { likedUsers: authdata.userId } }
+        );
+
+        res.send({});
+      }
+    }
+  );
+}
 
 async function updateProperty(req, res) {
   console.log("ok");
@@ -590,9 +638,10 @@ async function updateProperty(req, res) {
     if (err) {
     } else {
       let obj = req.body;
-      if (req.file) obj.image = "../images/" + req.file.originalname;
+     // if (req.file) obj.image = "../images/" + req.file.originalname;
       // console.log(obj.image);
       console.log(obj);
+      console.log(obj.address,"address");
       let obj2 = await PropertiesHR.updateOne(
         { _id: req.headers.pid },
         { $set: obj }
@@ -610,6 +659,7 @@ async function updateProperty(req, res) {
             "requestedProperties.$.securityDeposit": obj.securityDeposit,
             "requestedProperties.$.facing": obj.facing,
             "requestedProperties.$.address": obj.address,
+           
             "requestedProperties.$.balconies": obj.balconies,
             "requestedProperties.$.bhkSize": obj.bhkSize,
             "requestedProperties.$.baths": obj.baths,
@@ -646,6 +696,59 @@ async function addProperty(req, res) {
       }
     }
   );
+}
+function liked(req,res){
+  console.log(req.body, "add liked property");
+  jwt.verify(
+    req.headers.periperi,
+    process.env.SECRETKEY,
+    async (err, authdata) => {
+      if (err) {
+        res.send(null);
+      } else {
+        statusl=req.body.statusl;
+        var arr=req.body.id.split(" ");
+        console.log(arr[0]);
+        let propobj = await PropertiesHR.findOne({ _id: arr[0] });
+        if(statusl=="like"){
+          
+          if(!propobj.likedUsers.includes(authdata.userId)){
+            await  PropertiesHR.updateOne({_id:arr[0]},{$push: { likedUsers: authdata.userId}})
+            let x= await PropertiesHR.findOne({ _id: arr[0] });
+            await UsersHR.updateOne({_id:authdata.userId},{$push:{likedProperties:x}})
+
+
+          }
+        }
+        else{
+          if(propobj.likedUsers.includes(authdata.userId)){
+            // await  PropertiesHR.updateOne({_id:arr[0]},{$pull: { likedUsers: authdata.userId}})
+            // let x= await PropertiesHR.findOne({ _id: arr[0] });
+            // await UsersHR.updateOne({_id:authdata.userId},{$pull:{likedProperties:x}})
+            let obj = await UsersHR.findOne({ _id: authdata.userId });
+              obj = obj.toObject();
+              obj.likedProperties.forEach((ele, ind) => {
+                if (ele._id == arr[0]) {
+                  obj.likedProperties.splice(ind, 1);
+                  return;
+                }
+              });
+
+              await UsersHR.updateOne(
+                { _id: authdata.userId },
+                { $set: { likedProperties: obj.likedProperties } }
+              );
+              await PropertiesHR.updateOne(
+                { _id: arr[0]},
+                { $pull: { likedUsers: authdata.userId } }
+              );
+
+          }
+        }
+      }
+    }
+  )
+
 }
 
 
@@ -731,6 +834,8 @@ module.exports = {
   getPropertyId,
   requestedProperties,
   updateProperty,
+  locationProperties,
   checkadd,
-  locationProperties
+  liked,
+  removeLike
 };
