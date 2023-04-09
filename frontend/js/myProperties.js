@@ -22,7 +22,7 @@ function loader() {
                     <div class="col-lg-6 col-md-9">
                       <div class="head-text">
                       <a href="../html/editProperty.html" class=${result[i]._id }>
-                      ${result[i].propertyName},${result[i].beds}BHK ${result[i].propertyType} for rent in ${result[i].address}, ${result[i].location}.
+                      ${result[i].propertyName},${result[i].bhkSize}BHK ${result[i].propertyType} for rent in ${result[i].address}, ${result[i].location}.
                       </a>
                       </div>
                       <div class="body-text">

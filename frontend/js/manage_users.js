@@ -13,11 +13,9 @@ $.ajax({
     result.forEach((ele) => {
       document.querySelector("tbody").innerHTML += `
         <tr>
-        <th scope="row" class="ps-4">
-            <div class="form-check font-size-16"><input type="checkbox" class="form-check-input" id="contacusercheck2" /><label class="form-check-label" for="contacusercheck2"></label></div>
-        </th>
-        <td><img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="avatar-sm rounded-circle me-2" /><a href="#" class="text-body">${ele.name}</a></td>
-        <td><span class="badge badge-soft-info mb-0">-</span></td>
+        
+        <td><img src=${ele.image} alt="" class="avatar-sm rounded-circle me-2" /><a href="#" class="text-body">${ele.name}</a></td>
+        <td><span class="badge badge-soft-${ele.userType=="Active"?"success":"info"} mb-0">${ele.userType}</span></td>
         <td>${ele.email}</td>
         <td>${ele.mobile}</td>
         <td>
@@ -37,6 +35,9 @@ $.ajax({
             </ul>
         </td>
     </tr>`;
+
     });
+
+
   }
 });

@@ -153,4 +153,13 @@ async function dataDisplay(req, res) {
   res.send(obj);
 }
 
-module.exports = { adminDashboard, dataDisplay };
+async function removeuser(req,res){
+  res.send("ok")
+}
+
+async function removeproperty(req,res){
+
+  res.send("ok")
+}
+
+module.exports = { adminDashboard, dataDisplay,removeuser,removeproperty};

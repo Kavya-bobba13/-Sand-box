@@ -147,8 +147,9 @@
 
           console.log(result);
 
-          
-          window.open("../index.html","_self");
+          if(result=="okdone")
+            window.open("../html/property_added_successfully.html","_self");
+          else window.open("../html/myProperties.html","_self");
       }
     })
     

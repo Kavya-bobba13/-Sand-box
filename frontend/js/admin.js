@@ -1,96 +1,96 @@
-// Executes when document is loaded
-document.addEventListener("DOMContentLoaded", (ev) => {
-  // Recent Orders Data
-  document.getElementById("recent-orders--table").appendChild(buildTableBody());
+// // Executes when document is loaded
+// document.addEventListener("DOMContentLoaded", (ev) => {
+//   // Recent Orders Data
+//   document.getElementById("recent-orders--table").appendChild(buildTableBody());
 
-  // Updates Data
-  document
-    .getElementsByClassName("recent-updates")
-    .item(0)
-    .appendChild(buildUpdatesList());
+//   // Updates Data
+//   document
+//     .getElementsByClassName("recent-updates")
+//     .item(0)
+//     .appendChild(buildUpdatesList());
 
-  // Sales Analytics
-  const salesAnalytics = document.getElementById("analytics");
-  buildSalesAnalytics(salesAnalytics);
-});
+//   // Sales Analytics
+//   const salesAnalytics = document.getElementById("analytics");
+//   buildSalesAnalytics(salesAnalytics);
+// });
 
 // Document Builder
-const buildTableBody = () => {
-  var recentOrderData = RECENT_ORDER_DATA;
+// const buildTableBody = () => {
+//   var recentOrderData = RECENT_ORDER_DATA;
 
-  var tbody = document.createElement("tbody");
+//   var tbody = document.createElement("tbody");
 
-  let bodyContent = "";
-  for (let row of recentOrderData) {
-    bodyContent += `
-      <tr>
-        <td>${row.productName}</td>
-        <td>${row.productNumber}</td>
-        <td>${row.payment}</td>
-        <td class="${row.statusColor}">${row.status}</td>
-        <td class="danger">Details</td>
-      </tr>
-    `;
-  }
+//   let bodyContent = "";
+//   for (let row of recentOrderData) {
+//     bodyContent += `
+//       <tr>
+//         <td>${row.productName}</td>
+//         <td>${row.productNumber}</td>
+//         <td>${row.payment}</td>
+//         <td class="${row.statusColor}">${row.status}</td>
+//         <td class="danger">Details</td>
+//       </tr>
+//     `;
+//   }
 
-  tbody.innerHTML = bodyContent;
+//   tbody.innerHTML = bodyContent;
 
-  return tbody;
-};
+//   return tbody;
+// };
 
-const buildUpdatesList = () => {
-  const updateData = UPDATE_DATA;
+// const buildUpdatesList = () => {
+//   const updateData = UPDATE_DATA;
 
-  const div = document.createElement("div");
-  div.classList.add("updates");
+//   const div = document.createElement("div");
+//   div.classList.add("updates");
 
-  let updateContent = "";
-  for (const update of updateData) {
-    updateContent += `
-      <div class="update">
-        <div class="profile-photo">
-          <img src="${update.imgSrc}" />
-        </div>
-        <div class="message">
-          <p><b>${update.profileName}</b> ${update.message}</p>
-          <small class="text-muted">${update.updatedTime}</small>
-        </div>
-      </div>
-    `;
-  }
+//   let updateContent = "";
+//   for (const update of updateData) {
+//     updateContent += `
+//       <div class="update">
+//         <div class="profile-photo">
+//           <img src="${update.imgSrc}" />
+//         </div>
+//         <div class="message">
+//           <p><b>${update.profileName}</b> ${update.message}</p>
+//           <small class="text-muted">${update.updatedTime}</small>
+//         </div>
+//       </div>
+//     `;
+//   }
 
-  div.innerHTML = updateContent;
+//   div.innerHTML = updateContent;
 
-  return div;
-};
+//   return div;
+// };
 
-const buildSalesAnalytics = (element) => {
-  const salesAnalyticsData = SALES_ANALYTICS_DATA;
+// const buildSalesAnalytics = (element) => {
+//   const salesAnalyticsData = SALES_ANALYTICS_DATA;
 
-  for (const analytic of salesAnalyticsData) {
-    const item = document.createElement("div");
-    item.classList.add("item");
-    item.classList.add(analytic.itemClass);
+//   for (const analytic of salesAnalyticsData) {
+//     const item = document.createElement("div");
+//     item.classList.add("item");
+//     item.classList.add(analytic.itemClass);
 
-    const itemHtml = `
-      <div class="icon">
-        <span class="material-icons-sharp"> ${analytic.icon} </span>
-      </div>
-      <div class="right">
-        <div class="info">
-          <h3>${analytic.title}</h3>
-          <small class="text-muted"> Last 24 Hours </small>
-        </div>
-        <h5 class="${analytic.colorClass}">${analytic.percentage}%</h5>
-        <h3>${analytic.sales}</h3>
-      </div>
-    `;
+//     const itemHtml = `
+//       <div class="icon">
+//         <span class="material-icons-sharp"> ${analytic.icon} </span>
+//       </div>
+//       <div class="right">
+//         <div class="info">
+//           <h3>${analytic.title}</h3>
+//           <small class="text-muted"> Last 24 Hours </small>
+//         </div>
+//         <h5 class="${analytic.colorClass}">${analytic.percentage}%</h5>
+//         <h3>${analytic.sales}</h3>
+//       </div>
+//     `;
 
-    item.innerHTML = itemHtml;
+//     item.innerHTML = itemHtml;
 
-    element.appendChild(item);
-  }
-};
+//     element.appendChild(item);
+//   }
+// };
 
 // Document operation functions
 const sideMenu = document.querySelector("aside");
@@ -186,7 +186,7 @@ $.ajax({
     let bodyContent = "";
     for (let row of resp.hotusers) {
       bodyContent += `
-    <tr>
+    <tr class="huser">
       <td>${row.name}</td>
       <td>${row.email}</td>
       <td>${row.mobile}</td>
@@ -208,13 +208,13 @@ $.ajax({
     bodyContent = "";
     for (let row of resp.udata) {
       bodyContent += `
-    <tr>
+    <tr class="user">
       <td>${row.name}</td>
       <td>${row.email}</td>
       <td>${row.mobile}</td>
       <td>${row.rp}</td>
       <td>${row.mp}</td>
-      <td class="danger">Remove</td>
+      <td class="danger removeuser" id=${row.userId}>Remove</td>
     </tr>
   `;
     }
@@ -229,7 +229,7 @@ $.ajax({
     bodyContent = "";
     for (let row of resp.pdata) {
       bodyContent += `
-    <tr>
+    <tr class="propertyy">
       <td>${row.propertyName}</td>
       <td>${row.propertyType}</td>
       <td>${row.ownerName}</td>
@@ -238,7 +238,7 @@ $.ajax({
       <td>${row.location}</td>
       <td>${row.RequestedUsers ? row.RequestedUsers : 0}</td>
       <td>${row.likedUsers ? row.likedUsers : 0}</td>
-      <td class="danger">Remove</td>
+      <td class="danger removeproperty" id=${row._id}>Remove</td>
     </tr>
   `;
     }
@@ -455,54 +455,97 @@ $.ajax({
         }
       },
     });
+
+    document.querySelector(".removeuser").addEventListener("click",(e)=>{
+      if(confirm("Are you sure u want to remove user?")){
+        $.ajax({
+          type: "POST",
+          url: "http://127.0.0.1:3000/admin/removeuser",
+          contentType: "application/json",
+          dataType: "json",
+          success: function (resp) {
+              console.log(resp);
+          }
+        })
+
+
+      }
+      
+
+    })
+
+    document.querySelector(".removeproperty").addEventListener("click",(e)=>{
+
+      if(confirm("Are you sure u want to remove property?")){
+        $.ajax({
+          type: "POST",
+          url: "http://127.0.0.1:3000/admin/removeproperty",
+          contentType: "application/json",
+          dataType: "json",
+          success: function (resp) {
+              console.log(resp);
+          }
+        })
+      }
+        
+    })
+
+
   },
 });
 
-// //ajax call prop
+function search_hotuser() {
+  let input = document.querySelector('.searchbarhuser').value
+  input=input.toLowerCase();
+  let x = document.getElementsByClassName('huser');
+    
+  for (i = 0; i < x.length; i++) { 
+      if (x[i].children[0].innerHTML.toLowerCase().includes(input) || x[i].children[1].innerHTML.toLowerCase().includes(input)) {
+        x[i].style.display="";
+        
+      }
+      else {
+          
+          x[i].style.display="none";                 
+        
+      }
+  }
+}
 
-// {let tbody = document.createElement("tbody");
 
-// let bodyContent = "";
-// for (let row of maindata.pdata) {
-//   bodyContent += `
-//     <tr>
-//       <td>${row.propertyName}</td>
-//       <td>${row.propertyType}</td>
-//       <td>${row.ownerName}</td>
-//       <td>${row.cost}</td>
-//       <td>${row.bhkSize}</td>
-//       <td>${row.location}</td>
-//       <td>${row.RequestedUsers?row.RequestedUsers.length:0}</td>
-//       <td>${row.likedUsers?row.likedUsers.length:0}</td>
-//       <td class="danger">Remove</td>
-//     </tr>
-//   `;
-// }
+function search_user() {
+  let input = document.querySelector('.searchbaruser').value
+  input=input.toLowerCase();
+  let x = document.getElementsByClassName('user');
+    
+  for (i = 0; i < x.length; i++) { 
+      if (x[i].children[0].innerHTML.toLowerCase().includes(input) || x[i].children[1].innerHTML.toLowerCase().includes(input)) {
+        x[i].style.display="";
+        
+      }
+      else {
+          
+          x[i].style.display="none";                 
+        
+      }
+  }
+}
 
-// tbody.innerHTML = bodyContent;
 
-// document.getElementById("recent-orders--table").appendChild(tbody)
-// }
-// //ajax
-
-// {
-//   let tbody = document.createElement("tbody");
-
-// let bodyContent = "";
-// for (let row of maindata.udata) {
-//   bodyContent += `
-//     <tr>
-//       <td>${row.name}</td>
-//       <td>${row.email}</td>
-//       <td>${row.mobile}</td>
-//       <td>${row.requestedProperties}</td>
-//       <td>${row.myProperties}</td>
-//       <td class="danger">Remove</td>
-//     </tr>
-//   `;
-// }
-
-// tbody.innerHTML = bodyContent;
-
-// document.getElementById("recent-orders--table").appendChild(tbody)
-// }
+function search_property() {
+  let input = document.querySelector('.searchbarproperty').value
+  input=input.toLowerCase();
+  let x = document.getElementsByClassName('propertyy');
+    
+  for (i = 0; i < x.length; i++) { 
+      if (x[i].children[0].innerHTML.toLowerCase().includes(input) || x[i].children[2].innerHTML.toLowerCase().includes(input)) {
+        x[i].style.display="";
+        
+      }
+      else {
+          
+          x[i].style.display="none";                 
+        
+      }
+  }
+}

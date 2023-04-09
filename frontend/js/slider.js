@@ -89,3 +89,18 @@ $(".search-btn").click((e)=>{
 
 
 })
+
+// if(localStorage.coordi){
+//   console.log("come0");
+//   $.ajax({
+//         type: "POST",
+//         url: "http://127.0.0.1:3000/userTrack/recommendLocation",
+//         contentType: 'application/json',
+//         dataType: 'json',
+//         success: function (result) {
+//           console.log("come");
+//             console.log(result);
+//         },
+//         error:(err)=>console.log(err)
+//   })
+//  }

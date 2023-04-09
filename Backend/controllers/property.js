@@ -10,11 +10,11 @@ app.use(express.json());
 
 const router = express.Router();
 const bodyParser = require("body-parser");
-const nodemailer = require('nodemailer');
-const Mailgen = require('mailgen');
+const nodemailer = require("nodemailer");
+const Mailgen = require("mailgen");
 //const { EMAIL, PASSWORD } = require('../env.js')
- const EMAIL=process.env.EMAIL;
- const PASSWORD=process.env.PASSWORD;
+const EMAIL = process.env.EMAIL;
+const PASSWORD = process.env.PASSWORD;
 
 const { PropertiesHR } = require("../models/propertyModel");
 const { UsersHR } = require("../models/userModel");
@@ -32,17 +32,17 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage }).single("imgg");
 
+async function checkadd(req, res) {
+  let doc = await PropertiesHR.findOne(
+    { _id: "642dae502bdb8a3506456e32" },
+    { postedOn: 1, _id: 0 }
+  );
 
-async function checkadd(req,res) {
-  let doc=await PropertiesHR.findOne({_id:"642dae502bdb8a3506456e32"},{postedOn:1,_id:0})
-  
-  let dd=new Date(doc.postedOn).getFullYear()
-  dd=String(dd)
+  let dd = new Date(doc.postedOn).getFullYear();
+  dd = String(dd);
   console.log(dd);
-  res.send(dd)
+  res.send(dd);
 }
-
-
 
 async function propertyDisplay(req, res) {
   console.log(req.body);
@@ -69,8 +69,9 @@ async function propertyDisplay(req, res) {
     );
   }
 
-  if (doc) doc = await PropertiesHR.find({ ownerId: { $ne: uid } });
-  else doc = await PropertiesHR.find();
+  if (doc)
+    doc = await PropertiesHR.find({ ownerId: { $ne: uid }, status: true });
+  else doc = await PropertiesHR.find({ status: true });
 
   let arrc = ["Location", "Budget", "Size-bhk", "Property-Type"];
 
@@ -87,8 +88,7 @@ async function propertyDisplay(req, res) {
     }
   }
   if (req.body.propertyType !== "Property-Type") {
-    if(req.body.propertyType=="Office Space")
-      typetrack="OfficeSpace"  
+    if (req.body.propertyType == "Office Space") typetrack = "OfficeSpace";
     else typetrack = req.body.propertyType;
   }
   doc.forEach((ele) => {
@@ -222,13 +222,70 @@ async function propertyDisplay(req, res) {
 async function getPropertyId(req, res) {
   let iid = req.body.id;
   let doc = await PropertiesHR.findOne({ _id: iid });
+  let ans = {};
+  ///similar props
+  let similar = await PropertiesHR.find({
+    location: doc.location,
+    propertyType: doc.propertyType,
+    bhkSize: doc.bhkSize,
+    _id:{$ne:iid}
+  });
+  if (similar.length < 8) {
+    let edata = await PropertiesHR.find({
+      location: doc.location,
+      bhkSize: { $ne: doc.bhkSize },
+      propertyType: doc.propertyType,
+      _id:{$ne:iid}
+    })
+    similar.push(...edata);
+    if (similar.length < 8) {
+      edata = await PropertiesHR.find({
+        
+        propertyType:{$ne:doc.propertyType},
+          location:doc.location,
+          _id:{$ne:iid}
+      });
+      similar.push(...edata);
+      if(similar.length<8){
+        edata = await PropertiesHR.find({
+          propertyType: doc.propertyType,
+        location: { $ne: doc.location },
+        _id:{$ne:iid}
+        })
+        similar.push(...edata);
+        
+        if(similar.length<8){
+          edata = await PropertiesHR.find({
+            propertyType:{$ne:doc.propertyType},
+            location:{$ne:doc.location},
+            _id:{$ne:iid}
+          })
+          similar.push(...edata);
+          ans.similar=similar
+          
+        }
+        else{
+          ans.similar=similar
+        } 
+      }
+      else{
+        ans.similar = similar;  
+      }
+      
+    } else {
+      ans.similar = similar;
+    }
+  } else {
+    ans.similar = similar;
+  }
   jwt.verify(
     req.headers.periperi,
     process.env.SECRETKEY,
     async (err, authdata) => {
       if (err) {
-        // res.send("Ivalid User!");
-        res.send(doc.toObject());
+        
+        ans.doc=doc
+        res.send(ans);
       } else {
         console.log("okok");
         let docc = await UsersTrackerHR.findOne({ userId: authdata.userId });
@@ -245,19 +302,17 @@ async function getPropertyId(req, res) {
           }
         }
         console.log(present);
-        if(present){
+        if (present) {
           val1++;
           console.log(val1, locationtrack);
-
         }
 
-        typetrack=doc.propertyType
-        if(typetrack=="Office Space")
-          typetrack="OfficeSpace"
+        typetrack = doc.propertyType;
+        if (typetrack == "Office Space") typetrack = "OfficeSpace";
         val2 = docc.intrest.propertyType.toObject()[typetrack];
 
         typetrack = "intrest.propertyType." + typetrack;
-  
+
         // let val=doc.sizetrack
         console.log(val2, typetrack);
         val2++;
@@ -272,42 +327,52 @@ async function getPropertyId(req, res) {
         sizetrack = "intrest.bhk." + sizetrack;
         val3++;
         console.log(val3, sizetrack);
-        if(!doc.cost.endsWith("Lac") && doc.cost<10000){
-          costtrack="low"
-        }
-        else if( !doc.cost.endsWith("Lac") && doc.cost<50000){
-          costtrack="middle"
-        }
-        else if(!doc.cost.endsWith("Lac")){
-          costtrack="high"
-        }
-        else{
-          costtrack="vhigh"
+        if (!doc.cost.endsWith("Lac") && doc.cost < 10000) {
+          costtrack = "low";
+        } else if (!doc.cost.endsWith("Lac") && doc.cost < 50000) {
+          costtrack = "middle";
+        } else if (!doc.cost.endsWith("Lac")) {
+          costtrack = "high";
+        } else {
+          costtrack = "vhigh";
         }
         val4 = docc.intrest.cost.toObject()[costtrack];
         costtrack = "intrest.cost." + costtrack;
         val4++;
         console.log(val4, costtrack);
-        if(present){
 
+        
+
+        if (present) {
           let docc2 = await UsersTrackerHR.updateOne(
-                { userId: authdata.userId,"intrest.location._id": locationtrack},
-                { $set: { "intrest.location.$.count": val1,[sizetrack]: val3, [costtrack]: val4,[typetrack]: val2 } }
-              );
-            res.send(doc)
-        }
-        else{
-          let docc2 = await UsersTrackerHR.updateOne(
-            { userId: authdata.userId},
-            { $push: { "intrest.location": { _id: locationtrack, count: 1 } } ,$set: {[sizetrack]: val3 ,[costtrack]: val4,[typetrack]: val2 } }
+            { userId: authdata.userId, "intrest.location._id": locationtrack },
+            {
+              $set: {
+                "intrest.location.$.count": val1,
+                [sizetrack]: val3,
+                [costtrack]: val4,
+                [typetrack]: val2,
+              },
+            }
           );
-          res.send(doc)
-        }
 
+          ans.doc = doc;
+
+          res.send(ans);
+        } else {
+          let docc2 = await UsersTrackerHR.updateOne(
+            { userId: authdata.userId },
+            {
+              $push: { "intrest.location": { _id: locationtrack, count: 1 } },
+              $set: { [sizetrack]: val3, [costtrack]: val4, [typetrack]: val2 },
+            }
+          );
+          ans.doc=doc
+          res.send(ans);
+        }
       }
     }
   );
-  
 }
 
 async function requestedProperties(req, res) {
@@ -363,69 +428,68 @@ async function myProperties(req, res) {
     }
   );
 }
-async function sendEmail(userEmail,cost,name,email,mobile){
+async function sendEmail(userEmail, cost, name, email, mobile) {
   //const { userEmail } = req.body;
   console.log("sendEmail fun entered");
   let config = {
-      service : 'gmail',
-      auth : {
-          user:  EMAIL,
-          pass: PASSWORD,
-      }
-  }
+    service: "gmail",
+    auth: {
+      user: EMAIL,
+      pass: PASSWORD,
+    },
+  };
 
   let transporter = nodemailer.createTransport(config);
 
   let MailGenerator = new Mailgen({
-      theme: "default",
-      product : {
-          name: "@Sand-box",
-          link : 'https://Sand-box.js/'
-      }
-  })
+    theme: "default",
+    product: {
+      name: "@Sand-box",
+      link: "https://Sand-box.js/",
+    },
+  });
 
   let response = {
-      body: {
-          name : "! User",
-          intro: "Thank you for using Sand-box!",
-          table : {
-              data : [
-                  {
-                      ownername : name,
-                      Email: email,
-                      mobile:mobile,
-                      price : cost,
-                  }
-              ]
+    body: {
+      name: "! User",
+      intro: "Thank you for using Sand-box!",
+      table: {
+        data: [
+          {
+            ownername: name,
+            Email: email,
+            mobile: mobile,
+            price: cost,
           },
-          outro: "Looking forward to find you more rentals"
-      }
-  }
+        ],
+      },
+      outro: "Looking forward to find you more rentals",
+    },
+  };
 
-  let mail = MailGenerator.generate(response)
+  let mail = MailGenerator.generate(response);
 
   let message = {
-      from : "hemalathabobba1@gmail.com",
-      to : userEmail,
-      subject: "Place Order",
-      html: mail
-  }
+    from: "hemalathabobba1@gmail.com",
+    to: userEmail,
+    subject: "Place Order",
+    html: mail,
+  };
   console.log("before send mail");
 
-  transporter.sendMail(message).then(() => {
-    console.log("you should receive an email");
-      return "you should receive an email"
-     
-  }).catch(error => {
-    console.log("error ",error);
-     return "error"
-     
-  })
+  transporter
+    .sendMail(message)
+    .then(() => {
+      console.log("you should receive an email");
+      return "you should receive an email";
+    })
+    .catch((error) => {
+      console.log("error ", error);
+      return "error";
+    });
 
-return ("Signup Successfully...!");
+  return "Signup Successfully...!";
 }
-
-
 
 async function storeRequest(req, res) {
   jwt.verify(
@@ -437,7 +501,9 @@ async function storeRequest(req, res) {
       } else {
         let propobj = await PropertiesHR.findOne({ _id: req.body.id });
         let obj = await UsersHR.findOne({ _id: authdata.userId });
-        let regobj=await RegisteredUsersHR.findOne({ userId: authdata.userId });
+        let regobj = await RegisteredUsersHR.findOne({
+          userId: authdata.userId,
+        });
         obj = obj.toObject();
         let present = false;
         obj.requestedProperties.forEach((ele) => {
@@ -456,9 +522,21 @@ async function storeRequest(req, res) {
             { $push: { RequestedUsers: authdata.userId } }
           );
         }
-        console.log(propobj.cost," ",regobj.name,regobj.email,regobj.mobile);
+        console.log(
+          propobj.cost,
+          " ",
+          regobj.name,
+          regobj.email,
+          regobj.mobile
+        );
         //sending an email
-       await sendEmail(req.body.email,propobj.cost,regobj.name,regobj.email,regobj.mobile);
+        await sendEmail(
+          req.body.email,
+          propobj.cost,
+          regobj.name,
+          regobj.email,
+          regobj.mobile
+        );
         res.send({});
       }
     }
@@ -570,6 +648,80 @@ async function addProperty(req, res) {
   );
 }
 
+
+
+async function getLocationProps(value){
+  console.log(value,"ok");
+  let properties=await PropertiesHR.find({location:value}).limit(8)
+  if(properties.length<8){
+    let properties2=await PropertiesHR.find({location:{$ne:value}}).limit(8-properties.length)
+    properties.push(...properties2)
+    
+  }
+  
+  return properties
+}
+
+async function locationProperties(req,res){
+  let result={}
+  console.log(req.body.city);
+  if(req.body.city){
+    
+    result.properties=await getLocationProps(req.body.city)
+
+    jwt.verify(req.headers.periperi,process.env.SECRETKEY,async (err,authdata)=>{
+      if(err){
+        console.log(result);
+        res.send(result)
+      }
+      else{
+        let docut=await UsersTrackerHR.updateOne({userId:authdata.userId},{location:req.body.city})
+        res.send(result)
+      }
+    })
+    
+  }
+  else{
+    jwt.verify(req.headers.periperi,process.env.SECRETKEY,async (err,authdata)=>{
+      if(err){
+        let properties=await PropertiesHR.find({}).limit(8)
+        result.properties=properties
+        res.send(result)
+      }
+      else{
+        let val;
+        
+        let docut=await UsersTrackerHR.findOne({userId:authdata.userId})
+        if(docut.location){
+          result.properties=await getLocationProps(docut.location)
+          
+        }
+        else{
+          let arr=docut.intrest.location,maxi=0,loci
+
+          for( let i=0;i<arr.length;i++){
+            if(arr[i].count>maxi){
+              maxi=arr[i].count
+              loci=arr[i]._id
+            }
+          }
+          if(loci){
+            result.properties=await getLocationProps(loci)
+          }
+          else{
+            let properties=await PropertiesHR.find({}).limit(8)
+            result.properties=properties
+          }
+        
+        }
+
+        res.send(result)
+      }
+    })
+  }
+
+}
+
 module.exports = {
   addProperty,
   removeRequest,
@@ -579,6 +731,6 @@ module.exports = {
   getPropertyId,
   requestedProperties,
   updateProperty,
-  checkadd
+  checkadd,
+  locationProperties
 };
-

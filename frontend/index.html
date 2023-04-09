@@ -18,7 +18,11 @@
     /> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/9.2.0/swiper-bundle.css" integrity="sha512-Lc4aT4sbiVWDTSgqn3lf5kwKECm7rU45AReUS9WI2k4yRPSKtS+kJ9aV1jrxDUIyetNFRYZ3U2gR6WWbtWbIfA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./css/styles.css" />
-    
+    <style>
+        .boxx .top,.boxx .bottom{
+          pointer-events: none;
+        }
+    </style>
 </head>
 <body>
     <header class="header" id="header">
@@ -452,6 +456,7 @@
 
 <script src="./js/logoutStorageHandle.js"></script>
 <script src="js/track.js"></script>
+<script src="js/index.js"></script>
 <script>
 const logot = document.querySelector("#logout");
 
@@ -468,6 +473,13 @@ if (logot) {
     storagehandle();
   });
 }
+
+// if(localStorage.coordi){
+  // position=JSON.parse(localStorage.coordi)
+
+// }
+
+
 </script>
 
 

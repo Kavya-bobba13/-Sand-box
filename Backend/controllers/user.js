@@ -102,37 +102,35 @@ async function valid(req, res) {
     console.log("done pwd enter");
     var email = req.body.email;
     var unameb = null;
-    bcrypt.compare(req.body.password,obj[0].password, async (err, hash) => {
+    bcrypt.compare(req.body.password, obj[0].password, async (err, hash) => {
       console.log(hash);
-      if (err) {
+      if (!hash) {
         console.log(unameb);
         res.send({ user: "Invalid pwd", token: unameb });
       } else {
-        
-        unameb=obj[0].name
+        console.log("entered valid");
+        unameb = obj[0].name;
 
-          console.log(unameb);
-          let data = {
-            name: unameb,
-            userId: obj[0].userId,
-            email: obj[0].email,
-            mobile: obj[0].mobile,
-          };
+        console.log(unameb);
+        let data = {
+          name: unameb,
+          userId: obj[0].userId,
+          email: obj[0].email,
+          mobile: obj[0].mobile,
+        };
 
-          jwt.sign(
-            data,
-            process.env.SECRETKEY,
-            { expiresIn: "24h" },
-            (err, token) => {
-              if (data.userId == "641b1f2da200c7ee16d4afa1") {
-                res.send({ user: "admin", token: token, admin: "yesyes" });
-              } else res.send({ user: "valid pwd", token: token });
-            }
-          );
-        
+        jwt.sign(
+          data,
+          process.env.SECRETKEY,
+          { expiresIn: "24h" },
+          (err, token) => {
+            if (data.userId == "641b1f2da200c7ee16d4afa1") {
+              res.send({ user: "admin", token: token, admin: "yesyes" });
+            } else res.send({ user: "valid pwd", token: token });
+          }
+        );
       }
     });
-
   } catch (err) {
     res.send(err);
   }
@@ -285,14 +283,43 @@ async function requestedUsers(req, res) {
   );
   console.log(doc);
   let arr = [];
-  doc.RequestedUsers.forEach(async (ele, ind) => {
-    let doc2 = await RegisteredUsersHR.findOne({ userId: String(ele) });
+  for (let i = 0; i < doc.RequestedUsers.length; i++) {
+    let doc2 = await RegisteredUsersHR.findOne({
+      userId: String(doc.RequestedUsers[i]),
+    });
     console.log(doc2);
-    arr.push(doc2);
-    if (ind + 1 == doc.RequestedUsers.length) {
-      res.send(arr);
+    let dd=new Date()
+    let hdoc_date=new Date(Date.UTC(dd.getUTCFullYear(),dd.getUTCMonth(),dd.getUTCDate()));
+    let hdoc = await UsersTrackerHR.aggregate([
+      {
+        $match: {
+          userId:doc.RequestedUsers[i],
+          "timespent.date": { $gte: hdoc_date },
+        },
+      }
+    ]);
+    console.log(hdoc);
+    if(hdoc.length){
+      doc2=doc2.toObject()
+      doc2.userType="Active"
     }
-  });
+    else{
+      doc2=doc2.toObject()
+      doc2.userType="Normal"
+    }
+    
+    
+
+    arr.push(doc2);
+  }
+  arr.sort((x,y)=>{
+    if(x.userType<y.userType) return -1;
+    else return 1;
+  })
+
+  
+  res.send(arr);
+
   console.log(arr);
 }
 module.exports = {

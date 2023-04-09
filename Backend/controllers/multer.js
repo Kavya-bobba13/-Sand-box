@@ -109,6 +109,7 @@ function uploadImg(req,res){
         obj.baths=Number(req.body.baths);
         obj.mobile=Number(req.body.mobile);
         obj.balconies=Number(req.body.balconies);
+        obj.bhkSize=obj.beds
        // obj.image="../images/"+req.file.originalname;
        obj.image= req.file.location;
         console.log(obj);
@@ -118,6 +119,7 @@ function uploadImg(req,res){
           async (err,authdata)=>{
             if(err){
               console.log(err,"kavya");
+              res.send("notok")
             }
             else{
               obj.ownerId=authdata.userId;
@@ -127,6 +129,7 @@ function uploadImg(req,res){
              var prop=new PropertiesHR(obj);
              prop.save();
              await UsersHR.updateOne({_id:authdata.userId},{$push:{myProperties:prop._id}})
+             res.send("okdone")
             }
           })
         

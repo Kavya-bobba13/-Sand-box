@@ -5,7 +5,7 @@ require("dotenv").config();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const { adminDashboard, dataDisplay } = require("../controllers/admin");
+const { adminDashboard, dataDisplay,removeuser,removeproperty } = require("../controllers/admin");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -16,4 +16,7 @@ const router=express.Router()
 
 router.get("/admindisplay",adminDashboard);
 router.post("/dataDisplay",dataDisplay);
+router.post("/removeuser",removeuser);
+router.post("/removeproperty",removeproperty);
+
 module.exports =router;

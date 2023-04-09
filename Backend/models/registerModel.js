@@ -27,7 +27,8 @@ const router=express.Router()
           type: String, 
           required: true, 
           unique: true,
-          match:   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/ },
+          // match:   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/ 
+        },
         mobile: { 
           type: Number,
            required: true,
