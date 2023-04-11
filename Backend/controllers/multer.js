@@ -109,7 +109,7 @@ function profilePic(req,res){
 }
    
 
-function uploadImg(req,res){
+async function uploadImg(req,res){
   try{
     console.log("ok");
     console.log(req.form,"main");
@@ -143,6 +143,7 @@ function uploadImg(req,res){
         obj.mobile=Number(req.body.mobile);
         obj.bhkSize=obj.beds;
         obj.balconies=Number(req.body.balconies);
+        obj.bhkSize=obj.beds
        // obj.image="../images/"+req.file.originalname;
        obj.image= req.file.location;
         console.log(obj);
@@ -152,6 +153,7 @@ function uploadImg(req,res){
           async (err,authdata)=>{
             if(err){
               console.log(err,"kavya");
+              res.send("notok")
             }
             else{
               obj.ownerId=authdata.userId;
@@ -161,8 +163,10 @@ function uploadImg(req,res){
              var prop=new PropertiesHR(obj);
              prop.save();
              await UsersHR.updateOne({_id:authdata.userId},{$push:{myProperties:prop._id}})
+             
             }
           })
+          res.send("okdone")
         
     }
 })
@@ -170,6 +174,7 @@ function uploadImg(req,res){
   catch(err){
     res.send(err);
   }
+  
   
   
 }

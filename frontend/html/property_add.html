@@ -13,8 +13,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
- 
-    <form method="post" id="myform" action="http://127.0.0.1:3000/properties/uploadfile" enctype="multipart/form-data" >
+  <!-- action="http://127.0.0.1:3000/properties/uploadfile" -->
+    <form  id="myform" name="myform" enctype="multipart/form-data" >
   <div id="msform">
     <!-- progressbar -->
     <ul id="progressbar">
@@ -83,7 +83,7 @@
 
       
       <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <input type="submit" id="submit" name="submit" class="action-button addPropertySubmit" value="Submit"  />
+      <input type="button" id="submit" name="submit" class="action-button addPropertySubmit" value="Submit" onclick="calling()" />
       <!-- onclick="window.location.href='selling.html'" -->
     </fieldset>
     <input type="hidden" id="key" name="key">

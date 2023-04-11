@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+var NodeGeocoder = require('node-geocoder');
 const router = express.Router();
 
 const { PropertiesHR } = require("../models/propertyModel");
@@ -91,7 +92,24 @@ async function recommending(req, res) {
     process.env.SECRETKEY,
     async (err, authdata) => {
       if (err) {
-        res.send(err);
+        let result={}
+
+        result.popular = await PropertiesHR.aggregate([
+          {
+            $addFields: { reqlen: { $size: "$RequestedUsers" } },
+          },
+          {
+            $sort: { reqlen: -1 },
+          },
+        ]);
+        console.log(result.popular);
+
+        result.newRelease = await PropertiesHR.find({})
+          .sort({ postedOn: -1 })
+          .limit(8);
+        
+          res.send(result);
+        
       } else {
         let result = {};
         let doc = await UsersTrackerHR.findOne({ userId: authdata.userId });
@@ -191,4 +209,25 @@ async function recommending(req, res) {
   );
 }
 
-module.exports = { tracking, counting, recommending };
+async function recommendingLocation(req,res){
+  
+
+var options = {
+  provider: 'google',
+  httpAdapter: 'https', // Default
+  apiKey: 'AIzaSyB7Thyj9fZ-8j44gfQjgHZahML79VnNDZA', // for Mapquest, OpenCage, Google Premier
+  formatter: 'json' // 'gpx', 'string', ...
+};
+
+var geocoder = NodeGeocoder(options);
+var loci;
+await geocoder.reverse({lat:28.5967439, lon:77.3285038},  function(err, resp) {
+  console.log(resp[0].city);
+  loci=resp[0].city
+  res.send(loci)
+});
+console.log(loci,1);
+// res.send(loci)
+}
+
+module.exports = { tracking, counting, recommending ,recommendingLocation};

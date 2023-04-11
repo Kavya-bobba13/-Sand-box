@@ -50,7 +50,8 @@ function fill() {
     success: function (resp) {
       //$('.title').text("  "+resp.cost);
       //$('p').text(resp.bhkSize+"bhk, "+"       "+resp.area +",       "+resp.propertyName+",  "+resp.location);
-      console.log(resp.area,"area");
+      resp=resp.doc
+      console.log((resp));
       document.querySelector(".pimg").setAttribute("src", resp.image);
       document.querySelector(".imagesrc").value=resp.image;
       document.querySelector(".cost").value = resp.cost;
