@@ -109,7 +109,7 @@ function profilePic(req,res){
 }
    
 
-function uploadImg(req,res){
+async function uploadImg(req,res){
   try{
     console.log("ok");
     console.log(req.form,"main");
@@ -163,9 +163,10 @@ function uploadImg(req,res){
              var prop=new PropertiesHR(obj);
              prop.save();
              await UsersHR.updateOne({_id:authdata.userId},{$push:{myProperties:prop._id}})
-             res.send("okdone")
+             
             }
           })
+          res.send("okdone")
         
     }
 })
@@ -173,6 +174,7 @@ function uploadImg(req,res){
   catch(err){
     res.send(err);
   }
+  
   
   
 }

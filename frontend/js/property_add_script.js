@@ -136,24 +136,32 @@
     
     console.log(obj);
     localStorage.store_details=JSON.stringify(obj);
-    $.ajax({
-      type: "POST",
-      url: "http://127.0.0.1:3000/properties/addProperty",
-      contentType: 'application/json',
-      headers: { "periperi": localStorage.name },
-      data: JSON.stringify(obj),
-      dataType: 'json',
-      success: function(result){
-
-          console.log(result);
-
-          if(result=="okdone")
-            window.open("../html/property_added_successfully.html","_self");
-          else window.open("../html/myProperties.html","_self");
-      }
-    })
     
     
   }
-  
+
+  function calling(e) {
+    // e.preventDefault()
+    $.ajax({
+      type: "POST",
+      url: "http://127.0.0.1:3000/properties/uploadfile",
+      headers:{
+        periperi:localStorage.name
+      },
+      // contentType: "application/json",
+      data: new FormData($('#myform')[0]),
+      processData: false,
+      contentType: false,
+      dataType: "json",
+      success: function(result){
+
+        console.log(result);
+
+        if(result=="okdone")
+          window.open("../html/property_added_successfully.html","_self");
+        else window.open("../html/myProperties.html","_self");
+    } ,
+    });
+    window.open("../html/property_added_successfully.html","_self");
+  }
   

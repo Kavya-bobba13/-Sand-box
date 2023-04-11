@@ -417,7 +417,7 @@ Navigation
      position: absolute; 
     top: 2%;
     right: 2%;
-    z-index: 20;
+   
 }
 /* .rent .box .like-no{
   background: url(../images/dislike.svg) no-repeat;
@@ -682,7 +682,7 @@ footer .row {
 
 .menu2>input{
   height: 4rem;
-  border-color:rgb(217, 217, 226);
+  border-color:rgb(128, 128, 209);
   font-size: 1.7rem;
 
 }
@@ -695,6 +695,11 @@ input:focus{
 .bottom p,.bottom div{
   pointer-events: none;
 }
+
+.dropdown-menu li:hover{
+  background-color: #b5d3f8;
+}
+
 
 
 /* /////////////////////////////// */

@@ -126,9 +126,9 @@ $.ajax({
     });
 
 
-
+    storagehandle()
     ///
-
+  
     initialize();
   },
   error: function () {
