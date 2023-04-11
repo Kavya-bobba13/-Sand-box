@@ -35,7 +35,7 @@ async function addNewUser(req, res) {
           password: hash,
           mobile: mobileno,
         });
-        if(obj){
+        if(obj && email && uname && mobileno){
           let data = {
             name: uname,
             userId: obj.userId,
@@ -48,9 +48,12 @@ async function addNewUser(req, res) {
             { expiresIn: "24h" },
             (err, token) => {
               console.log(token);
-              res.send({ token: token });
+              res.send({ token: token ,user:"valid"});
             }
           );
+        }
+        else{
+          res.send({user:"Invalid"})
         }
         
       } else res.send("notok");
@@ -76,7 +79,7 @@ async function addUser(obj) {
       userId: userid._id,
     });
     console.log("ok2");
-    let det = await user.save();
+   // let det = await user.save();
     console.log(det);
     console.log("ok3");
     return det;
@@ -159,7 +162,7 @@ async function register(req, res) {
     console.log(stat);
 
     // return {status:"Invalid"};
-    res.send({ status: stat });
+    res.send({ status: stat,statusValid:stat });
   } catch (err) {
     res.send(err);
   }
